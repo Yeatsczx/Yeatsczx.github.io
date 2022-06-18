@@ -82,7 +82,7 @@
       },
       fab: {
         enable: true,
-        always_show: false
+        always_show: true
       },
       carrier: {
         enable: true
@@ -103,7 +103,7 @@
         },
       },
       qrcode: {
-        enable: true,
+        enable: false,
         type: 'url',
         image: 'https://pic.izhaoo.com/weapp-code.jpg',
       },
@@ -143,8 +143,6 @@
     <div class="left">
       
       
-        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
-      
       
         <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
       
@@ -154,8 +152,6 @@
     <div class="right">
       <i class="iconfont iconmenu j-navbar-menu"></i>
     </div>
-    
-      <div id="qrcode-navbar"></div>
     
   </nav>
 
@@ -170,18 +166,18 @@
     <ul class="menu-content"><li class="menu-item">
         <a href="/ " class="underline active"> 首页</a>
       </li><li class="menu-item">
-        <a href="/galleries/ " class="underline "> 摄影</a>
+        <a href="/categories/htmlcss/ " class="underline "> HTML/CSS</a>
       </li><li class="menu-item">
-        <a href="/archives/ " class="underline "> 归档</a>
+        <a href="/categories/js/ " class="underline "> JavaScript</a>
       </li><li class="menu-item">
-        <a href="/tags/ " class="underline "> 标签</a>
+        <a href="/categories/algorithm/ " class="underline "> 数据结构与算法</a>
       </li><li class="menu-item">
-        <a href="/categories/ " class="underline "> 分类</a>
+        <a href="/categories/other/ " class="underline "> 其它</a>
       </li><li class="menu-item">
         <a href="/about/ " class="underline "> 关于</a>
       </li></ul>
     
-      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  CZX - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">2022</a></p></div>
     
   </div>
 </nav>
@@ -261,20 +257,6 @@
 
 <footer class="footer">
   <div class="footer-social"><a 
-        href="tencent://message/?Menu=yes&uin=894519210 "
-        target="_blank"
-        class="footer-social-item"
-        onMouseOver="this.style.color= '#12B7F5'" 
-        onMouseOut="this.style.color='#33333D'">
-          <i class="iconfont  iconQQ "></i>
-      </a><a 
-        href="javascript:; "
-        target="_blank"
-        class="footer-social-item"
-        onMouseOver="this.style.color= '#09BB07'" 
-        onMouseOut="this.style.color='#33333D'">
-          <i class="iconfont  iconwechat-fill "></i>
-      </a><a 
         href="https://www.instagram.com/izhaoo/ "
         target="_blank"
         class="footer-social-item"
@@ -282,14 +264,14 @@
         onMouseOut="this.style.color='#33333D'">
           <i class="iconfont  iconinstagram "></i>
       </a><a 
-        href="https://github.com/zhaoo "
+        href="https://github.com/Yeatsczx"
         target="_blank"
         class="footer-social-item"
         onMouseOver="this.style.color= '#9f7be1'" 
         onMouseOut="this.style.color='#33333D'">
           <i class="iconfont  icongithub-fill "></i>
       </a><a 
-        href="mailto:izhaoo@163.com "
+        href="mailto:engineerczx@gmail.com "
         target="_blank"
         class="footer-social-item"
         onMouseOver="this.style.color=#FF3B00" 
@@ -297,7 +279,7 @@
           <i class="iconfont  iconmail"></i>
       </a></div>
   
-    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  CZX - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">2022</a></p></div>
   
 </footer>
   
@@ -338,10 +320,6 @@
 
 
 
-
-
-  
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 
 
 
