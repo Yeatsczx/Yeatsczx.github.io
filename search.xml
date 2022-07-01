@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hexo建立博客</title>
+    <url>/2022/07/01/Hexo%E5%BB%BA%E7%AB%8B%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><ol>
+<li>一直想拥有一个自己的域名来作为个人博客，后来发现通过github pages + hexo可以帮助我们免费生成静态网址，不用购买域名就可以简便地搭建一个自由的个人博客，且不需要服务器及后台。</li>
+<li>Hexo是一个快速、简洁且高效的博客框架，支持 Markdown，可以部署到GitHub Pages平台。</li>
+</ol>
+<h2 id="二、准备环境"><a href="#二、准备环境" class="headerlink" title="二、准备环境"></a>二、准备环境</h2><ol>
+<li>需要注册一个Github账号。</li>
+<li>需要下载Node.js以及Git.</li>
+<li>安装Hexo，在Git Bash中运行以下命令：</li>
+</ol>
+<p>​      <code>npm install -g hexo-cli</code></p>
+<ol start="4">
+<li>初始化Hexo，在Git Bash中运行以下命令：</li>
+</ol>
+<p>​        这些即为Hexo初始化文件的路径。</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> hexo init &lt;folder&gt;<br><span class="hljs-variable">$</span> <span class="hljs-built_in">cd</span> &lt;folder&gt;<br><span class="hljs-variable">$</span> npm install<br></code></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><p>启动服务器。在<strong>此路径</strong>下，Git Bash中输入以下命令，运行即可：</p>
+<figure class="highlight axapta"><table><tr><td class="code"><pre><code class="hljs axapta">hexo <span class="hljs-keyword">server</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>可通过浏览器访问<a href="http://localhost:4000/%E3%80%82">http://localhost:4000/。</a></p>
+</li>
+</ol>
+<h2 id="三、博客搭建"><a href="#三、博客搭建" class="headerlink" title="三、博客搭建"></a>三、博客搭建</h2><h3 id="3-1、创建仓库"><a href="#3-1、创建仓库" class="headerlink" title="3.1、创建仓库"></a>3.1、创建仓库</h3><ul>
+<li>新建一个名为<code>你的账户名.github.io</code>的仓库，这样以后就可以通过http:&#x2F;&#x2F;《账户名称》.github.io，进行访问。（<strong>注意</strong>仓库名字一定为你的<strong>账户名</strong>,即登录github时使用的名称，而不是昵称）</li>
+</ul>
+<h3 id="3-2、安装hexo-deployer-git插件"><a href="#3-2、安装hexo-deployer-git插件" class="headerlink" title="3.2、安装hexo-deployer-git插件"></a>3.2、安装<code>hexo-deployer-git</code>插件</h3><ul>
+<li>在Git Bash中运行以下命令：</li>
+</ul>
+<figure class="highlight ada"><table><tr><td class="code"><pre><code class="hljs ada">$ npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3、配置SSH-key"><a href="#3-3、配置SSH-key" class="headerlink" title="3.3、配置SSH key"></a>3.3、配置SSH key</h3><ol>
+<li>创建一个 SSH key ，在Git Bash中输入以下命令， 回车三下：</li>
+</ol>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>ssh-keygen -t rsa -C <span class="hljs-string">&quot;邮箱地址&quot;</span><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>找到秘钥文件内容，在Git Bash中输入以下命令：</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> <span class="hljs-built_in">cat</span> id_rsa.pub<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>复制密钥文件内容，添加到github即可。</li>
+</ol>
+<h3 id="3-4、修改-config-yml文件及推送到GithubPages"><a href="#3-4、修改-config-yml文件及推送到GithubPages" class="headerlink" title="3.4、修改_config.yml文件及推送到GithubPages"></a>3.4、修改_config.yml文件及推送到GithubPages</h3><ol>
+<li>修改<code>_config.yml</code>（在站点目录下）。文件末尾修改为：</li>
+</ol>
+<figure class="highlight dts"><table><tr><td class="code"><pre><code class="hljs dts"><span class="hljs-meta"># Deployment</span><br><span class="hljs-meta">## Docs: https:<span class="hljs-comment">//hexo.io/docs/deployment.html</span></span><br><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> git@github.com:<span class="hljs-params">&lt;Github账号名称&gt;</span>/<span class="hljs-params">&lt;Github账号名称&gt;</span>.github.io.git<br><span class="hljs-symbol">  branch:</span> master<br><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>推送到GithubPages。在Git Bash中依次输入以下命令：</li>
+</ol>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>hexo g<br><span class="hljs-variable">$ </span>hexo d<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>现在即可通过http:&#x2F;&#x2F;《账户名称》.github.io进行访问。</li>
+</ol>
+<h2 id="四、更改主题"><a href="#四、更改主题" class="headerlink" title="四、更改主题"></a>四、更改主题</h2><h3 id="4-1-安装主题"><a href="#4-1-安装主题" class="headerlink" title="4.1 安装主题"></a>4.1 安装主题</h3><p>下载主题,例如next主题。</p>
+<p><code>$ cd your-hexo-site</code><br><code>$ git clone https://github.com/iissnan/hexo-theme-next themes/next</code></p>
+<h3 id="4-2-启用主题"><a href="#4-2-启用主题" class="headerlink" title="4.2 启用主题"></a>4.2 启用主题</h3><p>更改站点配置文件<code>_config.yml</code> 的theme字段，为主题文件夹的名称。</p>
+<h3 id="4-3-配置主题"><a href="#4-3-配置主题" class="headerlink" title="4.3 配置主题"></a>4.3 配置主题</h3><p>修改主题目录下的_config.yml配置文件可对主题进行配置。具体设置可参考该主题的配置文档。</p>
+<h2 id="五、写博客"><a href="#五、写博客" class="headerlink" title="五、写博客"></a>五、写博客</h2><h3 id="5-1-新建文章"><a href="#5-1-新建文章" class="headerlink" title="5.1 新建文章"></a>5.1 新建文章</h3><p>通过命令行<code>hexo new &quot;postName&quot;</code>或<code>hexo n &quot;postName&quot;</code><br>可新建一篇名为postName的文章，打开博客目录中 source&#x2F;_posts 文件夹中的对应Markdown文档即可开始撰写博文。</p>
+]]></content>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用方法总结</title>
+    <url>/2022/07/01/Typora%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="一、基础方法"><a href="#一、基础方法" class="headerlink" title="一、基础方法"></a>一、基础方法</h1><h3 id="1-1标题"><a href="#1-1标题" class="headerlink" title="1.1标题"></a>1.1标题</h3><ul>
+<li>使用快捷键Ctrl+1（2，3，4，5，6）表示相对应的标题（如HTML中的<h1>，<h2>等）。</li>
+<li>Ctrl+0表示段落（如HTML中的<p>）。</li>
+<li>此类快捷键信息可在菜单栏中的段落选项下查看。</li>
+</ul>
+<h3 id="1-2字体"><a href="#1-2字体" class="headerlink" title="1.2字体"></a>1.2字体</h3><ul>
+<li>快捷键<code>Ctrl+I</code>来表示  <em>斜体文本</em></li>
+<li>快捷键<code>Ctrl+B</code>来表示  <strong>粗体文本</strong></li>
+</ul>
+<h3 id="1-3各类线"><a href="#1-3各类线" class="headerlink" title="1.3各类线"></a>1.3各类线</h3><ul>
+<li><p>以使用<strong>三个及以上</strong>的 <code>+</code>  来表示一条分割线：</p>
+<hr>
+</li>
+<li><p><code>Alt+Shift+5</code>来表示   <del>删除文本</del></p>
+</li>
+<li><p>快捷键<code>Ctrl+U</code>来下划线  <u>下划线文本</u></p>
+</li>
+</ul>
+<h3 id="1-4列表"><a href="#1-4列表" class="headerlink" title="1.4列表"></a>1.4列表</h3><ul>
+<li>可以使用 * 标记符号来表示<strong>无序列表</strong>，注意要在标记符号后<strong>添加一个空格</strong></li>
+<li>可以使用<strong>数字加上<code>.</code>再加上空格</strong>来表示<strong>有序列表</strong></li>
+</ul>
+<h3 id="1-5区块"><a href="#1-5区块" class="headerlink" title="1.5区块"></a>1.5区块</h3><ul>
+<li>可以使用<code>&gt;</code>加空格来表示区块：</li>
+</ul>
+<blockquote>
+<p>12312312</p>
+</blockquote>
+<h3 id="1-6代码"><a href="#1-6代码" class="headerlink" title="1.6代码"></a>1.6代码</h3><ul>
+<li>如果是一行代码，可以使用段内代码块来表示，用一对 **&#96;**（数字1旁边的符号）括住代码。</li>
+<li>如果是代码段,可以使用<strong>三个 &#96; 加Enter+编程语言</strong>来表示</li>
+</ul>
+<h3 id="1-7链接"><a href="#1-7链接" class="headerlink" title="1.7链接"></a>1.7链接</h3><ul>
+<li><p>链接的使用方式有两种语法，如下：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">[<span class="hljs-string">链接文字</span>](<span class="hljs-link">链接地址</span>)<br>或<br>&lt;链接地址&gt;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>例如：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">[<span class="hljs-string">百度</span>](<span class="hljs-link">https://www.baidu.com/</span>) <span class="language-xml">&lt;https://www.baidu.com/&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><a href="https://www.baidu.com/">百度</a> <a href="https://www.baidu.com/">https://www.baidu.com/</a></p>
+<ul>
+<li>链接除了可以打开相应的网页外，还可以<strong>打开本地文件</strong></li>
+<li>链接地址需要使用本地文件的地址，相对地址、绝对地址均可</li>
+<li>相对地址的表示中：一个小圆点<code>.</code>表示当前目录，两个小圆点<code>..</code>表示上一级目录。</li>
+<li>可以使用链接来实现<strong>页内跳转</strong>：</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">[<span class="hljs-string">链接文字</span>](<span class="hljs-link">#标题文字</span>)<br></code></pre></td></tr></table></figure>
+
+<p>注意CSDN不支持页面跳转。</p>
+<h3 id="1-8图片"><a href="#1-8图片" class="headerlink" title="1.8图片"></a>1.8图片</h3><ul>
+<li>可以在Markdown文档中插入图片：</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">![<span class="hljs-string">alt 属性文本</span>](<span class="hljs-link">图片地址</span>) ![<span class="hljs-string">alt 属性文本</span>](<span class="hljs-link">图片地址 &quot;可选标题&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>如：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">![<span class="hljs-string">网络图片</span>](<span class="hljs-link">http://static.runoob.com/images/runoob-logo.png &quot;菜鸟教程&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-9表格"><a href="#1-9表格" class="headerlink" title="1.9表格"></a>1.9表格</h3><ul>
+<li>可以使用快捷键<strong>Ctrl+T</strong>来插入表格</li>
+</ul>
+<h2 id="二、扩展方法"><a href="#二、扩展方法" class="headerlink" title="二、扩展方法"></a>二、扩展方法</h2><h3 id="2-1字体颜色及大小"><a href="#2-1字体颜色及大小" class="headerlink" title="2.1字体颜色及大小"></a>2.1字体颜色及大小</h3><ul>
+<li>可以使用<code>&lt;font&gt; &lt;/font&gt;</code>标签来改变字体的颜色及大小 如：</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">font</span> <span class="hljs-attr">size</span>=<span class="hljs-string">3</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;red&quot;</span>&gt;</span></span>字体颜色为红色，大小为3<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">font</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>其中<code>size</code>表示字体大小，<code>color</code>表示颜色</li>
+</ul>
+<h3 id="2-2对齐方式"><a href="#2-2对齐方式" class="headerlink" title="2.2对齐方式"></a>2.2对齐方式</h3><ul>
+<li>可以改变字体的对齐方式，用标签<code>&lt;p&gt; &lt;/p&gt;</code>加上属性<code>align</code>，如：</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;left&quot;</span>&gt;</span></span>左对齐<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span>&gt;</span></span>中间对齐<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;right&quot;</span>&gt;</span></span>右对齐<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><ul>
+<li>上述方法仅为部分常用方法。</li>
+<li>参考资料：[1] 菜鸟Markdown教程：<a href="https://www.runoob.com/markdown/md-tutorial.html">https://www.runoob.com/markdown/md-tutorial.html</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Typora</tag>
+      </tags>
+  </entry>
+</search>
