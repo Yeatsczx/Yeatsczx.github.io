@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>CodePen - Box Jumping Game</title>
+    <title>Herald</title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <style>
         html,
         body {
@@ -30,7 +31,6 @@
 </head>
 
 <body>
-    <!-- partial:index.partial.html -->
     <div class="game-controller-wrapper">
         <label>Keyboard/Touch
             <input type="radio" checked="checked" name="radio" value="keyboard" />
@@ -39,6 +39,7 @@
             <input type="radio" name="radio" value="audio" />
         </label>
     </div>
+    <canvas id="canvas"></canvas>
     <script>
         "use strict";
         //数学中的标量
@@ -50,12 +51,6 @@
         };
         const randomOne = (arr) => {
             return arr[Math.floor(random(0, arr.length))];
-        };
-        const clamp = (value, min, max) => {
-            return Math.max(min, Math.min(value, max));
-        };
-        const lerp = (from, to, amount) => {
-            return from + (to - from) * amount;
         };
         class Vector {
             constructor(x = 0, y = 0) {
@@ -145,7 +140,7 @@
                 this.color = props.color;
                 this.opacity = props.opacity ?? 1;
             }
-            // 判断两个矩形是否相交，r1为hero，列举四种不相交的情况，然后取反
+            // 判断两个矩形是否相交，r1为herald，列举四种不相交的情况，然后取反
             static isIntersect(r1, r2) {
                 return !(r2.position.x > r1.position.x + r1.width ||
                     r2.position.x + r2.width < r1.position.x ||
@@ -163,8 +158,9 @@
                     this.init();
                 };
                 this.tick = (callback) => {
+                    //请求动画帧
                     this.raf = requestAnimationFrame(() => {
-                        this.ctx.clearRect(0, 0, this.width, this.height);
+                        this.ctx.clearRect(0, 0, this.width, this.height);//擦除上一帧画布
                         this.tick(callback);
                     });
                     const stage = {
@@ -174,11 +170,12 @@
                         ctx: this.ctx,
                         horizontalVelocity: this.horizontalVelocity
                     };
+                    //更新herald及平台数据
                     for (const entity of this.entities) {
                         entity.update(stage);
                     }
-                    //void 0即undefind
-                    callback === null || callback === void 0 ? void 0 : callback();
+                    callback();
+                    //重新绘制herald及平台
                     for (const entity of this.entities) {
                         entity.draw(stage);
                     }
@@ -188,10 +185,12 @@
                     this.stop();
                     this.tick(callback);
                 };
+                //取消请求动画帧
                 this.stop = () => {
                     cancelAnimationFrame(this.raf);
                 };
                 this.add = (...entity) => {
+                    //entity.length为2
                     for (let i = 0; i < entity.length; i++) {
                         this.entities.push(entity[i]);
                     }
@@ -200,16 +199,17 @@
                     this.horizontalVelocity = this.initialHorizontalVelocity.clone();
                     this.entities = [];
                 };
-                this.ele = document.createElement("canvas");
-                document.body.appendChild(this.ele);
+                this.ele = document.getElementById("canvas");
                 this.init();
                 this.ctx = this.ele.getContext("2d");
-                this.verticalAcceleration = props.verticalAcceleration;//垂直速度
-                this.initialHorizontalVelocity = props.initialHorizontalVelocity;//水平速度
-                this.horizontalVelocity = props.initialHorizontalVelocity.clone();//水平速度
-                this.horizontalAcceleration = props.horizontalAcceleration;//水平速度
+                this.verticalAcceleration = props.verticalAcceleration;//重力加速度
+                this.initialHorizontalVelocity = props.initialHorizontalVelocity;//初始水平速度
+                this.horizontalVelocity = props.initialHorizontalVelocity.clone();
+                this.horizontalAcceleration = props.horizontalAcceleration;//水平加速度
+                //视图大小调整事件监听
                 window.addEventListener("resize", this.handleResize, false);
             }
+            //做适配，消除图片边缘模糊现象，并将画布大小设置为整个浏览器窗口视图大小
             init() {
                 const { devicePixelRatio, innerWidth, innerHeight } = window;
                 this.ele.width = innerWidth * devicePixelRatio;
@@ -240,7 +240,7 @@
                 };
                 this.update = (stage) => {
                     if (!this.isFirstTime) {
-                        this.opacity -= 0.05;
+                        this.opacity -= 0.05;//让粒子慢慢消失
                         const { verticalAcceleration, horizontalVelocity } = stage;
                         this.velocity.add(verticalAcceleration);
                         this.position.add(Vector.add(this.velocity, horizontalVelocity));
@@ -253,18 +253,18 @@
                 this.mass = props.mass;
             }
         }
-        //小方块已攻克
-        class Hero extends Rect {
+        //小方块
+        class Herald extends Rect {
             constructor(props) {
                 super(props);
                 this.applyForce = (force) => {
                     this.velocity.add(force.clone().div(this.mass));//this.mass应该为一个倍数值。
                 };
+                //hexxo跳动行为
                 this.jump = () => {
                     if (this.curConJump < this.maxConJump) {
                         //velocity为给一个速度
-                        this.velocity = new Vector();//将this.velocity重置为（0,0），如果不做这一步，hexo的速度可能已经向下了，甚至可能大于后面所给的一个向下的速度，就有可能跳第二次hexo没什么反应了，这也可以解释如果跳第一次后快速跳第二次就不会出现明显的问题。
-                        console.log(this.velocity);
+                        this.velocity = new Vector();//将this.velocity重置为（0,0），如果不做这一步，herald的速度可能已经向下了，甚至可能大于后面所给的一个向下的速度，就有可能跳第二次herald没什么反应了。
                         this.applyForce === null || this.applyForce === void 0 ? void 0 : this.applyForce(new Vector(0, -12));
                         this.curConJump++;
                     }
@@ -278,17 +278,21 @@
                 this.maxConJump = 2;
                 this.curConJump = 0;
             }
+            //更新herald数据
             update(stage) {
                 const { verticalAcceleration } = stage;
                 this.prevPosition = this.position.clone();
                 this.prevVelocity = this.velocity.clone();
                 this.velocity.add(verticalAcceleration);
+                //sub 左参数-右参数
                 this.position.add(Vector.sub(this.velocity, verticalAcceleration.clone().mult(0.5)));
             }
         }
         class PlatformManager {
             constructor(props) {
                 this.update = (stage) => {
+
+                    //this.lastPlatform.position.x < stage.width表示前一个平台的左侧已经出现在舞台时，就开始执行{}的内容绘制一个新的平台
                     while (!this.platforms.length ||
                         this.lastPlatform.position.x < stage.width) {
                         const { width, height, gap } = PlatformManager.getRandomProperties(stage);
@@ -296,20 +300,20 @@
                             ? 0
                             : this.lastPlatform.position.x + this.lastPlatform.width + gap;
                         const newPlatform = new Platform({
-                            position: new Vector(prev, stage.height - height),
+                            position: new Vector(prev, stage.height - height),//stage.height - height，stage.height是舞台的高度，即整个浏览器的高度，height为一个平台的高度
                             width: !this.platforms.length
-                                ? random(stage.width * 0.8, stage.width)
-                                : width,
+                                ? random(stage.width * 0.8, stage.width)//每次开始时，第一个舞台的宽度
+                                : width,//第二个及以后舞台的宽度
                             height,
-                            color: randomOne(this.colors)
+                            color: randomOne(this.colors)//在自定义的几个颜色中随机舞台颜色
                         });
                         this.lastPlatform = newPlatform;
                         this.platforms.push(newPlatform);
                     }
                     for (let i = 0; i < this.platforms.length; i++) {
                         const platform = this.platforms[i];
-                        platform.update(stage);
-                        // 如果已经走过屏幕左边
+                        platform.update(stage);//platform的更新方法，不是PlatformManager的，为平台设置速度
+                        // 如果已经走过屏幕左边,需要将它的位置调整到队尾,达到复用的目的
                         if (platform.position.x + platform.width < 0) {
                             const { width, height, gap } = PlatformManager.getRandomProperties(stage);
                             platform.position = new Vector(this.lastPlatform.position.x + this.lastPlatform.width + gap, stage.height - height);
@@ -320,14 +324,16 @@
                         }
                     }
                 };
+                //画出平台
                 this.draw = (stage) => {
-                    this.platforms.forEach((p) => p.draw(stage));
+                    this.platforms.forEach((p) => p.draw(stage));//p的draw继承自Rect
                 };
                 const { colors } = props;
                 this.colors = colors;
                 this.platforms = [];
                 this.lastPlatform = null;
             }
+            //取得平台随机数据
             static getRandomProperties(stage) {
                 const width = random(80, 680);
                 const height = random(50, 200);
@@ -348,17 +354,21 @@
         const notify = () => {
             listeners.forEach((listener) => listener());
         };
+        //事件调度函数
         const eventDispatcher = (type) => {
             if (controlType === type) {
                 notify();
             }
         };
+        //初始化事件监听器
         function initKeyboardListener() {
+            //键盘事件监听器
             window.addEventListener("keydown", (event) => {
                 if (event.key === " " || event.key === "ArrowUp") {
                     eventDispatcher("keyboard");
                 }
             });
+            //鼠标点击事件监听器
             window.addEventListener("click", (event) => {
                 eventDispatcher("keyboard");
             });
@@ -395,6 +405,7 @@
                 }
             };
         }
+        //调用初始化的事件监听器（键盘及点击）
         initKeyboardListener();
         const lazyInitAudioListener = once(initAudioListener);
         const setControlType = (type) => {
@@ -404,52 +415,56 @@
             }
         };
         let init;
-        let hero;
+        let herald;
         let particles = [];
         const maxParticleLength = 40;
         let particleId = 0;
+        //创建舞台
         const stage = new Stage({
-            // 重力加速度
-            verticalAcceleration: new Vector(0, 0.6),
-            initialHorizontalVelocity: new Vector(-4, 0),
-            horizontalAcceleration: new Vector(-0.001, 0),
+            verticalAcceleration: new Vector(0, 0.6),// 重力加速度
+            initialHorizontalVelocity: new Vector(-4, 0),//初始水平速度
+            horizontalAcceleration: new Vector(-0.001, 0),//初始水平加速度
         });
         let hasIntersect = false;
         let prevHasIntersect = false;
         //判断是否碰撞到地面方块左侧
-        function isIntersectLeft(hero, platform) {
-            if (hero.prevPosition.x + hero.width >= platform.prevPosition.x) {
+        function isIntersectLeft(herald, platform) {
+            if (herald.prevPosition.x + herald.width >= platform.prevPosition.x) {
                 return false;
             }
-            if (hero.prevPosition.y + hero.height >= platform.prevPosition.y) {
+            if (herald.prevPosition.y + herald.height >= platform.prevPosition.y) {
                 return true;
             }
             const { x, y } = platform.prevPosition;
-            const prevRightBottomX = hero.width + hero.prevPosition.x;
-            const prevRightBottomY = hero.height + hero.prevPosition.y;
+            const prevRightBottomX = herald.width + herald.prevPosition.x;
+            const prevRightBottomY = herald.height + herald.prevPosition.y;
             const tx = (x - prevRightBottomX) / -stage.horizontalVelocity.x;
-            const ty = (y - prevRightBottomY) / hero.prevVelocity.y;
+            const ty = (y - prevRightBottomY) / herald.prevVelocity.y;
             return ty < tx;
         }
         //碰撞检测
-        function collideDetect(hero, platforms) {
-            if (hero.position.y > stage.height) {
-                init();
+        function collideDetect(herald, platforms) {
+            //当herald掉下消失在视图中时触发，即游戏结束，注意herald.position.y越往上越小,在浏览器上面的那一边时为0，如果为负则是herald超出浏览器视图
+            if (herald.position.y > stage.height) {
+                init();//游戏失败，初始化游戏
                 return;
             }
             let tempHasIntersect = false;
             for (let i = 0; i < platforms.length; i++) {
-                if (Rect.isIntersect(hero, platforms[i])) {
+                //如果herald在与平台相交
+                if (Rect.isIntersect(herald, platforms[i])) {
                     tempHasIntersect = true;
                     const platform = platforms[i];
-                    hero.velocity = new Vector(0, 0);
-                    hero.curConJump = 0;
-                    if (isIntersectLeft(hero, platform)) {
+                    herald.velocity = new Vector(0, 0);
+                    herald.curConJump = 0;
+                    //如果碰撞到地面方块左侧
+                    if (isIntersectLeft(herald, platform)) {
                         init();
                         return;
                     }
-                    hero.position.y = platform.position.y - hero.height;
+                    herald.position.y = platform.position.y - herald.height;//纵坐标设置刚好在平台上方。
                     const particleSize = 8;
+                    //初次碰撞时的例子效果
                     if (!prevHasIntersect) {
                         for (let i = 0; i < 10; i++) {
                             const left = Math.random() > 0.5;
@@ -459,20 +474,21 @@
                                     : new Vector(random(10, 16), random(-6, -1)),
                                 mass: 1,
                                 position: left
-                                    ? new Vector(hero.position.x - particleSize, hero.position.y + hero.height - particleSize)
-                                    : new Vector(hero.position.x + hero.width, hero.position.y + hero.height - particleSize),
+                                    ? new Vector(herald.position.x - particleSize, herald.position.y + herald.height - particleSize)
+                                    : new Vector(herald.position.x + herald.width, herald.position.y + herald.height - particleSize),
                                 width: particleSize,
                                 height: particleSize,
-                                color: randomOne([hero.color, platform.color])
+                                color: randomOne([herald.color, platform.color])
                             });
-                            particles[particleId++ % maxParticleLength].applyForce(new Vector(0, -2));
+                            particles[particleId++ % maxParticleLength].applyForce(new Vector(0, -2));//向上的初速度
                         }
                     }
+                    //初次碰撞之后的，即在平台上滑动时的粒子效果
                     else {
                         particles[particleId % maxParticleLength] = new Particle({
                             velocity: new Vector(0, random(-6, -1)),
                             mass: 1,
-                            position: new Vector(hero.position.x - particleSize, hero.position.y + hero.height - particleSize),
+                            position: new Vector(herald.position.x - particleSize, herald.position.y + herald.height - particleSize),
                             width: particleSize,
                             height: particleSize,
                             color: platform.color
@@ -483,39 +499,45 @@
             }
             hasIntersect = tempHasIntersect;
             if (!prevHasIntersect && hasIntersect) {
-                stage.horizontalVelocity.add(new Vector(-2, 0));
+                stage.horizontalVelocity.add(new Vector(-2, 0));//herald回到舞台时，舞台回到初始速度
             }
             if (prevHasIntersect && !hasIntersect) {
-                stage.horizontalVelocity.add(new Vector(2, 0));
+                stage.horizontalVelocity.add(new Vector(2, 0));//herald跳起时舞台减速
             }
             prevHasIntersect = hasIntersect;
         }
+        //初始游戏
         init = () => {
-            //重置舞台
-            stage.reset();
-            hero = new Hero({
+            stage.reset();//重置舞台
+            //创建小方块
+            herald = new Herald({
                 position: new Vector(160, 20),
                 height: 24,
                 width: 24,
                 color: "#222f3e"
             });
+            //创建平台方块管理者
             const pm = new PlatformManager({
                 colors: ["#1dd1a1", "#ff6b6b", "#feca57", "#54a0ff", "#9c88ff"]
             });
             stage.play(() => {
-                collideDetect(hero, pm.platforms);
+                collideDetect(herald, pm.platforms);//处于递归环境中，会不断执行
+                //改变粒子
                 for (let particle of particles) {
                     particle.update(stage);
                     particle.draw(stage);
                 }
             });
-            stage.add(hero, pm);
+            //在舞台中加入herald和舞台管理者
+            stage.add(herald, pm);
         };
+        //监听input标签，并对游戏模式做出改变
         document.body.addEventListener("change", function (event) {
             setControlType(event.target.value);
         });
+        //herald跳跃监听
         addListener(() => {
-            hero.jump();
+            herald.jump();
         });
         init();
 
