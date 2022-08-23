@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Herald</title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <style>
+        html,
+        body {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .game-controller-wrapper {
+            position: fixed;
+            padding: 8px;
+            top: 0;
+            right: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="game-controller-wrapper">
+        <label>Keyboard/Touch
+            <input type="radio" checked="checked" name="radio" value="keyboard" />
+        </label>
+        <label>Audio
+            <input type="radio" name="radio" value="audio" />
+        </label>
+    </div>
+    <canvas id="canvas"></canvas>
+    <script>
+        "use strict";
+        //数学中的标量
+        const scale = (value, inMin, inMax, outMin, outMax) => {
+            return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+        };
+        const random = (min, max) => {
+            return scale(Math.random(), 0, 1, min, max);
+        };
+        const randomOne = (arr) => {
+            return arr[Math.floor(random(0, arr.length))];
+        };
+        class Vector {
+            constructor(x = 0, y = 0) {
+                this.x = x;
+                this.y = y;
+            }
+            static add(vector1, vector2) {
+                return new Vector(vector1.x + vector2.x, vector1.y + vector2.y);
+            }
+            static sub(vector1, vector2) {
+                return new Vector(vector1.x - vector2.x, vector1.y - vector2.y);
+            }
+            static clone(vector) {
+                return new Vector(vector.x, vector.y);
+            }
+            static fromAngle(theta, d) {
+                return new Vector(d * Math.cos(theta), d * Math.sin(theta));
+            }
+            clone() {
+                return new Vector(this.x, this.y);
+            }
+            add(vector) {
+                this.x += vector.x;
+                this.y += vector.y;
+                return this;
+            }
+            sub(vector) {
+                this.x -= vector.x;
+                this.y -= vector.y;
+                return this;
+            }
+            mult(scale) {
+                this.x *= scale;
+                this.y *= scale;
+                return this;
+            }
+            div(scale) {
+                this.x /= scale;
+                this.y /= scale;
+                return this;
+            }
+            //计算向量的长度
+            mag() {
+                return Math.sqrt(this.x * this.x + this.y * this.y);
+            }
+            //setMag后文未调用
+            setMag(mag) {
+                this.normalize();
+                this.mult(mag);
+                return this;
+            }
+            //求单位向量
+            normalize() {
+                let m = this.mag();
+                if (m !== 0) {
+                    this.div(m);
+                }
+                return this;
+            }
+            //limit后文未调用
+            limit(max) {
+                if (this.mag() > max) {
+                    this.normalize();
+                    this.mult(max);
+                }
+                return this;
+            }
+            //heading后文未调用
+            heading() {
+                return Math.atan2(this.y, this.x);
+            }
+        }
+        //矩形
+        class Rect {
+            constructor(props) {
+                //画矩形
+                this.draw = ({ ctx }) => {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+                    ctx.restore();
+                };
+                this.position = props.position;
+                this.width = props.width;
+                this.height = props.height;
+                this.color = props.color;
+                this.opacity = props.opacity ?? 1;
+            }
+            // 判断两个矩形是否相交，r1为herald，列举四种不相交的情况，然后取反
+            static isIntersect(r1, r2) {
+                return !(r2.position.x > r1.position.x + r1.width ||
+                    r2.position.x + r2.width < r1.position.x ||
+                    r2.position.y > r1.position.y + r1.height ||
+                    r2.position.y + r2.height < r1.position.y);
+            }
+        }
+        //舞台
+        class Stage {
+            constructor(props) {
+                var _a;
+                this.entities = [];
+                //处理调整
+                this.handleResize = () => {
+                    this.init();
+                };
+                this.tick = (callback) => {
+                    //请求动画帧
+                    this.raf = requestAnimationFrame(() => {
+                        this.ctx.clearRect(0, 0, this.width, this.height);//擦除上一帧画布
+                        this.tick(callback);
+                    });
+                    const stage = {
+                        width: this.width,
+                        height: this.height,
+                        verticalAcceleration: this.verticalAcceleration,
+                        ctx: this.ctx,
+                        horizontalVelocity: this.horizontalVelocity
+                    };
+                    //更新herald及平台数据
+                    for (const entity of this.entities) {
+                        entity.update(stage);
+                    }
+                    callback();
+                    //重新绘制herald及平台
+                    for (const entity of this.entities) {
+                        entity.draw(stage);
+                    }
+                    this.horizontalVelocity.add(this.horizontalAcceleration);
+                };
+                this.play = (callback) => {
+                    this.stop();
+                    this.tick(callback);
+                };
+                //取消请求动画帧
+                this.stop = () => {
+                    cancelAnimationFrame(this.raf);
+                };
+                this.add = (...entity) => {
+                    //entity.length为2
+                    for (let i = 0; i < entity.length; i++) {
+                        this.entities.push(entity[i]);
+                    }
+                };
+                this.reset = () => {
+                    this.horizontalVelocity = this.initialHorizontalVelocity.clone();
+                    this.entities = [];
+                };
+                this.ele = document.getElementById("canvas");
+                this.init();
+                this.ctx = this.ele.getContext("2d");
+                this.verticalAcceleration = props.verticalAcceleration;//重力加速度
+                this.initialHorizontalVelocity = props.initialHorizontalVelocity;//初始水平速度
+                this.horizontalVelocity = props.initialHorizontalVelocity.clone();
+                this.horizontalAcceleration = props.horizontalAcceleration;//水平加速度
+                //视图大小调整事件监听
+                window.addEventListener("resize", this.handleResize, false);
+            }
+            //做适配，消除图片边缘模糊现象，并将画布大小设置为整个浏览器窗口视图大小
+            init() {
+                const { devicePixelRatio, innerWidth, innerHeight } = window;
+                this.ele.width = innerWidth * devicePixelRatio;
+                this.ele.height = innerHeight * devicePixelRatio;
+                this.width = innerWidth;
+                this.height = innerHeight;
+                this.ele.style.width = this.width + "px";
+                this.ele.style.height = this.height + "px";
+                this.ctx = this.ele.getContext("2d");
+                //为 canvas 单位添加缩放变换
+                this.ctx.scale(devicePixelRatio, devicePixelRatio);
+            }
+        }
+        //平台
+        class Platform extends Rect {
+            update(stage) {
+                const { horizontalVelocity } = stage;
+                this.prevPosition = this.position.clone();
+                this.position.add(horizontalVelocity);
+            }
+        }
+        //粒子
+        class Particle extends Rect {
+            constructor(props) {
+                super(props);
+                this.applyForce = (force) => {
+                    this.velocity.add(force.clone().div(this.mass));
+                };
+                this.update = (stage) => {
+                    if (!this.isFirstTime) {
+                        this.opacity -= 0.05;//让粒子慢慢消失
+                        const { verticalAcceleration, horizontalVelocity } = stage;
+                        this.velocity.add(verticalAcceleration);
+                        this.position.add(Vector.add(this.velocity, horizontalVelocity));
+                        this.opacity = Math.max(this.opacity, 0);
+                    }
+                    this.isFirstTime = false;
+                };
+                this.velocity = props.velocity;
+                this.isFirstTime = true;
+                this.mass = props.mass;
+            }
+        }
+        //小方块
+        class Herald extends Rect {
+            constructor(props) {
+                super(props);
+                this.applyForce = (force) => {
+                    this.velocity.add(force.clone().div(this.mass));//this.mass应该为一个倍数值。
+                };
+                //hexxo跳动行为
+                this.jump = () => {
+                    if (this.curConJump < this.maxConJump) {
+                        //velocity为给一个速度
+                        this.velocity = new Vector();//将this.velocity重置为（0,0），如果不做这一步，herald的速度可能已经向下了，甚至可能大于后面所给的一个向下的速度，就有可能跳第二次herald没什么反应了。
+                        this.applyForce === null || this.applyForce === void 0 ? void 0 : this.applyForce(new Vector(0, -12));
+                        this.curConJump++;
+                    }
+                    else if (this.curConJump === this.maxConJump) {
+                        this.velocity.add(new Vector(0, 30));
+                        this.curConJump++;//在碰撞时this.curConJump会为0
+                    }
+                };
+                this.mass = props.mass !== null && props.mass !== void 0 ? props.mass : 1;
+                this.velocity = props.velocity !== null && props.velocity !== void 0 ? props.velocity : new Vector();
+                this.maxConJump = 2;
+                this.curConJump = 0;
+            }
+            //更新herald数据
+            update(stage) {
+                const { verticalAcceleration } = stage;
+                this.prevPosition = this.position.clone();
+                this.prevVelocity = this.velocity.clone();
+                this.velocity.add(verticalAcceleration);
+                //sub 左参数-右参数
+                this.position.add(Vector.sub(this.velocity, verticalAcceleration.clone().mult(0.5)));
+            }
+        }
+        class PlatformManager {
+            constructor(props) {
+                this.update = (stage) => {
+
+                    //this.lastPlatform.position.x < stage.width表示前一个平台的左侧已经出现在舞台时，就开始执行{}的内容绘制一个新的平台
+                    while (!this.platforms.length ||
+                        this.lastPlatform.position.x < stage.width) {
+                        const { width, height, gap } = PlatformManager.getRandomProperties(stage);
+                        let prev = !this.platforms.length
+                            ? 0
+                            : this.lastPlatform.position.x + this.lastPlatform.width + gap;
+                        const newPlatform = new Platform({
+                            position: new Vector(prev, stage.height - height),//stage.height - height，stage.height是舞台的高度，即整个浏览器的高度，height为一个平台的高度
+                            width: !this.platforms.length
+                                ? random(stage.width * 0.8, stage.width)//每次开始时，第一个舞台的宽度
+                                : width,//第二个及以后舞台的宽度
+                            height,
+                            color: randomOne(this.colors)//在自定义的几个颜色中随机舞台颜色
+                        });
+                        this.lastPlatform = newPlatform;
+                        this.platforms.push(newPlatform);
+                    }
+                    for (let i = 0; i < this.platforms.length; i++) {
+                        const platform = this.platforms[i];
+                        platform.update(stage);//platform的更新方法，不是PlatformManager的，为平台设置速度
+                        // 如果已经走过屏幕左边,需要将它的位置调整到队尾,达到复用的目的
+                        if (platform.position.x + platform.width < 0) {
+                            const { width, height, gap } = PlatformManager.getRandomProperties(stage);
+                            platform.position = new Vector(this.lastPlatform.position.x + this.lastPlatform.width + gap, stage.height - height);
+                            platform.color = randomOne(this.colors);
+                            platform.width = width;
+                            platform.height = height;
+                            this.lastPlatform = platform;
+                        }
+                    }
+                };
+                //画出平台
+                this.draw = (stage) => {
+                    this.platforms.forEach((p) => p.draw(stage));//p的draw继承自Rect
+                };
+                const { colors } = props;
+                this.colors = colors;
+                this.platforms = [];
+                this.lastPlatform = null;
+            }
+            //取得平台随机数据
+            static getRandomProperties(stage) {
+                const width = random(80, 680);
+                const height = random(50, 200);
+                const gap = random((80 * Math.abs(stage.horizontalVelocity.x)) / 3, (180 * Math.abs(stage.horizontalVelocity.x)) / 3);
+                return {
+                    width,
+                    height,
+                    gap
+                };
+            }
+        }
+        const listeners = [];
+        let lastTime = 0;
+        let controlType = "keyboard";
+        const addListener = (callback) => {
+            listeners.push(callback);
+        };
+        const notify = () => {
+            listeners.forEach((listener) => listener());
+        };
+        //事件调度函数
+        const eventDispatcher = (type) => {
+            if (controlType === type) {
+                notify();
+            }
+        };
+        //初始化事件监听器
+        function initKeyboardListener() {
+            //键盘事件监听器
+            window.addEventListener("keydown", (event) => {
+                if (event.key === " " || event.key === "ArrowUp") {
+                    eventDispatcher("keyboard");
+                }
+            });
+            //鼠标点击事件监听器
+            window.addEventListener("click", (event) => {
+                eventDispatcher("keyboard");
+            });
+        }
+        function initAudioListener() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                // 获取用户的 media 信息
+                navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+                    const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+                    const scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
+                    mediaStreamSource.connect(scriptProcessor);
+                    scriptProcessor.connect(audioContext.destination);
+                    scriptProcessor.onaudioprocess = function (e) {
+                        // 获得缓冲区的输入音频，转换为包含了PCM通道数据的32位浮点数组
+                        let buffer = e.inputBuffer.getChannelData(0);
+                        // 获取缓冲区中最大的音量值
+                        let maxVal = Math.max.apply(Math, buffer);
+                        if (maxVal * 100 > 2 && performance.now() - lastTime > 300) {
+                            lastTime = performance.now();
+                            eventDispatcher("audio");
+                            console.log(maxVal);
+                        }
+                    };
+                });
+            }
+        }
+        function once(factory) {
+            let inited = false;
+            return () => {
+                if (!inited) {
+                    factory();
+                    inited = true;
+                }
+            };
+        }
+        //调用初始化的事件监听器（键盘及点击）
+        initKeyboardListener();
+        const lazyInitAudioListener = once(initAudioListener);
+        const setControlType = (type) => {
+            controlType = type;
+            if (type === "audio") {
+                lazyInitAudioListener();
+            }
+        };
+        let init;
+        let herald;
+        let particles = [];
+        const maxParticleLength = 40;
+        let particleId = 0;
+        //创建舞台
+        const stage = new Stage({
+            verticalAcceleration: new Vector(0, 0.6),// 重力加速度
+            initialHorizontalVelocity: new Vector(-4, 0),//初始水平速度
+            horizontalAcceleration: new Vector(-0.001, 0),//初始水平加速度
+        });
+        let hasIntersect = false;
+        let prevHasIntersect = false;
+        //判断是否碰撞到地面方块左侧
+        function isIntersectLeft(herald, platform) {
+            if (herald.prevPosition.x + herald.width >= platform.prevPosition.x) {
+                return false;
+            }
+            if (herald.prevPosition.y + herald.height >= platform.prevPosition.y) {
+                return true;
+            }
+            const { x, y } = platform.prevPosition;
+            const prevRightBottomX = herald.width + herald.prevPosition.x;
+            const prevRightBottomY = herald.height + herald.prevPosition.y;
+            const tx = (x - prevRightBottomX) / -stage.horizontalVelocity.x;
+            const ty = (y - prevRightBottomY) / herald.prevVelocity.y;
+            return ty < tx;
+        }
+        //碰撞检测
+        function collideDetect(herald, platforms) {
+            //当herald掉下消失在视图中时触发，即游戏结束，注意herald.position.y越往上越小,在浏览器上面的那一边时为0，如果为负则是herald超出浏览器视图
+            if (herald.position.y > stage.height) {
+                init();//游戏失败，初始化游戏
+                return;
+            }
+            let tempHasIntersect = false;
+            for (let i = 0; i < platforms.length; i++) {
+                //如果herald在与平台相交
+                if (Rect.isIntersect(herald, platforms[i])) {
+                    tempHasIntersect = true;
+                    const platform = platforms[i];
+                    herald.velocity = new Vector(0, 0);
+                    herald.curConJump = 0;
+                    //如果碰撞到地面方块左侧
+                    if (isIntersectLeft(herald, platform)) {
+                        init();
+                        return;
+                    }
+                    herald.position.y = platform.position.y - herald.height;//纵坐标设置刚好在平台上方。
+                    const particleSize = 8;
+                    //初次碰撞时的例子效果
+                    if (!prevHasIntersect) {
+                        for (let i = 0; i < 10; i++) {
+                            const left = Math.random() > 0.5;
+                            particles[particleId % maxParticleLength] = new Particle({
+                                velocity: left
+                                    ? new Vector(random(-4, -2), random(-6, -1))
+                                    : new Vector(random(10, 16), random(-6, -1)),
+                                mass: 1,
+                                position: left
+                                    ? new Vector(herald.position.x - particleSize, herald.position.y + herald.height - particleSize)
+                                    : new Vector(herald.position.x + herald.width, herald.position.y + herald.height - particleSize),
+                                width: particleSize,
+                                height: particleSize,
+                                color: randomOne([herald.color, platform.color])
+                            });
+                            particles[particleId++ % maxParticleLength].applyForce(new Vector(0, -2));//向上的初速度
+                        }
+                    }
+                    //初次碰撞之后的，即在平台上滑动时的粒子效果
+                    else {
+                        particles[particleId % maxParticleLength] = new Particle({
+                            velocity: new Vector(0, random(-6, -1)),
+                            mass: 1,
+                            position: new Vector(herald.position.x - particleSize, herald.position.y + herald.height - particleSize),
+                            width: particleSize,
+                            height: particleSize,
+                            color: platform.color
+                        });
+                        particles[particleId++ % maxParticleLength].applyForce(new Vector(0, -2));
+                    }
+                }
+            }
+            hasIntersect = tempHasIntersect;
+            if (!prevHasIntersect && hasIntersect) {
+                stage.horizontalVelocity.add(new Vector(-2, 0));//herald回到舞台时，舞台回到初始速度
+            }
+            if (prevHasIntersect && !hasIntersect) {
+                stage.horizontalVelocity.add(new Vector(2, 0));//herald跳起时舞台减速
+            }
+            prevHasIntersect = hasIntersect;
+        }
+        //初始游戏
+        init = () => {
+            stage.reset();//重置舞台
+            //创建小方块
+            herald = new Herald({
+                position: new Vector(160, 20),
+                height: 24,
+                width: 24,
+                color: "#222f3e"
+            });
+            //创建平台方块管理者
+            const pm = new PlatformManager({
+                colors: ["#1dd1a1", "#ff6b6b", "#feca57", "#54a0ff", "#9c88ff"]
+            });
+            stage.play(() => {
+                collideDetect(herald, pm.platforms);//处于递归环境中，会不断执行
+                //改变粒子
+                for (let particle of particles) {
+                    particle.update(stage);
+                    particle.draw(stage);
+                }
+            });
+            //在舞台中加入herald和舞台管理者
+            stage.add(herald, pm);
+        };
+        //监听input标签，并对游戏模式做出改变
+        document.body.addEventListener("change", function (event) {
+            setControlType(event.target.value);
+        });
+        //herald跳跃监听
+        addListener(() => {
+            herald.jump();
+        });
+        init();
+
+    </script>
+
+</body>
+
+</html>

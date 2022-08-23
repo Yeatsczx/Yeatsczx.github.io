@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html lang="en" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>从0到1实现H5游戏 - 芝叶</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="从0到1实现H5游戏预览试玩地址
+源码
+
+简介我将这款...">
+  <meta name="author" content="芝叶">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: true
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: false,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: true,
+        path: 'search.xml'
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+        <i class="iconfont iconsearch j-navbar-search"></i>
+      
+    </div>
+    <div class="center">从0到1实现H5游戏</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/html/game.html " class="underline "> 游戏</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  <a target="_blank" href="https://github.com/Yeatsczx">CZX - 2022</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/d9fcb449fa428b1cc001b40527b99076.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">从0到1实现H5游戏</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>July 19, 2022</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>17728</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h1 id="从0到1实现H5游戏"><a href="#从0到1实现H5游戏" class="headerlink" title="从0到1实现H5游戏"></a>从0到1实现H5游戏</h1><h2 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h2><p><a target="_blank" rel="noopener" href="https://yeatsczx.github.io/html/game.html">试玩地址</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Yeatsczx/H5game">源码</a></p>
+<p><img   class="lazyload" data-original="https://img-blog.csdnimg.cn/33d423652af54cc2baf930ce283f322e.png#pic_center" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>我将这款游戏命名为herald（先驱），玩家可以在界面右上角改变操控模式（鼠键模式和声音模式），通过鼠标点击、空格键、↑键以及声音控制herald（herald即移动的黑色小方块，以下皆由herald代指黑色小方块）跳动，herald可连续跳动两次，第三次herald会加速坠落，herald的速度会随着时间的变化而慢慢加快。当herald消失于地面两个平台之间的间隙时或者触碰到地面任意平台左侧时，游戏结束并且游戏会自动重新开始。在开发过程中，有借鉴各路实现。</p>
+<h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><p>HTML+CSS+JavaScript,其中运用了H5中的canvas。</p>
+<h2 id="开发思路"><a href="#开发思路" class="headerlink" title="开发思路"></a>开发思路</h2><h3 id="Rect-矩形"><a href="#Rect-矩形" class="headerlink" title="Rect(矩形)"></a>Rect(矩形)</h3><p>此部分主要为绘制矩形，包括herald和地面平台，此外还包括判断herald和地面平台是否相交。</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs maxima">class Rect &#123;<br>  constructor(<span class="hljs-built_in">props</span>) &#123;<br>    //画矩形<br>    this.<span class="hljs-built_in">draw</span> = (&#123; ctx &#125;) =&gt; &#123;<br>      ctx.<span class="hljs-built_in">save</span>();<br>      ctx.globalAlpha = this.<span class="hljs-built_in">opacity</span>;<br>      ctx.fillStyle = this.<span class="hljs-built_in">color</span>;<br>      ctx.fillRect(this.<span class="hljs-built_in">position</span>.x, this.<span class="hljs-built_in">position</span>.y, this.<span class="hljs-built_in">width</span>, this.<span class="hljs-built_in">height</span>);<br>      ctx.restore();<br>    &#125;;<br>    this.<span class="hljs-built_in">position</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">position</span>;<br>    this.<span class="hljs-built_in">width</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">width</span>;<br>    this.<span class="hljs-built_in">height</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">height</span>;<br>    this.<span class="hljs-built_in">color</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">color</span>;<br>    this.<span class="hljs-built_in">opacity</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">opacity</span> ?? <span class="hljs-number">1</span>;<br>  &#125;<br>  // 判断两个矩形是否相交，r1为herald，列举四种不相交的情况，然后取反<br>  static isIntersect(r1, r2) &#123;<br>    <span class="hljs-built_in">return</span> !(r2.<span class="hljs-built_in">position</span>.x &gt; r1.<span class="hljs-built_in">position</span>.x + r1.<span class="hljs-built_in">width</span> ||<br>      r2.<span class="hljs-built_in">position</span>.x + r2.<span class="hljs-built_in">width</span> &lt; r1.<span class="hljs-built_in">position</span>.x ||<br>      r2.<span class="hljs-built_in">position</span>.y &gt; r1.<span class="hljs-built_in">position</span>.y + r1.<span class="hljs-built_in">height</span> ||<br>      r2.<span class="hljs-built_in">position</span>.y + r2.<span class="hljs-built_in">height</span> &lt; r1.<span class="hljs-built_in">position</span>.y);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Vector（向量）"><a href="#Vector（向量）" class="headerlink" title="Vector（向量）"></a>Vector（向量）</h3><p>此部分主要为一些操作向量的方法，向量可以表示速度，加速度，力。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Vector</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(x = <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-keyword">this</span>.x = x;<br>    <span class="hljs-keyword">this</span>.y = y;<br>  &#125;<br>  static add(vector1, vector2) &#123;<br>    <span class="hljs-keyword">return</span> new Vector(vector1.x + vector2.x, vector1.y + vector2.y);<br>  &#125;<br>  static sub(vector1, vector2) &#123;<br>    <span class="hljs-keyword">return</span> new Vector(vector1.x - vector2.x, vector1.y - vector2.y);<br>  &#125;<br>  static clone(vector) &#123;<br>    <span class="hljs-keyword">return</span> new Vector(vector.x, vector.y);<br>  &#125;<br>  static fromAngle(theta, d) &#123;<br>    <span class="hljs-keyword">return</span> new Vector(d * Math.cos(theta), d * Math.sin(theta));<br>  &#125;<br>  clone() &#123;<br>    <span class="hljs-keyword">return</span> new Vector(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y);<br>  &#125;<br>  add(vector) &#123;<br>    <span class="hljs-keyword">this</span>.x += vector.x;<br>    <span class="hljs-keyword">this</span>.y += vector.y;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>  sub(vector) &#123;<br>    <span class="hljs-keyword">this</span>.x -= vector.x;<br>    <span class="hljs-keyword">this</span>.y -= vector.y;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>  mult(scale) &#123;<br>    <span class="hljs-keyword">this</span>.x *= scale;<br>    <span class="hljs-keyword">this</span>.y *= scale;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>  div(scale) &#123;<br>    <span class="hljs-keyword">this</span>.x /= scale;<br>    <span class="hljs-keyword">this</span>.y /= scale;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>  <span class="hljs-comment">//计算向量的长度</span><br>  mag() &#123;<br>    <span class="hljs-keyword">return</span> Math.sqrt(<span class="hljs-keyword">this</span>.x * <span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.y * <span class="hljs-keyword">this</span>.y);<br>  &#125;<br>  <span class="hljs-comment">//求单位向量</span><br>  normalize() &#123;<br>    let m = <span class="hljs-keyword">this</span>.mag();<br>    <span class="hljs-keyword">if</span> (m !== <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-keyword">this</span>.div(m);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Stage（舞台）"><a href="#Stage（舞台）" class="headerlink" title="Stage（舞台）"></a><strong>Stage</strong>（舞台）</h3><p>此部分主要为请求动画帧，更新herald及平台数据并重新绘制herald和平台，还包括了做适配，消除图片边缘模糊现象，并将画布大小设置为整个浏览器窗口视图大小。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Stage</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(props) &#123;<br>    <span class="hljs-keyword">var</span> _a;<br>    <span class="hljs-keyword">this</span>.entities = [];<br>    <span class="hljs-comment">//处理调整</span><br>    <span class="hljs-keyword">this</span>.handleResize = () =&gt; &#123;<br>      <span class="hljs-keyword">this</span>.<span class="hljs-keyword">init</span>();<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.tick = (callback) =&gt; &#123;<br>      <span class="hljs-comment">//请求动画帧</span><br>      <span class="hljs-keyword">this</span>.raf = requestAnimationFrame(() =&gt; &#123;<br>        <span class="hljs-keyword">this</span>.ctx.clearRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);<span class="hljs-comment">//擦除上一帧画布</span><br>        <span class="hljs-keyword">this</span>.tick(callback);<br>      &#125;);<br>      <span class="hljs-keyword">const</span> stage = &#123;<br>        width: <span class="hljs-keyword">this</span>.width,<br>        height: <span class="hljs-keyword">this</span>.height,<br>        verticalAcceleration: <span class="hljs-keyword">this</span>.verticalAcceleration,<br>        ctx: <span class="hljs-keyword">this</span>.ctx,<br>        horizontalVelocity: <span class="hljs-keyword">this</span>.horizontalVelocity<br>      &#125;;<br>      <span class="hljs-comment">//更新herald及平台数据</span><br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entity of <span class="hljs-keyword">this</span>.entities) &#123;<br>        entity.update(stage);<br>      &#125;<br>      callback();<br>      <span class="hljs-comment">//重新绘制herald及平台</span><br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entity of <span class="hljs-keyword">this</span>.entities) &#123;<br>        entity.draw(stage);<br>      &#125;<br>      <span class="hljs-keyword">this</span>.horizontalVelocity.add(<span class="hljs-keyword">this</span>.horizontalAcceleration);<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.play = (callback) =&gt; &#123;<br>      <span class="hljs-keyword">this</span>.stop();<br>      <span class="hljs-keyword">this</span>.tick(callback);<br>    &#125;;<br>    <span class="hljs-comment">//取消请求动画帧</span><br>    <span class="hljs-keyword">this</span>.stop = () =&gt; &#123;<br>      cancelAnimationFrame(<span class="hljs-keyword">this</span>.raf);<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.add = (...entity) =&gt; &#123;<br>      <span class="hljs-comment">//entity.length为2</span><br>      <span class="hljs-keyword">for</span> (let i = <span class="hljs-number">0</span>; i &lt; entity.length; i++) &#123;<br>        <span class="hljs-keyword">this</span>.entities.push(entity[i]);<br>      &#125;<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.reset = () =&gt; &#123;<br>      <span class="hljs-keyword">this</span>.horizontalVelocity = <span class="hljs-keyword">this</span>.initialHorizontalVelocity.clone();<br>      <span class="hljs-keyword">this</span>.entities = [];<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.ele = document.getElementById(<span class="hljs-string">&quot;canvas&quot;</span>);<br>    <span class="hljs-keyword">this</span>.<span class="hljs-keyword">init</span>();<br>    <span class="hljs-keyword">this</span>.ctx = <span class="hljs-keyword">this</span>.ele.getContext(<span class="hljs-string">&quot;2d&quot;</span>);<br>    <span class="hljs-keyword">this</span>.verticalAcceleration = props.verticalAcceleration;<span class="hljs-comment">//重力加速度</span><br>    <span class="hljs-keyword">this</span>.initialHorizontalVelocity = props.initialHorizontalVelocity;<span class="hljs-comment">//初始水平速度</span><br>    <span class="hljs-keyword">this</span>.horizontalVelocity = props.initialHorizontalVelocity.clone();<br>    <span class="hljs-keyword">this</span>.horizontalAcceleration = props.horizontalAcceleration;<span class="hljs-comment">//水平加速度</span><br>    <span class="hljs-comment">//视图大小调整事件监听</span><br>    window.addEventListener(<span class="hljs-string">&quot;resize&quot;</span>, <span class="hljs-keyword">this</span>.handleResize, <span class="hljs-literal">false</span>);<br>  &#125;<br>  <span class="hljs-comment">//做适配，消除图片边缘模糊现象，并将画布大小设置为整个浏览器窗口视图大小</span><br>  <span class="hljs-keyword">init</span>() &#123;<br>    <span class="hljs-keyword">const</span> &#123; devicePixelRatio, innerWidth, innerHeight &#125; = window;<br>    <span class="hljs-keyword">this</span>.ele.width = innerWidth * devicePixelRatio;<br>    <span class="hljs-keyword">this</span>.ele.height = innerHeight * devicePixelRatio;<br>    <span class="hljs-keyword">this</span>.width = innerWidth;<br>    <span class="hljs-keyword">this</span>.height = innerHeight;<br>    <span class="hljs-keyword">this</span>.ele.style.width = <span class="hljs-keyword">this</span>.width + <span class="hljs-string">&quot;px&quot;</span>;<br>    <span class="hljs-keyword">this</span>.ele.style.height = <span class="hljs-keyword">this</span>.height + <span class="hljs-string">&quot;px&quot;</span>;<br>    <span class="hljs-keyword">this</span>.ctx = <span class="hljs-keyword">this</span>.ele.getContext(<span class="hljs-string">&quot;2d&quot;</span>);<br>    <span class="hljs-comment">//为 canvas 单位添加缩放变换</span><br>    <span class="hljs-keyword">this</span>.ctx.scale(devicePixelRatio, devicePixelRatio);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Platform（平台）"><a href="#Platform（平台）" class="headerlink" title="Platform（平台）"></a><strong>Platform</strong>（平台）</h3><p>此部分主要为更新平台位置</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Platform</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Rect</span> </span>&#123;<br>    update(stage) &#123;<br>        const &#123; horizontalVelocity &#125; = stage;<br>        <span class="hljs-keyword">this</span>.prevPosition = <span class="hljs-keyword">this</span>.position.clone();<br>        <span class="hljs-keyword">this</span>.position.add(horizontalVelocity);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Particle-粒子"><a href="#Particle-粒子" class="headerlink" title="Particle(粒子)"></a>Particle(粒子)</h3><p>此部分主要为实现粒子效果。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Particle</span> <span class="hljs-title">extends</span> <span class="hljs-title">Rect</span> </span>&#123;<br>    <span class="hljs-keyword">constructor</span>(props) &#123;<br>        <span class="hljs-keyword">super</span>(props);<br>        <span class="hljs-keyword">this</span>.applyForce = (force) =&gt; &#123;<br>            <span class="hljs-keyword">this</span>.velocity.add(force.clone().div(<span class="hljs-keyword">this</span>.mass));<br>        &#125;;<br>        <span class="hljs-keyword">this</span>.update = (stage) =&gt; &#123;<br>            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isFirstTime) &#123;<br>                <span class="hljs-keyword">this</span>.opacity -= <span class="hljs-number">0.05</span>;<span class="hljs-comment">//让粒子慢慢消失</span><br>                <span class="hljs-keyword">const</span> &#123; verticalAcceleration, horizontalVelocity &#125; = stage;<br>                <span class="hljs-keyword">this</span>.velocity.add(verticalAcceleration);<br>                <span class="hljs-keyword">this</span>.position.add(Vector.add(<span class="hljs-keyword">this</span>.velocity, horizontalVelocity));<br>                <span class="hljs-keyword">this</span>.opacity = Math.max(<span class="hljs-keyword">this</span>.opacity, <span class="hljs-number">0</span>);<br>            &#125;<br>            <span class="hljs-keyword">this</span>.isFirstTime = <span class="hljs-literal">false</span>;<br>        &#125;;<br>        <span class="hljs-keyword">this</span>.velocity = props.velocity;<br>        <span class="hljs-keyword">this</span>.isFirstTime = <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">this</span>.mass = props.mass;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Herald-先驱"><a href="#Herald-先驱" class="headerlink" title="Herald(先驱)"></a>Herald(先驱)</h3><p>此部分主要实现herald的跳跃行为并更新herald数据。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Herald</span> <span class="hljs-title">extends</span> <span class="hljs-title">Rect</span> </span>&#123;<br>    <span class="hljs-keyword">constructor</span>(props) &#123;<br>        <span class="hljs-keyword">super</span>(props);<br>        <span class="hljs-keyword">this</span>.applyForce = (force) =&gt; &#123;<br>            <span class="hljs-keyword">this</span>.velocity.add(force.clone().div(<span class="hljs-keyword">this</span>.mass));<span class="hljs-comment">//this.mass应该为一个倍数值。</span><br>        &#125;;<br>        <span class="hljs-comment">//herald跳跃行为</span><br>        <span class="hljs-keyword">this</span>.jump = () =&gt; &#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curConJump &lt; <span class="hljs-keyword">this</span>.maxConJump) &#123;<br>                <span class="hljs-comment">//velocity为给一个速度</span><br>                <span class="hljs-keyword">this</span>.velocity = new Vector();<span class="hljs-comment">//将this.velocity重置为（0,0），如果不做这一步，herald的速度可能已经向下了，甚至可能大于后面所给的一个向下的速度，就有可能跳第二次herald没什么反应了。</span><br>                <span class="hljs-keyword">this</span>.applyForce === <span class="hljs-literal">null</span> || <span class="hljs-keyword">this</span>.applyForce === void <span class="hljs-number">0</span> ? void <span class="hljs-number">0</span> : <span class="hljs-keyword">this</span>.applyForce(new Vector(<span class="hljs-number">0</span>, -<span class="hljs-number">12</span>));<br>                <span class="hljs-keyword">this</span>.curConJump++;<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curConJump === <span class="hljs-keyword">this</span>.maxConJump) &#123;<br>                <span class="hljs-keyword">this</span>.velocity.add(new Vector(<span class="hljs-number">0</span>, <span class="hljs-number">30</span>));<br>                <span class="hljs-keyword">this</span>.curConJump++;<span class="hljs-comment">//在碰撞时this.curConJump会为0</span><br>            &#125;<br>        &#125;;<br>        <span class="hljs-keyword">this</span>.mass = props.mass !== <span class="hljs-literal">null</span> &amp;&amp; props.mass !== void <span class="hljs-number">0</span> ? props.mass : <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">this</span>.velocity = props.velocity !== <span class="hljs-literal">null</span> &amp;&amp; props.velocity !== void <span class="hljs-number">0</span> ? props.velocity : new Vector();<br>        <span class="hljs-keyword">this</span>.maxConJump = <span class="hljs-number">2</span>;<br>        <span class="hljs-keyword">this</span>.curConJump = <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-comment">//更新herald数据</span><br>    update(stage) &#123;<br>        <span class="hljs-keyword">const</span> &#123; verticalAcceleration &#125; = stage;<br>        <span class="hljs-keyword">this</span>.prevPosition = <span class="hljs-keyword">this</span>.position.clone();<br>        <span class="hljs-keyword">this</span>.prevVelocity = <span class="hljs-keyword">this</span>.velocity.clone();<br>        <span class="hljs-keyword">this</span>.velocity.add(verticalAcceleration);<br>        <span class="hljs-comment">//sub 左参数-右参数</span><br>        <span class="hljs-keyword">this</span>.position.add(Vector.sub(<span class="hljs-keyword">this</span>.velocity, verticalAcceleration.clone().mult(<span class="hljs-number">0.5</span>)));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="PlatformManager（平台管理者）"><a href="#PlatformManager（平台管理者）" class="headerlink" title="PlatformManager（平台管理者）"></a>PlatformManager（平台管理者）</h3><p>此部分主要为创建平台随机数据并绘制平台，此外实现了无限循环的障碍物，将已经走过屏幕左边的平台的位置调整到队尾,达到复用的目的。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PlatformManager</span> </span>&#123;<br>    <span class="hljs-keyword">constructor</span>(props) &#123;<br>        <span class="hljs-keyword">this</span>.update = (stage) =&gt; &#123;<br><br>            <span class="hljs-comment">//this.lastPlatform.position.x &lt; stage.width表示前一个平台的左侧已经出现在舞台时，就开始执行&#123;&#125;的内容绘制一个新的平台</span><br>            <span class="hljs-keyword">while</span> (!<span class="hljs-keyword">this</span>.platforms.length ||<br>                <span class="hljs-keyword">this</span>.lastPlatform.position.x &lt; stage.width) &#123;<br>                <span class="hljs-keyword">const</span> &#123; width, height, gap &#125; = PlatformManager.getRandomProperties(stage);<br>                let prev = !<span class="hljs-keyword">this</span>.platforms.length<br>                    ? <span class="hljs-number">0</span><br>                    : <span class="hljs-keyword">this</span>.lastPlatform.position.x + <span class="hljs-keyword">this</span>.lastPlatform.width + gap;<br>                <span class="hljs-keyword">const</span> newPlatform = new Platform(&#123;<br>                    position: new Vector(prev, stage.height - height),<span class="hljs-comment">//stage.height - height，stage.height是舞台的高度，即整个浏览器的高度，height为一个平台的高度</span><br>                    width: !<span class="hljs-keyword">this</span>.platforms.length<br>                        ? random(stage.width * <span class="hljs-number">0.8</span>, stage.width)<span class="hljs-comment">//每次开始时，第一个舞台的宽度</span><br>                        : width,<span class="hljs-comment">//第二个及以后舞台的宽度</span><br>                    height,<br>                    color: randomOne(<span class="hljs-keyword">this</span>.colors)<span class="hljs-comment">//在自定义的几个颜色中随机舞台颜色</span><br>                &#125;);<br>                <span class="hljs-keyword">this</span>.lastPlatform = newPlatform;<br>                <span class="hljs-keyword">this</span>.platforms.push(newPlatform);<br>            &#125;<br>            <span class="hljs-keyword">for</span> (let i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.platforms.length; i++) &#123;<br>                <span class="hljs-keyword">const</span> platform = <span class="hljs-keyword">this</span>.platforms[i];<br>                platform.update(stage);<span class="hljs-comment">//platform的更新方法，不是PlatformManager的，为平台设置速度</span><br>                <span class="hljs-comment">// 如果已经走过屏幕左边,需要将它的位置调整到队尾,达到复用的目的</span><br>                <span class="hljs-keyword">if</span> (platform.position.x + platform.width &lt; <span class="hljs-number">0</span>) &#123;<br>                    <span class="hljs-keyword">const</span> &#123; width, height, gap &#125; = PlatformManager.getRandomProperties(stage);<br>                    platform.position = new Vector(<span class="hljs-keyword">this</span>.lastPlatform.position.x + <span class="hljs-keyword">this</span>.lastPlatform.width + gap, stage.height - height);<br>                    platform.color = randomOne(<span class="hljs-keyword">this</span>.colors);<br>                    platform.width = width;<br>                    platform.height = height;<br>                    <span class="hljs-keyword">this</span>.lastPlatform = platform;<br>                &#125;<br>            &#125;<br>        &#125;;<br>        <span class="hljs-comment">//画出平台</span><br>        <span class="hljs-keyword">this</span>.draw = (stage) =&gt; &#123;<br>            <span class="hljs-keyword">this</span>.platforms.forEach((p) =&gt; p.draw(stage));<span class="hljs-comment">//p的draw继承自Rect</span><br>        &#125;;<br>        <span class="hljs-keyword">const</span> &#123; colors &#125; = props;<br>        <span class="hljs-keyword">this</span>.colors = colors;<br>        <span class="hljs-keyword">this</span>.platforms = [];<br>        <span class="hljs-keyword">this</span>.lastPlatform = <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-comment">//取得平台随机数据</span><br>    static getRandomProperties(stage) &#123;<br>        <span class="hljs-keyword">const</span> width = random(<span class="hljs-number">80</span>, <span class="hljs-number">680</span>);<br>        <span class="hljs-keyword">const</span> height = random(<span class="hljs-number">50</span>, <span class="hljs-number">200</span>);<br>        <span class="hljs-keyword">const</span> gap = random((<span class="hljs-number">80</span> * Math.abs(stage.horizontalVelocity.x)) / <span class="hljs-number">3</span>, (<span class="hljs-number">180</span> * Math.abs(stage.horizontalVelocity.x)) / <span class="hljs-number">3</span>);<br>        <span class="hljs-keyword">return</span> &#123;<br>            width,<br>            height,<br>            gap<br>        &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="GameController（游戏控制者）"><a href="#GameController（游戏控制者）" class="headerlink" title="GameController（游戏控制者）"></a>GameController（游戏控制者）</h3><p>此部分主要为初始化事件监听函数（鼠标，键盘，声音）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> listeners = [];<br><span class="hljs-keyword">let</span> lastTime = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">let</span> controlType = <span class="hljs-string">&quot;keyboard&quot;</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">addListener</span> = (<span class="hljs-params">callback</span>) =&gt; &#123;<br>  listeners.<span class="hljs-title function_">push</span>(callback);<br>&#125;;<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">notify</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  listeners.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">listener</span>) =&gt;</span> <span class="hljs-title function_">listener</span>());<br>&#125;;<br><span class="hljs-comment">//事件调度函数</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">eventDispatcher</span> = (<span class="hljs-params"><span class="hljs-keyword">type</span></span>) =&gt; &#123;<br>  <span class="hljs-keyword">if</span> (controlType === <span class="hljs-keyword">type</span>) &#123;<br>    <span class="hljs-title function_">notify</span>();<br>  &#125;<br>&#125;;<br><span class="hljs-comment">//初始化事件监听器</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">initKeyboardListener</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">//键盘事件监听器</span><br>  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;keydown&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (event.<span class="hljs-property">key</span> === <span class="hljs-string">&quot; &quot;</span> || event.<span class="hljs-property">key</span> === <span class="hljs-string">&quot;ArrowUp&quot;</span>) &#123;<br>      <span class="hljs-title function_">eventDispatcher</span>(<span class="hljs-string">&quot;keyboard&quot;</span>);<br>    &#125;<br>  &#125;);<br>  <span class="hljs-comment">//鼠标点击事件监听器</span><br>  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;<br>    <span class="hljs-title function_">eventDispatcher</span>(<span class="hljs-string">&quot;keyboard&quot;</span>);<br>  &#125;);<br>&#125;<br><span class="hljs-comment">////初始化声音事件监听器</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">initAudioListener</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">if</span> (navigator.<span class="hljs-property">mediaDevices</span> &amp;&amp; navigator.<span class="hljs-property">mediaDevices</span>.<span class="hljs-property">getUserMedia</span>) &#123;<br>    <span class="hljs-keyword">let</span> audioContext = <span class="hljs-keyword">new</span> (<span class="hljs-variable language_">window</span>.<span class="hljs-property">AudioContext</span> || <span class="hljs-variable language_">window</span>.<span class="hljs-property">webkitAudioContext</span>)();<br>    <span class="hljs-comment">// 获取用户的 media 信息</span><br>    navigator.<span class="hljs-property">mediaDevices</span>.<span class="hljs-title function_">getUserMedia</span>(&#123; <span class="hljs-attr">audio</span>: <span class="hljs-literal">true</span> &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">stream</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> mediaStreamSource = audioContext.<span class="hljs-title function_">createMediaStreamSource</span>(stream);<br>      <span class="hljs-keyword">const</span> scriptProcessor = audioContext.<span class="hljs-title function_">createScriptProcessor</span>(<span class="hljs-number">4096</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>      mediaStreamSource.<span class="hljs-title function_">connect</span>(scriptProcessor);<br>      scriptProcessor.<span class="hljs-title function_">connect</span>(audioContext.<span class="hljs-property">destination</span>);<br>      scriptProcessor.<span class="hljs-property">onaudioprocess</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) &#123;<br>        <span class="hljs-comment">// 获得缓冲区的输入音频，转换为包含了PCM通道数据的32位浮点数组</span><br>        <span class="hljs-keyword">let</span> buffer = e.<span class="hljs-property">inputBuffer</span>.<span class="hljs-title function_">getChannelData</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-comment">// 获取缓冲区中最大的音量值</span><br>        <span class="hljs-keyword">let</span> maxVal = <span class="hljs-title class_">Math</span>.<span class="hljs-property">max</span>.<span class="hljs-title function_">apply</span>(<span class="hljs-title class_">Math</span>, buffer);<br>        <span class="hljs-keyword">if</span> (maxVal * <span class="hljs-number">100</span> &gt; <span class="hljs-number">2</span> &amp;&amp; performance.<span class="hljs-title function_">now</span>() - lastTime &gt; <span class="hljs-number">300</span>) &#123;<br>          lastTime = performance.<span class="hljs-title function_">now</span>();<br>          <span class="hljs-title function_">eventDispatcher</span>(<span class="hljs-string">&quot;audio&quot;</span>);<br>          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(maxVal);<br>        &#125;<br>      &#125;;<br>    &#125;);<br>  &#125;<br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">once</span>(<span class="hljs-params">factory</span>) &#123;<br>  <span class="hljs-keyword">let</span> inited = <span class="hljs-literal">false</span>;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (!inited) &#123;<br>      <span class="hljs-title function_">factory</span>();<br>      inited = <span class="hljs-literal">true</span>;<br>    &#125;<br>  &#125;;<br>&#125;<br><span class="hljs-comment">//调用初始化的事件监听器（键盘及点击）</span><br><span class="hljs-title function_">initKeyboardListener</span>();<br><span class="hljs-keyword">const</span> lazyInitAudioListener = <span class="hljs-title function_">once</span>(initAudioListener);<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">setControlType</span> = (<span class="hljs-params"><span class="hljs-keyword">type</span></span>) =&gt; &#123;<br>  controlType = <span class="hljs-keyword">type</span>;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === <span class="hljs-string">&quot;audio&quot;</span>) &#123;<br>    <span class="hljs-title function_">lazyInitAudioListener</span>();<br>  &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="index"><a href="#index" class="headerlink" title="index"></a>index</h3><p>此部分主要为碰撞检测函数，初始化游戏，包括新建实例对象。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><code class="hljs processing">let init;<br>let herald;<br>let particles = [];<br><span class="hljs-keyword">const</span> maxParticleLength = <span class="hljs-number">40</span>;<br>let particleId = <span class="hljs-number">0</span>;<br><span class="hljs-comment">//创建舞台</span><br><span class="hljs-keyword">const</span> stage = <span class="hljs-keyword">new </span><span class="hljs-class title_">Stage</span>(&#123;<br>  verticalAcceleration: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0.6</span>),<span class="hljs-comment">// 重力加速度</span><br>  initialHorizontalVelocity: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">-4</span>, <span class="hljs-number">0</span>),<span class="hljs-comment">//初始水平速度</span><br>  horizontalAcceleration: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">-0.001</span>, <span class="hljs-number">0</span>),<span class="hljs-comment">//初始水平加速度</span><br>&#125;);<br>let hasIntersect = <span class="hljs-literal">false</span>;<br>let prevHasIntersect = <span class="hljs-literal">false</span>;<br><span class="hljs-comment">//判断是否碰撞到地面方块左侧</span><br>function <span class="hljs-title function_">isIntersectLeft</span>(herald, platform) &#123;<br>  <span class="hljs-keyword">if</span> (herald.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">x</span> + herald.<span class="hljs-property">width</span> &gt;= platform.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">x</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>  &#125;<br>  <span class="hljs-keyword">if</span> (herald.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">y</span> + herald.<span class="hljs-property">height</span> &gt;= platform.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">y</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>  &#125;<br>  <span class="hljs-keyword">const</span> &#123; x, y &#125; = platform.<span class="hljs-property">prevPosition</span>;<br>  <span class="hljs-keyword">const</span> prevRightBottomX = herald.<span class="hljs-property">width</span> + herald.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">x</span>;<br>  <span class="hljs-keyword">const</span> prevRightBottomY = herald.<span class="hljs-property">height</span> + herald.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">y</span>;<br>  <span class="hljs-keyword">const</span> tx = (x - prevRightBottomX) / -stage.<span class="hljs-property">horizontalVelocity</span>.<span class="hljs-property">x</span>;<br>  <span class="hljs-keyword">const</span> ty = (y - prevRightBottomY) / herald.<span class="hljs-property">prevVelocity</span>.<span class="hljs-property">y</span>;<br>  <span class="hljs-keyword">return</span> ty &lt; tx;<br>&#125;<br><span class="hljs-comment">//碰撞检测</span><br>function <span class="hljs-title function_">collideDetect</span>(herald, platforms) &#123;<br>  <span class="hljs-comment">//当herald掉下消失在视图中时触发，即游戏结束，注意herald.position.y越往上越小,在浏览器上面的那一边时为0，如果为负则是herald超出浏览器视图</span><br>  <span class="hljs-keyword">if</span> (herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> &gt; stage.<span class="hljs-property">height</span>) &#123;<br>    <span class="hljs-title function_">init</span>();<span class="hljs-comment">//游戏失败，初始化游戏</span><br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>  let tempHasIntersect = <span class="hljs-literal">false</span>;<br>  <span class="hljs-keyword">for</span> (let i = <span class="hljs-number">0</span>; i &lt; platforms.<span class="hljs-property">length</span>; i++) &#123;<br>    <span class="hljs-comment">//如果herald在与平台相交</span><br>    <span class="hljs-keyword">if</span> (Rect.<span class="hljs-property">isIntersect</span>(herald, platforms[i])) &#123;<br>      tempHasIntersect = <span class="hljs-literal">true</span>;<br>      <span class="hljs-keyword">const</span> platform = platforms[i];<br>      herald.<span class="hljs-property">velocity</span> = <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>      herald.<span class="hljs-property">curConJump</span> = <span class="hljs-number">0</span>;<br>      <span class="hljs-comment">//如果碰撞到地面方块左侧</span><br>      <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isIntersectLeft</span>(herald, platform)) &#123;<br>        <span class="hljs-title function_">init</span>();<br>        <span class="hljs-keyword">return</span>;<br>      &#125;<br>      herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> = platform.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> - herald.<span class="hljs-property">height</span>;<span class="hljs-comment">//纵坐标设置刚好在平台上方。</span><br>      <span class="hljs-keyword">const</span> particleSize = <span class="hljs-number">8</span>;<br>      <span class="hljs-comment">//初次碰撞时的例子效果</span><br>      <span class="hljs-keyword">if</span> (!prevHasIntersect) &#123;<br>        <span class="hljs-keyword">for</span> (let i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>          <span class="hljs-keyword">const</span> left = Math.<span class="hljs-property">random</span>() &gt; <span class="hljs-number">0.5</span>;<br>          particles[particleId % maxParticleLength] = <span class="hljs-keyword">new </span><span class="hljs-class title_">Particle</span>(&#123;<br>            velocity: left<br>              ? <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-built_in">random</span>(<span class="hljs-number">-4</span>, <span class="hljs-number">-2</span>), <span class="hljs-built_in">random</span>(<span class="hljs-number">-6</span>, <span class="hljs-number">-1</span>))<br>              : <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-built_in">random</span>(<span class="hljs-number">10</span>, <span class="hljs-number">16</span>), <span class="hljs-built_in">random</span>(<span class="hljs-number">-6</span>, <span class="hljs-number">-1</span>)),<br>            mass: <span class="hljs-number">1</span>,<br>            position: left<br>              ? <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(herald.<span class="hljs-property">position</span>.<span class="hljs-property">x</span> - particleSize, herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> + herald.<span class="hljs-property">height</span> - particleSize)<br>              : <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(herald.<span class="hljs-property">position</span>.<span class="hljs-property">x</span> + herald.<span class="hljs-property">width</span>, herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> + herald.<span class="hljs-property">height</span> - particleSize),<br>            <span class="hljs-built_in">width</span>: particleSize,<br>            <span class="hljs-built_in">height</span>: particleSize,<br>            <span class="hljs-type">color</span>: <span class="hljs-title function_">randomOne</span>([herald.<span class="hljs-property">color</span>, platform.<span class="hljs-property">color</span>])<br>          &#125;);<br>          particles[particleId++ % maxParticleLength].<span class="hljs-property">applyForce</span>(<span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-number">-2</span>));<span class="hljs-comment">//向上的初速度</span><br>        &#125;<br>      &#125;<br>      <span class="hljs-comment">//初次碰撞之后的，即在平台上滑动时的粒子效果</span><br>      <span class="hljs-keyword">else</span> &#123;<br>        particles[particleId % maxParticleLength] = <span class="hljs-keyword">new </span><span class="hljs-class title_">Particle</span>(&#123;<br>          velocity: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">random</span>(<span class="hljs-number">-6</span>, <span class="hljs-number">-1</span>)),<br>          mass: <span class="hljs-number">1</span>,<br>          position: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(herald.<span class="hljs-property">position</span>.<span class="hljs-property">x</span> - particleSize, herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> + herald.<span class="hljs-property">height</span> - particleSize),<br>          <span class="hljs-built_in">width</span>: particleSize,<br>          <span class="hljs-built_in">height</span>: particleSize,<br>          <span class="hljs-type">color</span>: platform.<span class="hljs-property">color</span><br>        &#125;);<br>        particles[particleId++ % maxParticleLength].<span class="hljs-property">applyForce</span>(<span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-number">-2</span>));<br>      &#125;<br>    &#125;<br>  &#125;<br>  hasIntersect = tempHasIntersect;<br>  <span class="hljs-keyword">if</span> (!prevHasIntersect &amp;&amp; hasIntersect) &#123;<br>    stage.<span class="hljs-property">horizontalVelocity</span>.<span class="hljs-property">add</span>(<span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">-2</span>, <span class="hljs-number">0</span>));<span class="hljs-comment">//herald回到舞台时，舞台回到初始速度</span><br>  &#125;<br>  <span class="hljs-keyword">if</span> (prevHasIntersect &amp;&amp; !hasIntersect) &#123;<br>    stage.<span class="hljs-property">horizontalVelocity</span>.<span class="hljs-property">add</span>(<span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>));<span class="hljs-comment">//herald跳起时舞台减速</span><br>  &#125;<br>  prevHasIntersect = hasIntersect;<br>&#125;<br><span class="hljs-comment">//初始游戏</span><br>init = () =&gt; &#123;<br>  stage.<span class="hljs-property">reset</span>();<span class="hljs-comment">//重置舞台</span><br>  <span class="hljs-comment">//创建小方块</span><br>  herald = <span class="hljs-keyword">new </span><span class="hljs-class title_">Herald</span>(&#123;<br>    position: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">160</span>, <span class="hljs-number">20</span>),<br>    <span class="hljs-built_in">height</span>: <span class="hljs-number">24</span>,<br>    <span class="hljs-built_in">width</span>: <span class="hljs-number">24</span>,<br>    <span class="hljs-type">color</span>: <span class="hljs-string">&quot;#222f3e&quot;</span><br>  &#125;);<br>  <span class="hljs-comment">//创建平台方块管理者</span><br>  <span class="hljs-keyword">const</span> pm = <span class="hljs-keyword">new </span><span class="hljs-class title_">PlatformManager</span>(&#123;<br>    colors: [<span class="hljs-string">&quot;#1dd1a1&quot;</span>, <span class="hljs-string">&quot;#ff6b6b&quot;</span>, <span class="hljs-string">&quot;#feca57&quot;</span>, <span class="hljs-string">&quot;#54a0ff&quot;</span>, <span class="hljs-string">&quot;#9c88ff&quot;</span>]<br>  &#125;);<br>  stage.<span class="hljs-property">play</span>(() =&gt; &#123;<br>    <span class="hljs-title function_">collideDetect</span>(herald, pm.<span class="hljs-property">platforms</span>);<span class="hljs-comment">//处于递归环境中，会不断执行</span><br>    <span class="hljs-comment">//改变粒子</span><br>    <span class="hljs-keyword">for</span> (let particle of particles) &#123;<br>      particle.<span class="hljs-property">update</span>(stage);<br>      particle.<span class="hljs-property">draw</span>(stage);<br>    &#125;<br>  &#125;);<br>  <span class="hljs-comment">//在舞台中加入herald和平台管理者</span><br>  stage.<span class="hljs-property">add</span>(herald, pm);<br>&#125;;<br><span class="hljs-comment">//监听input标签，并对游戏模式做出改变</span><br>document.<span class="hljs-property">body</span>.<span class="hljs-property">addEventListener</span>(<span class="hljs-string">&quot;change&quot;</span>, <span class="hljs-title function_">function</span> (event) &#123;<br>  <span class="hljs-title function_">setControlType</span>(event.<span class="hljs-property">target</span>.<span class="hljs-property">value</span>);<br>&#125;);<br><span class="hljs-comment">//herald跳跃监听</span><br><span class="hljs-title function_">addListener</span>(() =&gt; &#123;<br>  herald.<span class="hljs-property">jump</span>();<br>&#125;);<br><span class="hljs-title function_">init</span>();<br><br></code></pre></td></tr></table></figure>
+
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>芝叶</li>
+    <li><strong>本文链接：</strong><a href="https://yeats.vercel.app/2022/07/19/%E4%BB%8E0%E5%88%B01%E5%AE%9E%E7%8E%B0H5%E6%B8%B8%E6%88%8F/index.html" title="https:&#x2F;&#x2F;yeats.vercel.app&#x2F;2022&#x2F;07&#x2F;19&#x2F;%E4%BB%8E0%E5%88%B01%E5%AE%9E%E7%8E%B0H5%E6%B8%B8%E6%88%8F&#x2F;index.html">https:&#x2F;&#x2F;yeats.vercel.app&#x2F;2022&#x2F;07&#x2F;19&#x2F;%E4%BB%8E0%E5%88%B01%E5%AE%9E%E7%8E%B0H5%E6%B8%B8%E6%88%8F&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/H5%E6%B8%B8%E6%88%8F/" rel="tag">H5游戏</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2022/07/29/%E7%AE%97%E6%B3%95-101-JavaScript%E6%8F%8F%E8%BF%B0%EF%BC%88%E6%94%BF%E9%87%87%E4%BA%91%EF%BC%89/"><i class="iconfont iconleft"></i>算法 101-JavaScript描述（政采云）</a>
+    <a href="/2022/07/01/Typora%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/">Typora使用方法总结<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E0%E5%88%B01%E5%AE%9E%E7%8E%B0H5%E6%B8%B8%E6%88%8F"><span class="toc-text">从0到1实现H5游戏</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E8%A7%88"><span class="toc-text">预览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-text">技术栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E6%80%9D%E8%B7%AF"><span class="toc-text">开发思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rect-%E7%9F%A9%E5%BD%A2"><span class="toc-text">Rect(矩形)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vector%EF%BC%88%E5%90%91%E9%87%8F%EF%BC%89"><span class="toc-text">Vector（向量）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stage%EF%BC%88%E8%88%9E%E5%8F%B0%EF%BC%89"><span class="toc-text">Stage（舞台）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Platform%EF%BC%88%E5%B9%B3%E5%8F%B0%EF%BC%89"><span class="toc-text">Platform（平台）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Particle-%E7%B2%92%E5%AD%90"><span class="toc-text">Particle(粒子)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Herald-%E5%85%88%E9%A9%B1"><span class="toc-text">Herald(先驱)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PlatformManager%EF%BC%88%E5%B9%B3%E5%8F%B0%E7%AE%A1%E7%90%86%E8%80%85%EF%BC%89"><span class="toc-text">PlatformManager（平台管理者）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GameController%EF%BC%88%E6%B8%B8%E6%88%8F%E6%8E%A7%E5%88%B6%E8%80%85%EF%BC%89"><span class="toc-text">GameController（游戏控制者）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#index"><span class="toc-text">index</span></a></li></ol></li></ol></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="https://github.com/Yeatsczx"
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:engineerczx@foxmail.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail "></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  <a target="_blank" href="https://github.com/Yeatsczx">CZX - 2022</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+    <div class="search">
+  <div class="search-container">
+    <div class="search-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <div class="search-input-wrapper">
+      <i class="search-input-icon iconfont iconsearch"></i>
+      <input class="search-input" type="search" id="search-input" placeholder="Search..." autofocus autocomplete="off"
+        autocorrect="off" autocapitalize="off">
+    </div>
+    <div class="search-output" id="search-output"></div>
+  </div>
+</div>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/tororo.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script defer src='https://hm.baidu.com/hm.js?cdb8957a9ec8323f89c80310f82d9fb6'></script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

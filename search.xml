@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>你不知道的console.log()</title>
+    <url>/2022/08/13/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84console-log/</url>
+    <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>偶然在使用JavaScript做题时发现了一个关于console.log()的坑：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">        <span class="hljs-keyword">let</span> a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];</span><br><span class="language-javascript">        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a[<span class="hljs-number">0</span>], a);</span><br><span class="language-javascript">        a[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;</span><br><span class="language-javascript">        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a[<span class="hljs-number">0</span>], a);</span><br><span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>理论上在浏览器的控制台中会输出:</p>
+<figure class="highlight basic"><table><tr><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]<br><span class="hljs-symbol">0 </span>[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]<br></code></pre></td></tr></table></figure>
+
+<p>但是，实际上浏览器的输出：</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/142994d544704080944a5f502581d519~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"></p>
+<p>两次输出的数组竟然都是**[0,2,3]**。</p>
+<p>但是在<strong>刷新浏览器</strong>后：</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/567f4f179494474a98cad60d2dbcdc2b~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"></p>
+<p>发现输出结果是正确的，但是在点击下拉框后发现竟然和输出的数组对不上。</p>
+<p>而后我将同样的代码<strong>使用node</strong>进行输出：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6492237ecfe545f382fcf43e25a6dce9~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"></p>
+<p>发现输出结果又是正确的。</p>
+<p>至此可以发现输出结果与运行环境有关，应该是浏览器中console.log()中的问题。</p>
+<h2 id="探索过程"><a href="#探索过程" class="headerlink" title="探索过程"></a>探索过程</h2><p>然后，通过控制台进行调试，发现在调试过程中，数组a其实发生了变化。这就很奇怪了，为什么调试过程中输出是符合预期的呢？</p>
+<p>之后询问了其它大佬，提出过 可以使用JSON.stringify()进行处理，照做之后发现输出结果是正确的:</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ddf8e412f8b94e18b96854726466f288~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"></p>
+<p>为什么通过JSON.stringify()进行处理后，输出结果又是正确的呢？</p>
+<p>在查找了相关资料后，发现了原因所在。</p>
+<p><strong>《你不知道的JavaScript-中卷》</strong>第二部分第一章中写道：</p>
+<p>并没有什么规范或一组需求指定 console.* 方法族如何工作——它们并不是 JavaScript 正式的一部分，而是由宿主环境（请参考本书的“类型和语法”部分）添加到 JavaScript 中的。 因此，不同的浏览器和 JavaScript 环境可以按照自己的意愿来实现，有时候这会引起混淆。 尤其要提出的是，<strong>在某些条件下，某些浏览器的 console.log(..) 并不会把传入的内容立 即输出</strong>。出现这种情况的主要原因是，在许多程序（不只是 JavaScript）中，I&#x2F;O 是非常低 速的阻塞部分。所以，（从页面 &#x2F;UI 的角度来说）浏览器在后台<strong>异步处理</strong>控制台 I&#x2F;O 能够提高性能，这时用户甚至可能根本意识不到其发生。</p>
+<p>书中举了一个例子：</p>
+<p>下面这种情景不是很常见，但也可能发生，从中（不是从代码本身而是从外部）可以观察到这种情况：</p>
+<figure class="highlight arcade"><table><tr><td class="code"><pre><code class="hljs arcade"><span class="hljs-keyword">var</span> a = &#123; <span class="hljs-attr">index</span>: <span class="hljs-number">1</span> &#125;;<br><span class="hljs-comment">// 然后 </span><br><span class="hljs-built_in">console</span>.<span class="hljs-built_in">log</span>( a );<span class="hljs-comment">// ?? </span><br><span class="hljs-comment">// 再然后 </span><br>a.index++;<br></code></pre></td></tr></table></figure>
+
+<p>我们通常认为恰好在执行到 console.log(..) 语句的时候会看到 a 对象的快照，打印出类 似于 { index: 1 } 这样的内容，然后在下一条语句 a.index++ 执行时将其修改，这句的执行会严格在 a 的输出之后。</p>
+<p>多数情况下，前述代码在开发者工具的控制台中输出的对象表示与期望是一致的。但是， 这段代码运行的时候，浏览器可能会认为需要把控制台 I&#x2F;O 延迟到后台，在这种情况下， 等到浏览器控制台输出对象内容时，a.index++ 可能已经执行，因此会显示 { index: 2 }。 到底什么时候控制台 I&#x2F;O 会延迟，甚至是否能够被观察到，这都是游移不定的。如果在调试的过程中遇到对象在 console.log(..) 语句之后被修改，可你却看到了意料之外的结果， 要意识到这可能是这种 <strong>I&#x2F;O 的异步化</strong>造成的.</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><ul>
+<li>如果遇到这种少见的情况，最好的选择是在 JavaScript 调试器中使用断点， 而不要依赖控制台输出。</li>
+<li>次优的方案是把对象序列化到一个字符串中，以强制执行一次“快照”，比如通过 JSON.stringify(..)。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>其它</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>从0到1实现H5游戏</title>
+    <url>/2022/07/19/%E4%BB%8E0%E5%88%B01%E5%AE%9E%E7%8E%B0H5%E6%B8%B8%E6%88%8F/</url>
+    <content><![CDATA[<h1 id="从0到1实现H5游戏"><a href="#从0到1实现H5游戏" class="headerlink" title="从0到1实现H5游戏"></a>从0到1实现H5游戏</h1><h2 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h2><p><a href="https://yeatsczx.github.io/html/game.html">试玩地址</a></p>
+<p><a href="https://github.com/Yeatsczx/H5game">源码</a></p>
+<p><img src="https://img-blog.csdnimg.cn/33d423652af54cc2baf930ce283f322e.png#pic_center"></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>我将这款游戏命名为herald（先驱），玩家可以在界面右上角改变操控模式（鼠键模式和声音模式），通过鼠标点击、空格键、↑键以及声音控制herald（herald即移动的黑色小方块，以下皆由herald代指黑色小方块）跳动，herald可连续跳动两次，第三次herald会加速坠落，herald的速度会随着时间的变化而慢慢加快。当herald消失于地面两个平台之间的间隙时或者触碰到地面任意平台左侧时，游戏结束并且游戏会自动重新开始。在开发过程中，有借鉴各路实现。</p>
+<h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><p>HTML+CSS+JavaScript,其中运用了H5中的canvas。</p>
+<h2 id="开发思路"><a href="#开发思路" class="headerlink" title="开发思路"></a>开发思路</h2><h3 id="Rect-矩形"><a href="#Rect-矩形" class="headerlink" title="Rect(矩形)"></a>Rect(矩形)</h3><p>此部分主要为绘制矩形，包括herald和地面平台，此外还包括判断herald和地面平台是否相交。</p>
+<figure class="highlight maxima"><table><tr><td class="code"><pre><code class="hljs maxima">class Rect &#123;<br>  constructor(<span class="hljs-built_in">props</span>) &#123;<br>    //画矩形<br>    this.<span class="hljs-built_in">draw</span> = (&#123; ctx &#125;) =&gt; &#123;<br>      ctx.<span class="hljs-built_in">save</span>();<br>      ctx.globalAlpha = this.<span class="hljs-built_in">opacity</span>;<br>      ctx.fillStyle = this.<span class="hljs-built_in">color</span>;<br>      ctx.fillRect(this.<span class="hljs-built_in">position</span>.x, this.<span class="hljs-built_in">position</span>.y, this.<span class="hljs-built_in">width</span>, this.<span class="hljs-built_in">height</span>);<br>      ctx.restore();<br>    &#125;;<br>    this.<span class="hljs-built_in">position</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">position</span>;<br>    this.<span class="hljs-built_in">width</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">width</span>;<br>    this.<span class="hljs-built_in">height</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">height</span>;<br>    this.<span class="hljs-built_in">color</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">color</span>;<br>    this.<span class="hljs-built_in">opacity</span> = <span class="hljs-built_in">props</span>.<span class="hljs-built_in">opacity</span> ?? <span class="hljs-number">1</span>;<br>  &#125;<br>  // 判断两个矩形是否相交，r1为herald，列举四种不相交的情况，然后取反<br>  static isIntersect(r1, r2) &#123;<br>    <span class="hljs-built_in">return</span> !(r2.<span class="hljs-built_in">position</span>.x &gt; r1.<span class="hljs-built_in">position</span>.x + r1.<span class="hljs-built_in">width</span> ||<br>      r2.<span class="hljs-built_in">position</span>.x + r2.<span class="hljs-built_in">width</span> &lt; r1.<span class="hljs-built_in">position</span>.x ||<br>      r2.<span class="hljs-built_in">position</span>.y &gt; r1.<span class="hljs-built_in">position</span>.y + r1.<span class="hljs-built_in">height</span> ||<br>      r2.<span class="hljs-built_in">position</span>.y + r2.<span class="hljs-built_in">height</span> &lt; r1.<span class="hljs-built_in">position</span>.y);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Vector（向量）"><a href="#Vector（向量）" class="headerlink" title="Vector（向量）"></a>Vector（向量）</h3><p>此部分主要为一些操作向量的方法，向量可以表示速度，加速度，力。</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Vector</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(x = <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-keyword">this</span>.x = x;<br>    <span class="hljs-keyword">this</span>.y = y;<br>  &#125;<br>  static add(vector1, vector2) &#123;<br>    <span class="hljs-keyword">return</span> new Vector(vector1.x + vector2.x, vector1.y + vector2.y);<br>  &#125;<br>  static sub(vector1, vector2) &#123;<br>    <span class="hljs-keyword">return</span> new Vector(vector1.x - vector2.x, vector1.y - vector2.y);<br>  &#125;<br>  static clone(vector) &#123;<br>    <span class="hljs-keyword">return</span> new Vector(vector.x, vector.y);<br>  &#125;<br>  static fromAngle(theta, d) &#123;<br>    <span class="hljs-keyword">return</span> new Vector(d * Math.cos(theta), d * Math.sin(theta));<br>  &#125;<br>  clone() &#123;<br>    <span class="hljs-keyword">return</span> new Vector(<span class="hljs-keyword">this</span>.x, <span class="hljs-keyword">this</span>.y);<br>  &#125;<br>  add(vector) &#123;<br>    <span class="hljs-keyword">this</span>.x += vector.x;<br>    <span class="hljs-keyword">this</span>.y += vector.y;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>  sub(vector) &#123;<br>    <span class="hljs-keyword">this</span>.x -= vector.x;<br>    <span class="hljs-keyword">this</span>.y -= vector.y;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>  mult(scale) &#123;<br>    <span class="hljs-keyword">this</span>.x *= scale;<br>    <span class="hljs-keyword">this</span>.y *= scale;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>  div(scale) &#123;<br>    <span class="hljs-keyword">this</span>.x /= scale;<br>    <span class="hljs-keyword">this</span>.y /= scale;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>  <span class="hljs-comment">//计算向量的长度</span><br>  mag() &#123;<br>    <span class="hljs-keyword">return</span> Math.sqrt(<span class="hljs-keyword">this</span>.x * <span class="hljs-keyword">this</span>.x + <span class="hljs-keyword">this</span>.y * <span class="hljs-keyword">this</span>.y);<br>  &#125;<br>  <span class="hljs-comment">//求单位向量</span><br>  normalize() &#123;<br>    let m = <span class="hljs-keyword">this</span>.mag();<br>    <span class="hljs-keyword">if</span> (m !== <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-keyword">this</span>.div(m);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Stage（舞台）"><a href="#Stage（舞台）" class="headerlink" title="Stage（舞台）"></a><strong>Stage</strong>（舞台）</h3><p>此部分主要为请求动画帧，更新herald及平台数据并重新绘制herald和平台，还包括了做适配，消除图片边缘模糊现象，并将画布大小设置为整个浏览器窗口视图大小。</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Stage</span> </span>&#123;<br>  <span class="hljs-keyword">constructor</span>(props) &#123;<br>    <span class="hljs-keyword">var</span> _a;<br>    <span class="hljs-keyword">this</span>.entities = [];<br>    <span class="hljs-comment">//处理调整</span><br>    <span class="hljs-keyword">this</span>.handleResize = () =&gt; &#123;<br>      <span class="hljs-keyword">this</span>.<span class="hljs-keyword">init</span>();<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.tick = (callback) =&gt; &#123;<br>      <span class="hljs-comment">//请求动画帧</span><br>      <span class="hljs-keyword">this</span>.raf = requestAnimationFrame(() =&gt; &#123;<br>        <span class="hljs-keyword">this</span>.ctx.clearRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);<span class="hljs-comment">//擦除上一帧画布</span><br>        <span class="hljs-keyword">this</span>.tick(callback);<br>      &#125;);<br>      <span class="hljs-keyword">const</span> stage = &#123;<br>        width: <span class="hljs-keyword">this</span>.width,<br>        height: <span class="hljs-keyword">this</span>.height,<br>        verticalAcceleration: <span class="hljs-keyword">this</span>.verticalAcceleration,<br>        ctx: <span class="hljs-keyword">this</span>.ctx,<br>        horizontalVelocity: <span class="hljs-keyword">this</span>.horizontalVelocity<br>      &#125;;<br>      <span class="hljs-comment">//更新herald及平台数据</span><br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entity of <span class="hljs-keyword">this</span>.entities) &#123;<br>        entity.update(stage);<br>      &#125;<br>      callback();<br>      <span class="hljs-comment">//重新绘制herald及平台</span><br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entity of <span class="hljs-keyword">this</span>.entities) &#123;<br>        entity.draw(stage);<br>      &#125;<br>      <span class="hljs-keyword">this</span>.horizontalVelocity.add(<span class="hljs-keyword">this</span>.horizontalAcceleration);<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.play = (callback) =&gt; &#123;<br>      <span class="hljs-keyword">this</span>.stop();<br>      <span class="hljs-keyword">this</span>.tick(callback);<br>    &#125;;<br>    <span class="hljs-comment">//取消请求动画帧</span><br>    <span class="hljs-keyword">this</span>.stop = () =&gt; &#123;<br>      cancelAnimationFrame(<span class="hljs-keyword">this</span>.raf);<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.add = (...entity) =&gt; &#123;<br>      <span class="hljs-comment">//entity.length为2</span><br>      <span class="hljs-keyword">for</span> (let i = <span class="hljs-number">0</span>; i &lt; entity.length; i++) &#123;<br>        <span class="hljs-keyword">this</span>.entities.push(entity[i]);<br>      &#125;<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.reset = () =&gt; &#123;<br>      <span class="hljs-keyword">this</span>.horizontalVelocity = <span class="hljs-keyword">this</span>.initialHorizontalVelocity.clone();<br>      <span class="hljs-keyword">this</span>.entities = [];<br>    &#125;;<br>    <span class="hljs-keyword">this</span>.ele = document.getElementById(<span class="hljs-string">&quot;canvas&quot;</span>);<br>    <span class="hljs-keyword">this</span>.<span class="hljs-keyword">init</span>();<br>    <span class="hljs-keyword">this</span>.ctx = <span class="hljs-keyword">this</span>.ele.getContext(<span class="hljs-string">&quot;2d&quot;</span>);<br>    <span class="hljs-keyword">this</span>.verticalAcceleration = props.verticalAcceleration;<span class="hljs-comment">//重力加速度</span><br>    <span class="hljs-keyword">this</span>.initialHorizontalVelocity = props.initialHorizontalVelocity;<span class="hljs-comment">//初始水平速度</span><br>    <span class="hljs-keyword">this</span>.horizontalVelocity = props.initialHorizontalVelocity.clone();<br>    <span class="hljs-keyword">this</span>.horizontalAcceleration = props.horizontalAcceleration;<span class="hljs-comment">//水平加速度</span><br>    <span class="hljs-comment">//视图大小调整事件监听</span><br>    window.addEventListener(<span class="hljs-string">&quot;resize&quot;</span>, <span class="hljs-keyword">this</span>.handleResize, <span class="hljs-literal">false</span>);<br>  &#125;<br>  <span class="hljs-comment">//做适配，消除图片边缘模糊现象，并将画布大小设置为整个浏览器窗口视图大小</span><br>  <span class="hljs-keyword">init</span>() &#123;<br>    <span class="hljs-keyword">const</span> &#123; devicePixelRatio, innerWidth, innerHeight &#125; = window;<br>    <span class="hljs-keyword">this</span>.ele.width = innerWidth * devicePixelRatio;<br>    <span class="hljs-keyword">this</span>.ele.height = innerHeight * devicePixelRatio;<br>    <span class="hljs-keyword">this</span>.width = innerWidth;<br>    <span class="hljs-keyword">this</span>.height = innerHeight;<br>    <span class="hljs-keyword">this</span>.ele.style.width = <span class="hljs-keyword">this</span>.width + <span class="hljs-string">&quot;px&quot;</span>;<br>    <span class="hljs-keyword">this</span>.ele.style.height = <span class="hljs-keyword">this</span>.height + <span class="hljs-string">&quot;px&quot;</span>;<br>    <span class="hljs-keyword">this</span>.ctx = <span class="hljs-keyword">this</span>.ele.getContext(<span class="hljs-string">&quot;2d&quot;</span>);<br>    <span class="hljs-comment">//为 canvas 单位添加缩放变换</span><br>    <span class="hljs-keyword">this</span>.ctx.scale(devicePixelRatio, devicePixelRatio);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Platform（平台）"><a href="#Platform（平台）" class="headerlink" title="Platform（平台）"></a><strong>Platform</strong>（平台）</h3><p>此部分主要为更新平台位置</p>
+<figure class="highlight scala"><table><tr><td class="code"><pre><code class="hljs scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Platform</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Rect</span> </span>&#123;<br>    update(stage) &#123;<br>        const &#123; horizontalVelocity &#125; = stage;<br>        <span class="hljs-keyword">this</span>.prevPosition = <span class="hljs-keyword">this</span>.position.clone();<br>        <span class="hljs-keyword">this</span>.position.add(horizontalVelocity);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Particle-粒子"><a href="#Particle-粒子" class="headerlink" title="Particle(粒子)"></a>Particle(粒子)</h3><p>此部分主要为实现粒子效果。</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Particle</span> <span class="hljs-title">extends</span> <span class="hljs-title">Rect</span> </span>&#123;<br>    <span class="hljs-keyword">constructor</span>(props) &#123;<br>        <span class="hljs-keyword">super</span>(props);<br>        <span class="hljs-keyword">this</span>.applyForce = (force) =&gt; &#123;<br>            <span class="hljs-keyword">this</span>.velocity.add(force.clone().div(<span class="hljs-keyword">this</span>.mass));<br>        &#125;;<br>        <span class="hljs-keyword">this</span>.update = (stage) =&gt; &#123;<br>            <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isFirstTime) &#123;<br>                <span class="hljs-keyword">this</span>.opacity -= <span class="hljs-number">0.05</span>;<span class="hljs-comment">//让粒子慢慢消失</span><br>                <span class="hljs-keyword">const</span> &#123; verticalAcceleration, horizontalVelocity &#125; = stage;<br>                <span class="hljs-keyword">this</span>.velocity.add(verticalAcceleration);<br>                <span class="hljs-keyword">this</span>.position.add(Vector.add(<span class="hljs-keyword">this</span>.velocity, horizontalVelocity));<br>                <span class="hljs-keyword">this</span>.opacity = Math.max(<span class="hljs-keyword">this</span>.opacity, <span class="hljs-number">0</span>);<br>            &#125;<br>            <span class="hljs-keyword">this</span>.isFirstTime = <span class="hljs-literal">false</span>;<br>        &#125;;<br>        <span class="hljs-keyword">this</span>.velocity = props.velocity;<br>        <span class="hljs-keyword">this</span>.isFirstTime = <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">this</span>.mass = props.mass;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Herald-先驱"><a href="#Herald-先驱" class="headerlink" title="Herald(先驱)"></a>Herald(先驱)</h3><p>此部分主要实现herald的跳跃行为并更新herald数据。</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Herald</span> <span class="hljs-title">extends</span> <span class="hljs-title">Rect</span> </span>&#123;<br>    <span class="hljs-keyword">constructor</span>(props) &#123;<br>        <span class="hljs-keyword">super</span>(props);<br>        <span class="hljs-keyword">this</span>.applyForce = (force) =&gt; &#123;<br>            <span class="hljs-keyword">this</span>.velocity.add(force.clone().div(<span class="hljs-keyword">this</span>.mass));<span class="hljs-comment">//this.mass应该为一个倍数值。</span><br>        &#125;;<br>        <span class="hljs-comment">//herald跳跃行为</span><br>        <span class="hljs-keyword">this</span>.jump = () =&gt; &#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curConJump &lt; <span class="hljs-keyword">this</span>.maxConJump) &#123;<br>                <span class="hljs-comment">//velocity为给一个速度</span><br>                <span class="hljs-keyword">this</span>.velocity = new Vector();<span class="hljs-comment">//将this.velocity重置为（0,0），如果不做这一步，herald的速度可能已经向下了，甚至可能大于后面所给的一个向下的速度，就有可能跳第二次herald没什么反应了。</span><br>                <span class="hljs-keyword">this</span>.applyForce === <span class="hljs-literal">null</span> || <span class="hljs-keyword">this</span>.applyForce === void <span class="hljs-number">0</span> ? void <span class="hljs-number">0</span> : <span class="hljs-keyword">this</span>.applyForce(new Vector(<span class="hljs-number">0</span>, -<span class="hljs-number">12</span>));<br>                <span class="hljs-keyword">this</span>.curConJump++;<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.curConJump === <span class="hljs-keyword">this</span>.maxConJump) &#123;<br>                <span class="hljs-keyword">this</span>.velocity.add(new Vector(<span class="hljs-number">0</span>, <span class="hljs-number">30</span>));<br>                <span class="hljs-keyword">this</span>.curConJump++;<span class="hljs-comment">//在碰撞时this.curConJump会为0</span><br>            &#125;<br>        &#125;;<br>        <span class="hljs-keyword">this</span>.mass = props.mass !== <span class="hljs-literal">null</span> &amp;&amp; props.mass !== void <span class="hljs-number">0</span> ? props.mass : <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">this</span>.velocity = props.velocity !== <span class="hljs-literal">null</span> &amp;&amp; props.velocity !== void <span class="hljs-number">0</span> ? props.velocity : new Vector();<br>        <span class="hljs-keyword">this</span>.maxConJump = <span class="hljs-number">2</span>;<br>        <span class="hljs-keyword">this</span>.curConJump = <span class="hljs-number">0</span>;<br>    &#125;<br>    <span class="hljs-comment">//更新herald数据</span><br>    update(stage) &#123;<br>        <span class="hljs-keyword">const</span> &#123; verticalAcceleration &#125; = stage;<br>        <span class="hljs-keyword">this</span>.prevPosition = <span class="hljs-keyword">this</span>.position.clone();<br>        <span class="hljs-keyword">this</span>.prevVelocity = <span class="hljs-keyword">this</span>.velocity.clone();<br>        <span class="hljs-keyword">this</span>.velocity.add(verticalAcceleration);<br>        <span class="hljs-comment">//sub 左参数-右参数</span><br>        <span class="hljs-keyword">this</span>.position.add(Vector.sub(<span class="hljs-keyword">this</span>.velocity, verticalAcceleration.clone().mult(<span class="hljs-number">0.5</span>)));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="PlatformManager（平台管理者）"><a href="#PlatformManager（平台管理者）" class="headerlink" title="PlatformManager（平台管理者）"></a>PlatformManager（平台管理者）</h3><p>此部分主要为创建平台随机数据并绘制平台，此外实现了无限循环的障碍物，将已经走过屏幕左边的平台的位置调整到队尾,达到复用的目的。</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><code class="hljs kotlin"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PlatformManager</span> </span>&#123;<br>    <span class="hljs-keyword">constructor</span>(props) &#123;<br>        <span class="hljs-keyword">this</span>.update = (stage) =&gt; &#123;<br><br>            <span class="hljs-comment">//this.lastPlatform.position.x &lt; stage.width表示前一个平台的左侧已经出现在舞台时，就开始执行&#123;&#125;的内容绘制一个新的平台</span><br>            <span class="hljs-keyword">while</span> (!<span class="hljs-keyword">this</span>.platforms.length ||<br>                <span class="hljs-keyword">this</span>.lastPlatform.position.x &lt; stage.width) &#123;<br>                <span class="hljs-keyword">const</span> &#123; width, height, gap &#125; = PlatformManager.getRandomProperties(stage);<br>                let prev = !<span class="hljs-keyword">this</span>.platforms.length<br>                    ? <span class="hljs-number">0</span><br>                    : <span class="hljs-keyword">this</span>.lastPlatform.position.x + <span class="hljs-keyword">this</span>.lastPlatform.width + gap;<br>                <span class="hljs-keyword">const</span> newPlatform = new Platform(&#123;<br>                    position: new Vector(prev, stage.height - height),<span class="hljs-comment">//stage.height - height，stage.height是舞台的高度，即整个浏览器的高度，height为一个平台的高度</span><br>                    width: !<span class="hljs-keyword">this</span>.platforms.length<br>                        ? random(stage.width * <span class="hljs-number">0.8</span>, stage.width)<span class="hljs-comment">//每次开始时，第一个舞台的宽度</span><br>                        : width,<span class="hljs-comment">//第二个及以后舞台的宽度</span><br>                    height,<br>                    color: randomOne(<span class="hljs-keyword">this</span>.colors)<span class="hljs-comment">//在自定义的几个颜色中随机舞台颜色</span><br>                &#125;);<br>                <span class="hljs-keyword">this</span>.lastPlatform = newPlatform;<br>                <span class="hljs-keyword">this</span>.platforms.push(newPlatform);<br>            &#125;<br>            <span class="hljs-keyword">for</span> (let i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.platforms.length; i++) &#123;<br>                <span class="hljs-keyword">const</span> platform = <span class="hljs-keyword">this</span>.platforms[i];<br>                platform.update(stage);<span class="hljs-comment">//platform的更新方法，不是PlatformManager的，为平台设置速度</span><br>                <span class="hljs-comment">// 如果已经走过屏幕左边,需要将它的位置调整到队尾,达到复用的目的</span><br>                <span class="hljs-keyword">if</span> (platform.position.x + platform.width &lt; <span class="hljs-number">0</span>) &#123;<br>                    <span class="hljs-keyword">const</span> &#123; width, height, gap &#125; = PlatformManager.getRandomProperties(stage);<br>                    platform.position = new Vector(<span class="hljs-keyword">this</span>.lastPlatform.position.x + <span class="hljs-keyword">this</span>.lastPlatform.width + gap, stage.height - height);<br>                    platform.color = randomOne(<span class="hljs-keyword">this</span>.colors);<br>                    platform.width = width;<br>                    platform.height = height;<br>                    <span class="hljs-keyword">this</span>.lastPlatform = platform;<br>                &#125;<br>            &#125;<br>        &#125;;<br>        <span class="hljs-comment">//画出平台</span><br>        <span class="hljs-keyword">this</span>.draw = (stage) =&gt; &#123;<br>            <span class="hljs-keyword">this</span>.platforms.forEach((p) =&gt; p.draw(stage));<span class="hljs-comment">//p的draw继承自Rect</span><br>        &#125;;<br>        <span class="hljs-keyword">const</span> &#123; colors &#125; = props;<br>        <span class="hljs-keyword">this</span>.colors = colors;<br>        <span class="hljs-keyword">this</span>.platforms = [];<br>        <span class="hljs-keyword">this</span>.lastPlatform = <span class="hljs-literal">null</span>;<br>    &#125;<br>    <span class="hljs-comment">//取得平台随机数据</span><br>    static getRandomProperties(stage) &#123;<br>        <span class="hljs-keyword">const</span> width = random(<span class="hljs-number">80</span>, <span class="hljs-number">680</span>);<br>        <span class="hljs-keyword">const</span> height = random(<span class="hljs-number">50</span>, <span class="hljs-number">200</span>);<br>        <span class="hljs-keyword">const</span> gap = random((<span class="hljs-number">80</span> * Math.abs(stage.horizontalVelocity.x)) / <span class="hljs-number">3</span>, (<span class="hljs-number">180</span> * Math.abs(stage.horizontalVelocity.x)) / <span class="hljs-number">3</span>);<br>        <span class="hljs-keyword">return</span> &#123;<br>            width,<br>            height,<br>            gap<br>        &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="GameController（游戏控制者）"><a href="#GameController（游戏控制者）" class="headerlink" title="GameController（游戏控制者）"></a>GameController（游戏控制者）</h3><p>此部分主要为初始化事件监听函数（鼠标，键盘，声音）。</p>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">const</span> listeners = [];<br><span class="hljs-keyword">let</span> lastTime = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">let</span> controlType = <span class="hljs-string">&quot;keyboard&quot;</span>;<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">addListener</span> = (<span class="hljs-params">callback</span>) =&gt; &#123;<br>  listeners.<span class="hljs-title function_">push</span>(callback);<br>&#125;;<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">notify</span> = (<span class="hljs-params"></span>) =&gt; &#123;<br>  listeners.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">listener</span>) =&gt;</span> <span class="hljs-title function_">listener</span>());<br>&#125;;<br><span class="hljs-comment">//事件调度函数</span><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">eventDispatcher</span> = (<span class="hljs-params"><span class="hljs-keyword">type</span></span>) =&gt; &#123;<br>  <span class="hljs-keyword">if</span> (controlType === <span class="hljs-keyword">type</span>) &#123;<br>    <span class="hljs-title function_">notify</span>();<br>  &#125;<br>&#125;;<br><span class="hljs-comment">//初始化事件监听器</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">initKeyboardListener</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">//键盘事件监听器</span><br>  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;keydown&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (event.<span class="hljs-property">key</span> === <span class="hljs-string">&quot; &quot;</span> || event.<span class="hljs-property">key</span> === <span class="hljs-string">&quot;ArrowUp&quot;</span>) &#123;<br>      <span class="hljs-title function_">eventDispatcher</span>(<span class="hljs-string">&quot;keyboard&quot;</span>);<br>    &#125;<br>  &#125;);<br>  <span class="hljs-comment">//鼠标点击事件监听器</span><br>  <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> &#123;<br>    <span class="hljs-title function_">eventDispatcher</span>(<span class="hljs-string">&quot;keyboard&quot;</span>);<br>  &#125;);<br>&#125;<br><span class="hljs-comment">////初始化声音事件监听器</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">initAudioListener</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">if</span> (navigator.<span class="hljs-property">mediaDevices</span> &amp;&amp; navigator.<span class="hljs-property">mediaDevices</span>.<span class="hljs-property">getUserMedia</span>) &#123;<br>    <span class="hljs-keyword">let</span> audioContext = <span class="hljs-keyword">new</span> (<span class="hljs-variable language_">window</span>.<span class="hljs-property">AudioContext</span> || <span class="hljs-variable language_">window</span>.<span class="hljs-property">webkitAudioContext</span>)();<br>    <span class="hljs-comment">// 获取用户的 media 信息</span><br>    navigator.<span class="hljs-property">mediaDevices</span>.<span class="hljs-title function_">getUserMedia</span>(&#123; <span class="hljs-attr">audio</span>: <span class="hljs-literal">true</span> &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">stream</span>) =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> mediaStreamSource = audioContext.<span class="hljs-title function_">createMediaStreamSource</span>(stream);<br>      <span class="hljs-keyword">const</span> scriptProcessor = audioContext.<span class="hljs-title function_">createScriptProcessor</span>(<span class="hljs-number">4096</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br>      mediaStreamSource.<span class="hljs-title function_">connect</span>(scriptProcessor);<br>      scriptProcessor.<span class="hljs-title function_">connect</span>(audioContext.<span class="hljs-property">destination</span>);<br>      scriptProcessor.<span class="hljs-property">onaudioprocess</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) &#123;<br>        <span class="hljs-comment">// 获得缓冲区的输入音频，转换为包含了PCM通道数据的32位浮点数组</span><br>        <span class="hljs-keyword">let</span> buffer = e.<span class="hljs-property">inputBuffer</span>.<span class="hljs-title function_">getChannelData</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-comment">// 获取缓冲区中最大的音量值</span><br>        <span class="hljs-keyword">let</span> maxVal = <span class="hljs-title class_">Math</span>.<span class="hljs-property">max</span>.<span class="hljs-title function_">apply</span>(<span class="hljs-title class_">Math</span>, buffer);<br>        <span class="hljs-keyword">if</span> (maxVal * <span class="hljs-number">100</span> &gt; <span class="hljs-number">2</span> &amp;&amp; performance.<span class="hljs-title function_">now</span>() - lastTime &gt; <span class="hljs-number">300</span>) &#123;<br>          lastTime = performance.<span class="hljs-title function_">now</span>();<br>          <span class="hljs-title function_">eventDispatcher</span>(<span class="hljs-string">&quot;audio&quot;</span>);<br>          <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(maxVal);<br>        &#125;<br>      &#125;;<br>    &#125;);<br>  &#125;<br>&#125;<br><span class="hljs-keyword">function</span> <span class="hljs-title function_">once</span>(<span class="hljs-params">factory</span>) &#123;<br>  <span class="hljs-keyword">let</span> inited = <span class="hljs-literal">false</span>;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (!inited) &#123;<br>      <span class="hljs-title function_">factory</span>();<br>      inited = <span class="hljs-literal">true</span>;<br>    &#125;<br>  &#125;;<br>&#125;<br><span class="hljs-comment">//调用初始化的事件监听器（键盘及点击）</span><br><span class="hljs-title function_">initKeyboardListener</span>();<br><span class="hljs-keyword">const</span> lazyInitAudioListener = <span class="hljs-title function_">once</span>(initAudioListener);<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">setControlType</span> = (<span class="hljs-params"><span class="hljs-keyword">type</span></span>) =&gt; &#123;<br>  controlType = <span class="hljs-keyword">type</span>;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === <span class="hljs-string">&quot;audio&quot;</span>) &#123;<br>    <span class="hljs-title function_">lazyInitAudioListener</span>();<br>  &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="index"><a href="#index" class="headerlink" title="index"></a>index</h3><p>此部分主要为碰撞检测函数，初始化游戏，包括新建实例对象。</p>
+<figure class="highlight processing"><table><tr><td class="code"><pre><code class="hljs processing">let init;<br>let herald;<br>let particles = [];<br><span class="hljs-keyword">const</span> maxParticleLength = <span class="hljs-number">40</span>;<br>let particleId = <span class="hljs-number">0</span>;<br><span class="hljs-comment">//创建舞台</span><br><span class="hljs-keyword">const</span> stage = <span class="hljs-keyword">new </span><span class="hljs-class title_">Stage</span>(&#123;<br>  verticalAcceleration: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0.6</span>),<span class="hljs-comment">// 重力加速度</span><br>  initialHorizontalVelocity: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">-4</span>, <span class="hljs-number">0</span>),<span class="hljs-comment">//初始水平速度</span><br>  horizontalAcceleration: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">-0.001</span>, <span class="hljs-number">0</span>),<span class="hljs-comment">//初始水平加速度</span><br>&#125;);<br>let hasIntersect = <span class="hljs-literal">false</span>;<br>let prevHasIntersect = <span class="hljs-literal">false</span>;<br><span class="hljs-comment">//判断是否碰撞到地面方块左侧</span><br>function <span class="hljs-title function_">isIntersectLeft</span>(herald, platform) &#123;<br>  <span class="hljs-keyword">if</span> (herald.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">x</span> + herald.<span class="hljs-property">width</span> &gt;= platform.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">x</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>  &#125;<br>  <span class="hljs-keyword">if</span> (herald.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">y</span> + herald.<span class="hljs-property">height</span> &gt;= platform.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">y</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>  &#125;<br>  <span class="hljs-keyword">const</span> &#123; x, y &#125; = platform.<span class="hljs-property">prevPosition</span>;<br>  <span class="hljs-keyword">const</span> prevRightBottomX = herald.<span class="hljs-property">width</span> + herald.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">x</span>;<br>  <span class="hljs-keyword">const</span> prevRightBottomY = herald.<span class="hljs-property">height</span> + herald.<span class="hljs-property">prevPosition</span>.<span class="hljs-property">y</span>;<br>  <span class="hljs-keyword">const</span> tx = (x - prevRightBottomX) / -stage.<span class="hljs-property">horizontalVelocity</span>.<span class="hljs-property">x</span>;<br>  <span class="hljs-keyword">const</span> ty = (y - prevRightBottomY) / herald.<span class="hljs-property">prevVelocity</span>.<span class="hljs-property">y</span>;<br>  <span class="hljs-keyword">return</span> ty &lt; tx;<br>&#125;<br><span class="hljs-comment">//碰撞检测</span><br>function <span class="hljs-title function_">collideDetect</span>(herald, platforms) &#123;<br>  <span class="hljs-comment">//当herald掉下消失在视图中时触发，即游戏结束，注意herald.position.y越往上越小,在浏览器上面的那一边时为0，如果为负则是herald超出浏览器视图</span><br>  <span class="hljs-keyword">if</span> (herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> &gt; stage.<span class="hljs-property">height</span>) &#123;<br>    <span class="hljs-title function_">init</span>();<span class="hljs-comment">//游戏失败，初始化游戏</span><br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>  let tempHasIntersect = <span class="hljs-literal">false</span>;<br>  <span class="hljs-keyword">for</span> (let i = <span class="hljs-number">0</span>; i &lt; platforms.<span class="hljs-property">length</span>; i++) &#123;<br>    <span class="hljs-comment">//如果herald在与平台相交</span><br>    <span class="hljs-keyword">if</span> (Rect.<span class="hljs-property">isIntersect</span>(herald, platforms[i])) &#123;<br>      tempHasIntersect = <span class="hljs-literal">true</span>;<br>      <span class="hljs-keyword">const</span> platform = platforms[i];<br>      herald.<span class="hljs-property">velocity</span> = <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>      herald.<span class="hljs-property">curConJump</span> = <span class="hljs-number">0</span>;<br>      <span class="hljs-comment">//如果碰撞到地面方块左侧</span><br>      <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isIntersectLeft</span>(herald, platform)) &#123;<br>        <span class="hljs-title function_">init</span>();<br>        <span class="hljs-keyword">return</span>;<br>      &#125;<br>      herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> = platform.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> - herald.<span class="hljs-property">height</span>;<span class="hljs-comment">//纵坐标设置刚好在平台上方。</span><br>      <span class="hljs-keyword">const</span> particleSize = <span class="hljs-number">8</span>;<br>      <span class="hljs-comment">//初次碰撞时的例子效果</span><br>      <span class="hljs-keyword">if</span> (!prevHasIntersect) &#123;<br>        <span class="hljs-keyword">for</span> (let i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>          <span class="hljs-keyword">const</span> left = Math.<span class="hljs-property">random</span>() &gt; <span class="hljs-number">0.5</span>;<br>          particles[particleId % maxParticleLength] = <span class="hljs-keyword">new </span><span class="hljs-class title_">Particle</span>(&#123;<br>            velocity: left<br>              ? <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-built_in">random</span>(<span class="hljs-number">-4</span>, <span class="hljs-number">-2</span>), <span class="hljs-built_in">random</span>(<span class="hljs-number">-6</span>, <span class="hljs-number">-1</span>))<br>              : <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-built_in">random</span>(<span class="hljs-number">10</span>, <span class="hljs-number">16</span>), <span class="hljs-built_in">random</span>(<span class="hljs-number">-6</span>, <span class="hljs-number">-1</span>)),<br>            mass: <span class="hljs-number">1</span>,<br>            position: left<br>              ? <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(herald.<span class="hljs-property">position</span>.<span class="hljs-property">x</span> - particleSize, herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> + herald.<span class="hljs-property">height</span> - particleSize)<br>              : <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(herald.<span class="hljs-property">position</span>.<span class="hljs-property">x</span> + herald.<span class="hljs-property">width</span>, herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> + herald.<span class="hljs-property">height</span> - particleSize),<br>            <span class="hljs-built_in">width</span>: particleSize,<br>            <span class="hljs-built_in">height</span>: particleSize,<br>            <span class="hljs-type">color</span>: <span class="hljs-title function_">randomOne</span>([herald.<span class="hljs-property">color</span>, platform.<span class="hljs-property">color</span>])<br>          &#125;);<br>          particles[particleId++ % maxParticleLength].<span class="hljs-property">applyForce</span>(<span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-number">-2</span>));<span class="hljs-comment">//向上的初速度</span><br>        &#125;<br>      &#125;<br>      <span class="hljs-comment">//初次碰撞之后的，即在平台上滑动时的粒子效果</span><br>      <span class="hljs-keyword">else</span> &#123;<br>        particles[particleId % maxParticleLength] = <span class="hljs-keyword">new </span><span class="hljs-class title_">Particle</span>(&#123;<br>          velocity: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">random</span>(<span class="hljs-number">-6</span>, <span class="hljs-number">-1</span>)),<br>          mass: <span class="hljs-number">1</span>,<br>          position: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(herald.<span class="hljs-property">position</span>.<span class="hljs-property">x</span> - particleSize, herald.<span class="hljs-property">position</span>.<span class="hljs-property">y</span> + herald.<span class="hljs-property">height</span> - particleSize),<br>          <span class="hljs-built_in">width</span>: particleSize,<br>          <span class="hljs-built_in">height</span>: particleSize,<br>          <span class="hljs-type">color</span>: platform.<span class="hljs-property">color</span><br>        &#125;);<br>        particles[particleId++ % maxParticleLength].<span class="hljs-property">applyForce</span>(<span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">0</span>, <span class="hljs-number">-2</span>));<br>      &#125;<br>    &#125;<br>  &#125;<br>  hasIntersect = tempHasIntersect;<br>  <span class="hljs-keyword">if</span> (!prevHasIntersect &amp;&amp; hasIntersect) &#123;<br>    stage.<span class="hljs-property">horizontalVelocity</span>.<span class="hljs-property">add</span>(<span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">-2</span>, <span class="hljs-number">0</span>));<span class="hljs-comment">//herald回到舞台时，舞台回到初始速度</span><br>  &#125;<br>  <span class="hljs-keyword">if</span> (prevHasIntersect &amp;&amp; !hasIntersect) &#123;<br>    stage.<span class="hljs-property">horizontalVelocity</span>.<span class="hljs-property">add</span>(<span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>));<span class="hljs-comment">//herald跳起时舞台减速</span><br>  &#125;<br>  prevHasIntersect = hasIntersect;<br>&#125;<br><span class="hljs-comment">//初始游戏</span><br>init = () =&gt; &#123;<br>  stage.<span class="hljs-property">reset</span>();<span class="hljs-comment">//重置舞台</span><br>  <span class="hljs-comment">//创建小方块</span><br>  herald = <span class="hljs-keyword">new </span><span class="hljs-class title_">Herald</span>(&#123;<br>    position: <span class="hljs-keyword">new </span><span class="hljs-class title_">Vector</span>(<span class="hljs-number">160</span>, <span class="hljs-number">20</span>),<br>    <span class="hljs-built_in">height</span>: <span class="hljs-number">24</span>,<br>    <span class="hljs-built_in">width</span>: <span class="hljs-number">24</span>,<br>    <span class="hljs-type">color</span>: <span class="hljs-string">&quot;#222f3e&quot;</span><br>  &#125;);<br>  <span class="hljs-comment">//创建平台方块管理者</span><br>  <span class="hljs-keyword">const</span> pm = <span class="hljs-keyword">new </span><span class="hljs-class title_">PlatformManager</span>(&#123;<br>    colors: [<span class="hljs-string">&quot;#1dd1a1&quot;</span>, <span class="hljs-string">&quot;#ff6b6b&quot;</span>, <span class="hljs-string">&quot;#feca57&quot;</span>, <span class="hljs-string">&quot;#54a0ff&quot;</span>, <span class="hljs-string">&quot;#9c88ff&quot;</span>]<br>  &#125;);<br>  stage.<span class="hljs-property">play</span>(() =&gt; &#123;<br>    <span class="hljs-title function_">collideDetect</span>(herald, pm.<span class="hljs-property">platforms</span>);<span class="hljs-comment">//处于递归环境中，会不断执行</span><br>    <span class="hljs-comment">//改变粒子</span><br>    <span class="hljs-keyword">for</span> (let particle of particles) &#123;<br>      particle.<span class="hljs-property">update</span>(stage);<br>      particle.<span class="hljs-property">draw</span>(stage);<br>    &#125;<br>  &#125;);<br>  <span class="hljs-comment">//在舞台中加入herald和平台管理者</span><br>  stage.<span class="hljs-property">add</span>(herald, pm);<br>&#125;;<br><span class="hljs-comment">//监听input标签，并对游戏模式做出改变</span><br>document.<span class="hljs-property">body</span>.<span class="hljs-property">addEventListener</span>(<span class="hljs-string">&quot;change&quot;</span>, <span class="hljs-title function_">function</span> (event) &#123;<br>  <span class="hljs-title function_">setControlType</span>(event.<span class="hljs-property">target</span>.<span class="hljs-property">value</span>);<br>&#125;);<br><span class="hljs-comment">//herald跳跃监听</span><br><span class="hljs-title function_">addListener</span>(() =&gt; &#123;<br>  herald.<span class="hljs-property">jump</span>();<br>&#125;);<br><span class="hljs-title function_">init</span>();<br><br></code></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>H5游戏</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>暑期总结</title>
+    <url>/2022/08/23/%E6%9A%91%E6%9C%9F%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<ol>
+<li>利用Hexo搭建了个人博客。</li>
+<li>完成了《算法 101-JavaScript描述（政采云）》（这本书中大部分题都选自LeetCode,且解法全部为JavaScript,有些解法很好地用到了JavaScript的一些特有语法）共计36道题，并做了<a href="https://yeats.vercel.app/2022/07/29/%E7%AE%97%E6%B3%95-101-JavaScript%E6%8F%8F%E8%BF%B0%EF%BC%88%E6%94%BF%E9%87%87%E4%BA%91%EF%BC%89/">刷题记录</a>，包括思路和注意点。</li>
+<li>完成了《🔥 LeetCode 热题 HOT 100》共计25道题，并做了<a href="https://yeats.vercel.app/2022/08/13/%F0%9F%94%A5-LeetCode-%E7%83%AD%E9%A2%98-HOT-100/">刷题记录</a>，包括思路和注意点。</li>
+<li>采用HTML+CSS+JavaScript,其中包括了H5中的canvas，参考实现了一款<a href="https://yeats.vercel.app/2022/07/19/%E4%BB%8E0%E5%88%B01%E5%AE%9E%E7%8E%B0H5%E6%B8%B8%E6%88%8F/">H5游戏</a>，并上传到博客。</li>
+<li>再次学习了一遍React全家桶.</li>
+<li>学习了Webpack.</li>
+<li>学习了TypeScript.</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>其它</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Typora使用方法总结</title>
+    <url>/2022/07/01/Typora%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="一、基础方法"><a href="#一、基础方法" class="headerlink" title="一、基础方法"></a>一、基础方法</h1><h3 id="1-1标题"><a href="#1-1标题" class="headerlink" title="1.1标题"></a>1.1标题</h3><ul>
+<li>使用快捷键Ctrl+1（2，3，4，5，6）表示相对应的标题（如HTML中的&lt;h1&gt;，&lt;h2&gt;等）。</li>
+<li>Ctrl+0表示段落（如HTML中的&lt;p&gt;）。</li>
+<li>此类快捷键信息可在菜单栏中的段落选项下查看。</li>
+</ul>
+<h3 id="1-2字体"><a href="#1-2字体" class="headerlink" title="1.2字体"></a>1.2字体</h3><ul>
+<li>快捷键<code>Ctrl+I</code>来表示  <em>斜体文本</em></li>
+<li>快捷键<code>Ctrl+B</code>来表示  <strong>粗体文本</strong></li>
+</ul>
+<h3 id="1-3各类线"><a href="#1-3各类线" class="headerlink" title="1.3各类线"></a>1.3各类线</h3><ul>
+<li><p>以使用<strong>三个及以上</strong>的 <code>+</code>  来表示一条分割线：</p>
+<hr>
+</li>
+<li><p><code>Alt+Shift+5</code>来表示   <del>删除文本</del></p>
+</li>
+<li><p>快捷键<code>Ctrl+U</code>来下划线  <u>下划线文本</u></p>
+</li>
+</ul>
+<h3 id="1-4列表"><a href="#1-4列表" class="headerlink" title="1.4列表"></a>1.4列表</h3><ul>
+<li>可以使用 * 标记符号来表示<strong>无序列表</strong>，注意要在标记符号后<strong>添加一个空格</strong></li>
+<li>可以使用<strong>数字加上<code>.</code>再加上空格</strong>来表示<strong>有序列表</strong></li>
+</ul>
+<h3 id="1-5区块"><a href="#1-5区块" class="headerlink" title="1.5区块"></a>1.5区块</h3><ul>
+<li>可以使用<code>&gt;</code>加空格来表示区块：</li>
+</ul>
+<blockquote>
+<p>12312312</p>
+</blockquote>
+<h3 id="1-6代码"><a href="#1-6代码" class="headerlink" title="1.6代码"></a>1.6代码</h3><ul>
+<li>如果是一行代码，可以使用段内代码块来表示，用一对 **&#96;**（数字1旁边的符号）括住代码。</li>
+<li>如果是代码段,可以使用<strong>三个 &#96; 加Enter+编程语言</strong>来表示</li>
+</ul>
+<h3 id="1-7链接"><a href="#1-7链接" class="headerlink" title="1.7链接"></a>1.7链接</h3><ul>
+<li><p>链接的使用方式有两种语法，如下：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">[<span class="hljs-string">链接文字</span>](<span class="hljs-link">链接地址</span>)<br>或<br>&lt;链接地址&gt;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>例如：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">[<span class="hljs-string">百度</span>](<span class="hljs-link">https://www.baidu.com/</span>) <span class="language-xml">&lt;https://www.baidu.com/&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><a href="https://www.baidu.com/">百度</a> <a href="https://www.baidu.com/">https://www.baidu.com/</a></p>
+<ul>
+<li>链接除了可以打开相应的网页外，还可以<strong>打开本地文件</strong></li>
+<li>链接地址需要使用本地文件的地址，相对地址、绝对地址均可</li>
+<li>相对地址的表示中：一个小圆点<code>.</code>表示当前目录，两个小圆点<code>..</code>表示上一级目录。</li>
+<li>可以使用链接来实现<strong>页内跳转</strong>：</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">[<span class="hljs-string">链接文字</span>](<span class="hljs-link">#标题文字</span>)<br></code></pre></td></tr></table></figure>
+
+<p>注意CSDN不支持页面跳转。</p>
+<h3 id="1-8图片"><a href="#1-8图片" class="headerlink" title="1.8图片"></a>1.8图片</h3><ul>
+<li>可以在Markdown文档中插入图片：</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">![<span class="hljs-string">alt 属性文本</span>](<span class="hljs-link">图片地址</span>) ![<span class="hljs-string">alt 属性文本</span>](<span class="hljs-link">图片地址 &quot;可选标题&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>如：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown">![<span class="hljs-string">网络图片</span>](<span class="hljs-link">http://static.runoob.com/images/runoob-logo.png &quot;菜鸟教程&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-9表格"><a href="#1-9表格" class="headerlink" title="1.9表格"></a>1.9表格</h3><ul>
+<li>可以使用快捷键<strong>Ctrl+T</strong>来插入表格</li>
+</ul>
+<h2 id="二、扩展方法"><a href="#二、扩展方法" class="headerlink" title="二、扩展方法"></a>二、扩展方法</h2><h3 id="2-1字体颜色及大小"><a href="#2-1字体颜色及大小" class="headerlink" title="2.1字体颜色及大小"></a>2.1字体颜色及大小</h3><ul>
+<li>可以使用<code>&lt;font&gt; &lt;/font&gt;</code>标签来改变字体的颜色及大小 如：</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">font</span> <span class="hljs-attr">size</span>=<span class="hljs-string">3</span> <span class="hljs-attr">color</span>=<span class="hljs-string">&quot;red&quot;</span>&gt;</span></span>字体颜色为红色，大小为3<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">font</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>其中<code>size</code>表示字体大小，<code>color</code>表示颜色</li>
+</ul>
+<h3 id="2-2对齐方式"><a href="#2-2对齐方式" class="headerlink" title="2.2对齐方式"></a>2.2对齐方式</h3><ul>
+<li>可以改变字体的对齐方式，用标签<code>&lt;p&gt; &lt;/p&gt;</code>加上属性<code>align</code>，如：</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;left&quot;</span>&gt;</span></span>左对齐<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;center&quot;</span>&gt;</span></span>中间对齐<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">align</span>=<span class="hljs-string">&quot;right&quot;</span>&gt;</span></span>右对齐<span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><ul>
+<li>上述方法仅为部分常用方法。</li>
+<li>参考资料：[1] 菜鸟Markdown教程：<a href="https://www.runoob.com/markdown/md-tutorial.html">https://www.runoob.com/markdown/md-tutorial.html</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>其它</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo建立博客</title>
+    <url>/2022/07/01/Hexo%E5%BB%BA%E7%AB%8B%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><ol>
+<li>一直想拥有一个自己的域名来作为个人博客，后来发现通过github pages + hexo可以帮助我们免费生成静态网址，不用购买域名就可以简便地搭建一个自由的个人博客，且不需要服务器及后台。</li>
+<li>Hexo是一个快速、简洁且高效的博客框架，支持 Markdown，可以部署到GitHub Pages平台。</li>
+</ol>
+<h2 id="二、准备环境"><a href="#二、准备环境" class="headerlink" title="二、准备环境"></a>二、准备环境</h2><ol>
+<li>需要注册一个Github账号。</li>
+<li>需要下载Node.js以及Git.</li>
+<li>安装Hexo，在Git Bash中运行以下命令：</li>
+</ol>
+<p>​      <code>npm install -g hexo-cli</code></p>
+<ol start="4">
+<li>初始化Hexo，在Git Bash中运行以下命令：</li>
+</ol>
+<p>​        这些即为Hexo初始化文件的路径。</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> hexo init &lt;folder&gt;<br><span class="hljs-variable">$</span> <span class="hljs-built_in">cd</span> &lt;folder&gt;<br><span class="hljs-variable">$</span> npm install<br></code></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><p>启动服务器。在<strong>此路径</strong>下，Git Bash中输入以下命令，运行即可：</p>
+<figure class="highlight axapta"><table><tr><td class="code"><pre><code class="hljs axapta">hexo <span class="hljs-keyword">server</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>可通过浏览器访问<a href="http://localhost:4000/%E3%80%82">http://localhost:4000/。</a></p>
+</li>
+</ol>
+<h2 id="三、博客搭建"><a href="#三、博客搭建" class="headerlink" title="三、博客搭建"></a>三、博客搭建</h2><h3 id="3-1、创建仓库"><a href="#3-1、创建仓库" class="headerlink" title="3.1、创建仓库"></a>3.1、创建仓库</h3><ul>
+<li>新建一个名为<code>你的账户名.github.io</code>的仓库，这样以后就可以通过http:&#x2F;&#x2F;《账户名称》.github.io，进行访问。（<strong>注意</strong>仓库名字一定为你的<strong>账户名</strong>,即登录github时使用的名称，而不是昵称）</li>
+</ul>
+<h3 id="3-2、安装hexo-deployer-git插件"><a href="#3-2、安装hexo-deployer-git插件" class="headerlink" title="3.2、安装hexo-deployer-git插件"></a>3.2、安装<code>hexo-deployer-git</code>插件</h3><ul>
+<li>在Git Bash中运行以下命令：</li>
+</ul>
+<figure class="highlight ada"><table><tr><td class="code"><pre><code class="hljs ada">$ npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3、配置SSH-key"><a href="#3-3、配置SSH-key" class="headerlink" title="3.3、配置SSH key"></a>3.3、配置SSH key</h3><ol>
+<li>创建一个 SSH key ，在Git Bash中输入以下命令， 回车三下：</li>
+</ol>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>ssh-keygen -t rsa -C <span class="hljs-string">&quot;邮箱地址&quot;</span><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>找到秘钥文件内容，在Git Bash中输入以下命令：</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><code class="hljs powershell"><span class="hljs-variable">$</span> <span class="hljs-built_in">cat</span> id_rsa.pub<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>复制密钥文件内容，添加到github即可。</li>
+</ol>
+<h3 id="3-4、修改-config-yml文件及推送到GithubPages"><a href="#3-4、修改-config-yml文件及推送到GithubPages" class="headerlink" title="3.4、修改_config.yml文件及推送到GithubPages"></a>3.4、修改_config.yml文件及推送到GithubPages</h3><ol>
+<li>修改<code>_config.yml</code>（在站点目录下）。文件末尾修改为：</li>
+</ol>
+<figure class="highlight dts"><table><tr><td class="code"><pre><code class="hljs dts"><span class="hljs-meta"># Deployment</span><br><span class="hljs-meta">## Docs: https:<span class="hljs-comment">//hexo.io/docs/deployment.html</span></span><br><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> git@github.com:<span class="hljs-params">&lt;Github账号名称&gt;</span>/<span class="hljs-params">&lt;Github账号名称&gt;</span>.github.io.git<br><span class="hljs-symbol">  branch:</span> master<br><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>推送到GithubPages。在Git Bash中依次输入以下命令：</li>
+</ol>
+<figure class="highlight crystal"><table><tr><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>hexo g<br><span class="hljs-variable">$ </span>hexo d<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>现在即可通过http:&#x2F;&#x2F;《账户名称》.github.io进行访问。</li>
+</ol>
+<h2 id="四、更改主题"><a href="#四、更改主题" class="headerlink" title="四、更改主题"></a>四、更改主题</h2><h3 id="4-1-安装主题"><a href="#4-1-安装主题" class="headerlink" title="4.1 安装主题"></a>4.1 安装主题</h3><p>下载主题,例如next主题。</p>
+<p><code>$ cd your-hexo-site</code><br><code>$ git clone https://github.com/iissnan/hexo-theme-next themes/next</code></p>
+<h3 id="4-2-启用主题"><a href="#4-2-启用主题" class="headerlink" title="4.2 启用主题"></a>4.2 启用主题</h3><p>更改站点配置文件<code>_config.yml</code> 的theme字段，为主题文件夹的名称。</p>
+<h3 id="4-3-配置主题"><a href="#4-3-配置主题" class="headerlink" title="4.3 配置主题"></a>4.3 配置主题</h3><p>修改主题目录下的_config.yml配置文件可对主题进行配置。具体设置可参考该主题的配置文档。</p>
+<h2 id="五、写博客"><a href="#五、写博客" class="headerlink" title="五、写博客"></a>五、写博客</h2><h3 id="5-1-新建文章"><a href="#5-1-新建文章" class="headerlink" title="5.1 新建文章"></a>5.1 新建文章</h3><p>通过命令行<code>hexo new &quot;postName&quot;</code>或<code>hexo n &quot;postName&quot;</code><br>可新建一篇名为postName的文章，打开博客目录中 source&#x2F;_posts 文件夹中的对应Markdown文档即可开始撰写博文。</p>
+]]></content>
+      <tags>
+        <tag>其它</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>🔥 LeetCode 热题 HOT 100</title>
+    <url>/2022/08/13/%F0%9F%94%A5-LeetCode-%E7%83%AD%E9%A2%98-HOT-100/</url>
+    <content><![CDATA[<p>未完善…</p>
+<h2 id="1-两数之和-LeetCode1-Easy"><a href="#1-两数之和-LeetCode1-Easy" class="headerlink" title="1. 两数之和 LeetCode1 Easy *"></a>1. <a href="https://leetcode.cn/problems/two-sum/">两数之和</a> LeetCode1 Easy *</h2><h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<p><strong>进阶：</strong>你可以想出一个时间复杂度小于 <code>O(n2)</code> 的算法吗？</p>
+<h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><p>通过双重循环，暴力枚举每一种组合，再通过判断语句，如果两数满足和为target，则返回它们的数组下标。</p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>因为题目要求元素在答案里不能重复出现，且可以按任何顺序返回答案，所以部分组合已经遍历过，无需重复遍历。</p>
+<h3 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h3><p>利用哈希表，运用Array的some()方法进行处理，将每个元素的值和它的索引加到表中，检查每个元素所对应的目标元素（target - nums[i]）是否存在于表中。</p>
+<h3 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h3><p>判断成立的条件应为<code>typeof lookup[target - v] ===&quot;number&quot;</code>，如果为<code>lookup[target - v]</code>在下标为<strong>0</strong>时会判断错误。</p>
+<h2 id="2-两数相加-LeetCode2-Medium"><a href="#2-两数相加-LeetCode2-Medium" class="headerlink" title="2. 两数相加 LeetCode2 Medium *"></a>2. <a href="https://leetcode.cn/problems/add-two-numbers/">两数相加</a> LeetCode2 Medium *</h2><h3 id="题目-1"><a href="#题目-1" class="headerlink" title="题目"></a>题目</h3><p>给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。</p>
+<p>请你将两个数相加，并以相同形式返回一个表示和的链表。</p>
+<p>你可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
+<h3 id="思路一-1"><a href="#思路一-1" class="headerlink" title="思路一"></a>思路一</h3><p>由于输入的两个链表都是<strong>逆序</strong>存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。</p>
+<h3 id="注意-2"><a href="#注意-2" class="headerlink" title="注意"></a>注意</h3><p>注意需要保存进位值用于下一位相加，另外当链表遍历完时，如果进位值大于0，应<strong>再加一个结点存储进位值</strong>。</p>
+<h3 id="思路二-1"><a href="#思路二-1" class="headerlink" title="思路二"></a>思路二</h3><p>将输入的链表转换为逆序的字符串（<strong>字符串</strong>可以更容易的取出每一位数，无论是正序取出还是逆序取出），再将字符串转换为数（可以考虑使用BigInt,确保精度），然后将两个链表转换的数相加，再转换为字符串，然后逆序放入新的链表。</p>
+<h2 id="3-无重复字符的最长子串-LeetCode3-Medium"><a href="#3-无重复字符的最长子串-LeetCode3-Medium" class="headerlink" title="3. 无重复字符的最长子串 LeetCode3 Medium *"></a>3. <a href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/">无重复字符的最长子串</a> LeetCode3 Medium *</h2><h3 id="题目-2"><a href="#题目-2" class="headerlink" title="题目"></a>题目</h3><p>给定一个字符串 <code>s</code> ，请你找出其中不含有重复字符的 <strong>最长子串</strong> 的长度。</p>
+<h3 id="思路一-2"><a href="#思路一-2" class="headerlink" title="思路一"></a>思路一</h3><p>初始化一个数组和最大值， 从前向后遍历字符串， 如果该字符不在数组中（使用Array的indexOf()方法进行判断），则把字符 push 到数组中，并且比较记录下当前最大值。 否则就从头部向外shift字符直到该重复字符被移除（也可以使用slice（）方法直接截断数组,<code>a.slice(a.indexOf(s[i])+1,i+1)</code>）， 如此循环直到结束。</p>
+<h3 id="思路二-2"><a href="#思路二-2" class="headerlink" title="思路二"></a>思路二</h3><p>通过for (char of s){}遍历字符串，记录当前正在遍历的不重复字串的子集 string ， 在遍历过程中不断地添加不重复字符，遇到重复字符则截断 string 达到 string 内补字符不重复的条件。</p>
+<h2 id="4-寻找两个正序数组的中位数-LeetCode4-Hard"><a href="#4-寻找两个正序数组的中位数-LeetCode4-Hard" class="headerlink" title="4. 寻找两个正序数组的中位数 LeetCode4 Hard"></a>4. <a href="https://leetcode.cn/problems/median-of-two-sorted-arrays/">寻找两个正序数组的中位数</a> LeetCode4 Hard</h2><h3 id="题目-3"><a href="#题目-3" class="headerlink" title="题目"></a>题目</h3><p>给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。</p>
+<p>算法的时间复杂度应该为 O(log (m+n)) </p>
+<h2 id="5-最长回文子串-LeetCode5-Medium"><a href="#5-最长回文子串-LeetCode5-Medium" class="headerlink" title="5. 最长回文子串 LeetCode5 Medium *"></a>5. <a href="https://leetcode.cn/problems/longest-palindromic-substring/">最长回文子串</a> LeetCode5 Medium *</h2><h3 id="题目-4"><a href="#题目-4" class="headerlink" title="题目"></a>题目</h3><p>给你一个字符串 <code>s</code>，找到 <code>s</code> 中最长的回文子串。</p>
+<h3 id="思路一-3"><a href="#思路一-3" class="headerlink" title="思路一"></a>思路一</h3><p>暴力解法。用三个嵌套的for循环，列举所有的子串并判断其是否为回文子串，每次判断后记录此子串并与前一次的子串进行长度比较选取较大的子串。</p>
+<h3 id="思路二-3"><a href="#思路二-3" class="headerlink" title="思路二"></a>思路二</h3><p>中心扩展。回文子串一定是对称的，所以我们可以每次选择一个中心，然后从中心向两边扩展判断左右字符是否相等。 中心点的选取有两种情况： 当长度为奇数时，以单个字符为中心； 当长度为偶数时，以两个字符之间的空隙为中心。</p>
+<h3 id="注意-3"><a href="#注意-3" class="headerlink" title="注意"></a>注意</h3><p>String的slice方法，<strong>s.slice(++i,j)<strong>在执行时</strong>第一个参数为i</strong>而非i+1,应写为++i。</p>
+<h3 id="思路三"><a href="#思路三" class="headerlink" title="思路三"></a>思路三</h3><p>动态规划。动态规划算法的核心就是记住已经解决过的子问题的解。根据字符串的长度，建立一个矩阵 dp, 通过不同情况的判断条件，通过 dp[i][j]表示 s[i] 至 s[j] 所代 表的子串是否是回文子串。不同长度的子串，根据不同的条件进行判断是否为回文子串。长度为 1，一定回文 ；长度为 2 或 3，判断首尾是否相同：s[i] &#x3D;&#x3D;&#x3D; s[j] ；长度 &gt; 3, 首尾字符相同，且去掉首尾之后的子串仍为回文。</p>
+<h3 id="注意-4"><a href="#注意-4" class="headerlink" title="注意"></a>注意</h3><p>使用双层for循环遍历时，注意外层表示长度，内层表示字符串的开始位置。如果外层表示开始位置，内层表示长度，则在长度&gt;3时判断<strong>去掉首尾之后的子串</strong>是否为回文会有误。</p>
+<h2 id="6-正则表达式匹配-LeetCode10-Hard"><a href="#6-正则表达式匹配-LeetCode10-Hard" class="headerlink" title="6. 正则表达式匹配 LeetCode10 Hard"></a>6. <a href="https://leetcode.cn/problems/regular-expression-matching/">正则表达式匹配</a> LeetCode10 Hard</h2><h3 id="题目-5"><a href="#题目-5" class="headerlink" title="题目"></a>题目</h3><p>给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 ‘.’ 和 ‘*’ 的正则表达式匹配。</p>
+<ul>
+<li>‘.’ 匹配任意单个字符</li>
+<li>‘*’ 匹配零个或多个前面的那一个元素</li>
+</ul>
+<p>所谓匹配，是要涵盖 整个 字符串 s的，而不是部分字符串。</p>
+<h2 id="7-盛最多水的容器-LeetCode11-Medium"><a href="#7-盛最多水的容器-LeetCode11-Medium" class="headerlink" title="7. 盛最多水的容器 LeetCode11 Medium"></a>7. <a href="https://leetcode.cn/problems/container-with-most-water/">盛最多水的容器</a> LeetCode11 Medium</h2><h3 id="题目-6"><a href="#题目-6" class="headerlink" title="题目"></a>题目</h3><p>给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。</p>
+<p>找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。</p>
+<p>返回容器可以储存的最大水量。</p>
+<p>说明：你不能倾斜容器。</p>
+<h3 id="思路一-4"><a href="#思路一-4" class="headerlink" title="思路一"></a>思路一</h3><p>双指针解法。开始双指针指向数组的左右边界，然后每次移动较小高度的那一边，因为移动会减小宽度，又因面积受限于较短边，如果移动较高的那一边那么只会减小宽度而高度不可能会增加。另外其实可以在每次移动后对移动后的边的高度与未移动之前的高度进行比较，如果高度减小则可以不对当前移动进行面积计算，因为移动后宽度减小，而如果移动的边高度减小，那么面积只可能减小。</p>
+<h3 id="思路二-4"><a href="#思路二-4" class="headerlink" title="思路二"></a>思路二</h3><p>双for循环，但是<strong>时间会超时</strong>，不做详解。</p>
+<h2 id="8-三数之和-LeetCode15-Medium"><a href="#8-三数之和-LeetCode15-Medium" class="headerlink" title="8. 三数之和 LeetCode15 Medium *"></a>8. <a href="https://leetcode.cn/problems/3sum/">三数之和</a> LeetCode15 Medium *</h2><h3 id="题目-7"><a href="#题目-7" class="headerlink" title="题目"></a>题目</h3><p>给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c &#x3D; 0 ？请你找出所有和为 0 且不重复的三元组。</p>
+<p>注意：答案中不可以包含重复的三元组。</p>
+<h3 id="思路一-5"><a href="#思路一-5" class="headerlink" title="思路一"></a>思路一</h3><p>首先对数组进行排序，便于在插入的时候去重，进行双指针遍历时，遇到重复的数就方便跳过。设两个指针指向数组首尾，每次计算两个指针所指数与每次遍历的数三数之和，因为数组已经从小到大排序了，所以如果三数之和大于0则尾指针前移，小于0则首指针后移，如果等于0则添加此组合，并进行去重。</p>
+<h3 id="注意-5"><a href="#注意-5" class="headerlink" title="注意"></a>注意</h3><p>在数组中因避免这种写法：while(left&lt;right&amp;&amp;r&#x3D;&#x3D;&#x3D;<strong>nums[right-1])</strong>{right–;}，在加粗出容易超出边界。</p>
+<h3 id="思路二-5"><a href="#思路二-5" class="headerlink" title="思路二"></a>思路二</h3><p>三重循环，但是<strong>时间会超时</strong>，不做详解。</p>
+<h2 id="9-电话号码的字母组合-LeetCode17-Medium"><a href="#9-电话号码的字母组合-LeetCode17-Medium" class="headerlink" title="9. 电话号码的字母组合 LeetCode17 Medium *"></a>9. <a href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/">电话号码的字母组合</a> LeetCode17 Medium *</h2><h3 id="题目-8"><a href="#题目-8" class="headerlink" title="题目"></a>题目</h3><p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
+<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/11/09/200px-telephone-keypad2svg.png"></p>
+<h3 id="思路一-6"><a href="#思路一-6" class="headerlink" title="思路一"></a>思路一</h3><p>利用队列的先进先出的特点，把队列中的第一个元素拿出，再与后面的挨个拼接</p>
+<ol>
+<li>先在队列中插入一个空字符 </li>
+<li>取出队列中的第一个元素，与后一位数字对应的字符进行挨个拼接 。</li>
+<li>重复第二步，直到结束。</li>
+</ol>
+<h3 id="注意-6"><a href="#注意-6" class="headerlink" title="注意"></a>注意</h3><p><code>let a = [1, 2, 3];</code></p>
+<p><code>let b = a;</code></p>
+<p><code>let c = a;</code></p>
+<p>此代码中a,b,c仍然是<strong>同一个地址</strong>。</p>
+<h3 id="思路二-6"><a href="#思路二-6" class="headerlink" title="思路二"></a>思路二</h3><p>回溯。可以穷举所有的可能性，找到所有的可能性。回溯过程中维护一个字符串，表示已有的字母排列。 如果有数字需要被输入，就遍历数字对应的字母进行组合 。 当发现没有数字输入时，说明已经走完了，得到结果。</p>
+<h2 id="10-删除链表的倒数第-N-个结点-LeetCode19-Medium"><a href="#10-删除链表的倒数第-N-个结点-LeetCode19-Medium" class="headerlink" title="10. 删除链表的倒数第 N 个结点  LeetCode19 Medium *"></a>10. <a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">删除链表的倒数第 N 个结点</a>  LeetCode19 Medium *</h2><h3 id="题目-9"><a href="#题目-9" class="headerlink" title="题目"></a>题目</h3><p>给你一个链表，删除链表的倒数第 <code>n</code> 个结点，并且返回链表的头结点。</p>
+<p><strong>进阶：</strong>你能尝试使用一趟扫描实现吗？</p>
+<h3 id="思路一-7"><a href="#思路一-7" class="headerlink" title="思路一"></a>思路一</h3><p> 双指针法。先设first和second指向head，让first 指针前进 n，如果 first为空，说明要删除的节点正是 head 节点，那么直接返回 head 的下一个节点。如果不为空，则让让 second 从 head 开始和 first 一起前进，直到 first 到了最后，此时 second 的下一个节点就是要删除的节点，做出 second.next &#x3D; second.next.next处理。</p>
+<h3 id="注意-7"><a href="#注意-7" class="headerlink" title="注意"></a>注意</h3><p>注意first为空时的处理，还有<strong>second.next &#x3D; second.next.nex</strong>t这一步，而不是second.next&#x3D;first，这仅适用于n为2时。</p>
+<h3 id="思路二-7"><a href="#思路二-7" class="headerlink" title="思路二"></a>思路二</h3><p> 单向链表成为双向链表。先遍历，让单向链表成为双向链表，先找到其尾节点，从这个节点向前查找，n–，直到n&#x3D;1时，此时的节点就是我们要找的节点，然后直接删除。</p>
+<h2 id="11-有效的括号-LeetCode20-Easy"><a href="#11-有效的括号-LeetCode20-Easy" class="headerlink" title="11 有效的括号 LeetCode20 Easy *"></a>11 <a href="https://leetcode.cn/problems/valid-parentheses/">有效的括号</a> LeetCode20 Easy *</h2><h3 id="题目-10"><a href="#题目-10" class="headerlink" title="题目"></a>题目</h3><p>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串 s ，判断字符串是否有效。</p>
+<p>有效字符串需满足：</p>
+<p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。</p>
+<h3 id="思路一-8"><a href="#思路一-8" class="headerlink" title="思路一"></a>思路一</h3><p>利用<strong>头插法</strong>建立链栈，如果使用尾插法建立则不易删除节点（即出栈操作）。在遇到左括号的时候，将其入栈。在遇到右括号的时候，刚好就可以与栈中的左括号进行匹配，如果正确，就把左括号出栈 。 如果最终栈为空，说明全部匹配成功。</p>
+<h3 id="注意-8"><a href="#注意-8" class="headerlink" title="注意"></a>注意</h3><p>注意<strong>JS的垃圾回收机制</strong>。在链表中:</p>
+<p><code>let a = new ListNode(1);</code></p>
+<p><code>let b = a;</code></p>
+<p><code>a = null;</code></p>
+<p>b仍然指向新建的空间，不为空。</p>
+<p>另外需要使用<strong>头插法</strong>建立链表。</p>
+<h3 id="思路二-8"><a href="#思路二-8" class="headerlink" title="思路二"></a>思路二</h3><p>用 Map 数据类型，建立数组栈。在遇到左括号的时候，将其入栈。在遇到右括号的时候，刚好就可以与栈中的左括号进行匹配，如果正确，就把左括号出栈 。 如果最终栈为空，说明全部匹配成功。</p>
+<h2 id="12-合并两个有序链表-LeetCode21-Easy"><a href="#12-合并两个有序链表-LeetCode21-Easy" class="headerlink" title="12 合并两个有序链表 LeetCode21 Easy *"></a>12 <a href="https://leetcode.cn/problems/merge-two-sorted-lists/">合并两个有序链表</a> LeetCode21 Easy *</h2><h3 id="题目-11"><a href="#题目-11" class="headerlink" title="题目"></a>题目</h3><p>将两个升序链表合并为一个新的 <strong>升序</strong> 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。</p>
+<h3 id="思路一-9"><a href="#思路一-9" class="headerlink" title="思路一"></a>思路一</h3><p>创建一个新链表，通过判断两个链表当前值，将较小值放到新链表的下个节点，较小值的链表重新赋值为其下一节点，直到参数链表都为空时结束。</p>
+<h3 id="思路二-9"><a href="#思路二-9" class="headerlink" title="思路二"></a>思路二</h3><p>用递归的方式， 若两个链表中有一个链表为空，则返回另一个链表,依次比较两个链表中首项的大小，保留数值小的为链表当前值，直到一个链表参数为空则结束。</p>
+<h2 id="13-括号生成-LeetCode22-Medium"><a href="#13-括号生成-LeetCode22-Medium" class="headerlink" title="13 括号生成 LeetCode22 Medium *"></a>13 <a href="https://leetcode.cn/problems/generate-parentheses/">括号生成</a> LeetCode22 Medium *</h2><h3 id="题目-12"><a href="#题目-12" class="headerlink" title="题目"></a>题目</h3><p>数字 <code>n</code> 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 <strong>有效的</strong> 括号组合。</p>
+<h3 id="思路一-10"><a href="#思路一-10" class="headerlink" title="思路一"></a>思路一</h3><p>采用回溯法，如果自定义的字符串长度刚好满足条件，那么就说明这个组合是正确的的，把它放入数组。 否则，递归执行添加左括号，添加右括号的操作。递归结束条件为结果字符串长度等于左右括号的总个数（2n），则返回最终结果。</p>
+<h2 id="14-合并K个升序链表-LeetCode23-Hard"><a href="#14-合并K个升序链表-LeetCode23-Hard" class="headerlink" title="14 合并K个升序链表 LeetCode23 Hard"></a>14 <a href="https://leetcode.cn/problems/merge-k-sorted-lists/">合并K个升序链表</a> LeetCode23 Hard</h2><h3 id="题目-13"><a href="#题目-13" class="headerlink" title="题目"></a>题目</h3><p>给你一个链表数组，每个链表都已经按升序排列。</p>
+<p>请你将所有链表合并到一个升序链表中，返回合并后的链表。</p>
+<h2 id="15-下一个排列-LeetCode31-Medium"><a href="#15-下一个排列-LeetCode31-Medium" class="headerlink" title="15 下一个排列 LeetCode31 Medium"></a>15 <a href="https://leetcode.cn/problems/next-permutation/">下一个排列</a> LeetCode31 Medium</h2><h3 id="题目-14"><a href="#题目-14" class="headerlink" title="题目"></a>题目</h3><p>整数数组的一个 排列  就是将其所有成员以序列或线性顺序排列。</p>
+<p>例如，arr &#x3D; [1,2,3] ，以下这些都可以视作 arr 的排列：[1,2,3]、[1,3,2]、[3,1,2]、[2,3,1] 。<br>整数数组的 下一个排列 是指其整数的下一个字典序更大的排列。更正式地，如果数组的所有排列根据其字典顺序从小到大排列在一个容器中，那么数组的 下一个排列 就是在这个有序容器中排在它后面的那个排列。如果不存在下一个更大的排列，那么这个数组必须重排为字典序最小的排列（即，其元素按升序排列）。</p>
+<p>例如，arr &#x3D; [1,2,3] 的下一个排列是 [1,3,2] 。<br>类似地，arr &#x3D; [2,3,1] 的下一个排列是 [3,1,2] 。<br>而 arr &#x3D; [3,2,1] 的下一个排列是 [1,2,3] ，因为 [3,2,1] 不存在一个字典序更大的排列。<br>给你一个整数数组 nums ，找出 nums 的下一个排列。</p>
+<p>必须 原地 修改，只允许使用额外常数空间。</p>
+<h3 id="思路一-11"><a href="#思路一-11" class="headerlink" title="思路一"></a>思路一</h3><p>从后向前查找第一个相邻升序的元素对 (i,j)，满足 A[i] &lt; A[j]。此时 [j,end) 必然是降序,在 [j,end) 从后向前查找第一个满足 A[i] &lt; A[k] 的 k。A[i]、A[k] 分别就是上文所说的「小数」、「大数」,将 A[i] 与 A[k] 交换,可以断定这时 [j,end) 必然是降序，逆置 [j,end)，使其升序.</p>
+<h3 id="注意-9"><a href="#注意-9" class="headerlink" title="注意"></a>注意</h3><p>注意题目要求中的必须原地修改，不能使用splice（）截取再使用concat()合并。另外需要注意sort()默认是字典排序（ 例如：9&gt;19）。</p>
+<h2 id="16-最长有效括号-LeetCode32-Hard"><a href="#16-最长有效括号-LeetCode32-Hard" class="headerlink" title="16 最长有效括号 LeetCode32 Hard"></a>16 <a href="https://leetcode.cn/problems/longest-valid-parentheses/">最长有效括号</a> LeetCode32 Hard</h2><h3 id="题目-15"><a href="#题目-15" class="headerlink" title="题目"></a>题目</h3><p>给你一个只包含 <code>&#39;(&#39;</code> 和 <code>&#39;)&#39;</code> 的字符串，找出最长有效（格式正确且连续）括号子串的长度。</p>
+<h2 id="17-搜索旋转排序数组-LeetCode33-Medium"><a href="#17-搜索旋转排序数组-LeetCode33-Medium" class="headerlink" title="17. 搜索旋转排序数组 LeetCode33 Medium *"></a>17. <a href="https://leetcode.cn/problems/search-in-rotated-sorted-array/">搜索旋转排序数组</a> LeetCode33 Medium *</h2><h3 id="题目-16"><a href="#题目-16" class="headerlink" title="题目"></a>题目</h3><p>整数数组 nums 按升序排列，数组中的值 互不相同 。</p>
+<p>在传递给函数之前，nums 在预先未知的某个下标 k（0 &lt;&#x3D; k &lt; nums.length）上进行了 旋转，使数组变为 [nums[k], nums[k+1], …, nums[n-1], nums[0], nums[1], …, nums[k-1]]（下标 从 0 开始 计数）。例如， [0,1,2,4,5,6,7] 在下标 3 处经旋转后可能变为 [4,5,6,7,0,1,2] 。</p>
+<p>给你 旋转后 的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。</p>
+<p>你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。</p>
+<h3 id="思路一-12"><a href="#思路一-12" class="headerlink" title="思路一"></a>思路一</h3><p>先用<code>Math.min.apply(null, nums)</code>和<code>Math.max.apply(null, nums)</code>计算数组中的最大最小值。当目标值大于数组最后一位时，数组查询位置从 0 到数字中在最大位置，当目标值小于等于数组最后一位时，数组查询位置从数组中最小值的位置开始，到数组的最后一 位。 循环二分查询，计算定位数组的中间值，数组的值等于目标查询结束。</p>
+<h3 id="注意-10"><a href="#注意-10" class="headerlink" title="注意"></a>注意</h3><p>此方法时间复杂度不为 O(log n)，因为求了最大值与最小值。</p>
+<h3 id="思路二-10"><a href="#思路二-10" class="headerlink" title="思路二"></a>思路二</h3><p>定义左右值分别为数组第一个和最后一个的下标 ，中间下标值为最大最小值的平均数 ，如果数组中间数等于目标直接返回下标 。数组的中间值小于数组最后一个值，后半部分还处于升序，如果目标值在这部分数组中，则左下标等于中间值+1，代表目标值在后半部分数组，反之重新定义右下标为中间值-1，目标在前半数组。 数组中间值大于数组最后一个值，代表前半部分数组处于升序，如果目标在前半数组中，右标 更新为中间值-1，反之，左下标更新为中间值+1。循环二分查询，计算定位数组的中间值，数组的值等于目标查询结束。</p>
+<h3 id="注意-11"><a href="#注意-11" class="headerlink" title="注意"></a>注意</h3><p>二分查找主要是同过目标值与中间值进行比较，从而直接确定目标值在哪一部分。如果<strong>不是</strong>升序或降序数组，则需要进一步确定目标值位置。</p>
+<h2 id="18-在排序数组中查找元素的第一个和最后一个位置-LeetCode34-Medium"><a href="#18-在排序数组中查找元素的第一个和最后一个位置-LeetCode34-Medium" class="headerlink" title="18. 在排序数组中查找元素的第一个和最后一个位置 LeetCode34 Medium *"></a>18. <a href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/">在排序数组中查找元素的第一个和最后一个位置</a> LeetCode34 Medium *</h2><h3 id="题目-17"><a href="#题目-17" class="headerlink" title="题目"></a>题目</h3><p>给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。</p>
+<p>如果数组中不存在目标值 target，返回 [-1, -1]。</p>
+<p>你必须设计并实现时间复杂度为 O(log n) 的算法解决此问题</p>
+<h3 id="思路一-13"><a href="#思路一-13" class="headerlink" title="思路一"></a>思路一</h3><p>二分查找，找到左边第一个不小于目标值的位置 ,然后从位置开始到最后，二分查找，确定右边最后一个符合条件值的位置 ，最后校验下标是否符合，得到结果。</p>
+<h2 id="19-组合总和-LeetCode39-Medium"><a href="#19-组合总和-LeetCode39-Medium" class="headerlink" title="19. 组合总和 LeetCode39 Medium"></a>19. <a href="https://leetcode.cn/problems/combination-sum/">组合总和</a> LeetCode39 Medium</h2><h3 id="题目-18"><a href="#题目-18" class="headerlink" title="题目"></a>题目</h3><p>给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。</p>
+<p>candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 </p>
+<p>对于给定的输入，保证和为 target 的不同组合数少于 150 个。</p>
+<h3 id="思路一-14"><a href="#思路一-14" class="headerlink" title="思路一"></a>思路一</h3><p>回溯算法。递归的终止条件为已经找到一组数和为目标值或者数组中的数被全部遍历完。在每次递归中，我们可以选择跳过不用当前数，即搜索下标+1。也可以选择使用当前数，目标值减去当前数。因为到每个数字可以被无限制重复选取，因此搜索的下标不变。</p>
+<h2 id="20-接雨水-LeetCode42-Hard"><a href="#20-接雨水-LeetCode42-Hard" class="headerlink" title="20. 接雨水 LeetCode42 Hard"></a>20. <a href="https://leetcode.cn/problems/trapping-rain-water/">接雨水</a> LeetCode42 Hard</h2><h3 id="题目-19"><a href="#题目-19" class="headerlink" title="题目"></a>题目</h3><p>给定 <code>n</code> 个非负整数表示每个宽度为 <code>1</code> 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。</p>
+<h2 id="21-全排列-LeetCode46-Medium"><a href="#21-全排列-LeetCode46-Medium" class="headerlink" title="21. 全排列 LeetCode46 Medium *"></a>21. <a href="https://leetcode.cn/problems/permutations/">全排列</a> LeetCode46 Medium *</h2><h3 id="题目-20"><a href="#题目-20" class="headerlink" title="题目"></a>题目</h3><p>给定一个不含重复数字的数组 <code>nums</code> ，返回其 <em>所有可能的全排列</em> 。你可以 <strong>按任意顺序</strong> 返回答案。</p>
+<h3 id="思路一-15"><a href="#思路一-15" class="headerlink" title="思路一"></a>思路一</h3><p>回溯法.构造一颗生成树，遍历需要全排列的数组，将不同位置的数字与目前树结合起来 ,重复该操作直到需要全排列的数组长度为 0，即表明完成了全排列，因为数字不能重复，所以在每次遍历后应对数组做出处理，之后传入剩余的数组。</p>
+<h3 id="注意-12"><a href="#注意-12" class="headerlink" title="注意"></a>注意</h3><p>在递归中应注意不要使用数组的push()方法，最好使用扩展运算符。</p>
+<h3 id="思路二-11"><a href="#思路二-11" class="headerlink" title="思路二"></a>思路二</h3><p>插值排列法。遍历需要全排列的数组，将不同位置的数字抽离出来，插入到剩余数组的不同位置，即可得到该数字与另一个数组的全排列结果。 将一个固定的数字，插入到另一个数组 的全排列结果的不同位置， 遍历需要全排列的数组，将不同的数字连接到不同的树上继续全排列剩下的数组与生成的树，当剩余数组长度为0时，表明完成了全排列。</p>
+<h2 id="22-旋转图像-LeetCode48-Medium"><a href="#22-旋转图像-LeetCode48-Medium" class="headerlink" title="22. 旋转图像 LeetCode48 Medium *"></a>22. <a href="https://leetcode.cn/problems/rotate-image/">旋转图像</a> LeetCode48 Medium *</h2><h3 id="题目-21"><a href="#题目-21" class="headerlink" title="题目"></a>题目</h3><p>给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。</p>
+<p>你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。</p>
+<h3 id="思路一-16"><a href="#思路一-16" class="headerlink" title="思路一"></a>思路一</h3><p>先将矩阵沿左上角到右下角的对角线进行对称,运用for双层循环，内层循环的计数值的初始值为外层循环的计数值，然后将矩阵沿垂直中线对称即可。运用for双层循环，内层循环计数值小于Math.floor(n &#x2F; 2)，n为矩阵长度。</p>
+<h3 id="注意-13"><a href="#注意-13" class="headerlink" title="注意"></a>注意</h3><p>注意两个for双层循环的内层循环计数值的初始值即范围。</p>
+<h2 id="23-字母异位词分组-LeetCode49-Medium"><a href="#23-字母异位词分组-LeetCode49-Medium" class="headerlink" title="23. 字母异位词分组 LeetCode49 Medium *"></a>23. <a href="https://leetcode.cn/problems/group-anagrams/">字母异位词分组</a> LeetCode49 Medium *</h2><h3 id="题目-22"><a href="#题目-22" class="headerlink" title="题目"></a>题目</h3><p>给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。</p>
+<p>字母异位词 是由重新排列源单词的字母得到的一个新单词，所有源单词中的字母通常恰好只用一次。</p>
+<h3 id="思路一-17"><a href="#思路一-17" class="headerlink" title="思路一"></a>思路一</h3><p>排序分类。先创建个空对象，用于储存字母异位词，然后创建个空数组，用与返回结果。遍历数组里的元素，将每个字母异位词进行排序，并将排序后的字符串作为 key，可知 key 值一样的即为字母异位 词，将他们置于同一个数组中， 待上述遍历结束，再遍历对象，将 对象的每一个值，push 到数组中。</p>
+<h3 id="思路二-12"><a href="#思路二-12" class="headerlink" title="思路二"></a>思路二</h3><p>计数分类。和思路一的不同在于判断两个字符串是否为字母异位词的方法不同。我们先遍历数组，每次都创建一个长度为 26，元素全是 0 的数组，用于记录每个单词中每个字符出现的次数；然后将其转化为字符串作为 key，将 key 值一样的字母异位词置于同一个数组中。最 后返回数组。</p>
+<h3 id="注意-14"><a href="#注意-14" class="headerlink" title="注意"></a>注意</h3><p>数组间不能直接判断是否相同，可以运用JSON.stringify()转换数组为字符串进行判断。</p>
+<h2 id="24-最大子数组和-LeetCode53-Medium"><a href="#24-最大子数组和-LeetCode53-Medium" class="headerlink" title="24. 最大子数组和 LeetCode53 Medium *"></a>24. <a href="https://leetcode.cn/problems/maximum-subarray/">最大子数组和</a> LeetCode53 Medium *</h2><h3 id="题目-23"><a href="#题目-23" class="headerlink" title="题目"></a>题目</h3><p>给你一个整数数组 <code>nums</code> ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p><strong>子数组</strong> 是数组中的一个连续部分。</p>
+<p><strong>进阶：</strong>如果你已经实现复杂度为 <code>O(n)</code> 的解法，尝试使用更为精妙的 <strong>分治法</strong> 求解。</p>
+<h3 id="思路一-18"><a href="#思路一-18" class="headerlink" title="思路一"></a>思路一</h3><p>从数组获取第一个值为最大值和中间值 ,遍历数组，如果中间值大于0,则和中间值相加，相加结果和最大值比较，较大值赋值给最大值。如果中间值小于0，则将当前值作为中间值。</p>
+<h3 id="思路二-13"><a href="#思路二-13" class="headerlink" title="思路二"></a>思路二</h3><p>分治方法。运用递归，每次求得左右两半部分各自最大子数组和，然后处理两个部分一起的最大子数组和。递归结束条件为左右下标相等。</p>
+<h2 id="25-跳跃游戏-LeetCode55-Medium"><a href="#25-跳跃游戏-LeetCode55-Medium" class="headerlink" title="25. 跳跃游戏 LeetCode55 Medium *"></a>25. <a href="https://leetcode.cn/problems/jump-game/">跳跃游戏</a> LeetCode55 Medium *</h2><h3 id="题目-24"><a href="#题目-24" class="headerlink" title="题目"></a>题目</h3><p>给定一个非负整数数组 <code>nums</code> ，你最初位于数组的 <strong>第一个下标</strong> 。</p>
+<p>数组中的每个元素代表你在该位置可以跳跃的最大长度。</p>
+<p>判断你是否能够到达最后一个下标。</p>
+<h3 id="思路一-19"><a href="#思路一-19" class="headerlink" title="思路一"></a>思路一</h3><p>贪心。先初始化最远位置为0，然后遍历数组，如果当前位置能到达，并且当前位置+跳数&gt;最远位置，就更新最远位置， 每次循环都比较当前最远位置和当前数组下标，如果最远距离小于等于当前下标就返回false。</p>
+<h3 id="思路二-14"><a href="#思路二-14" class="headerlink" title="思路二"></a>思路二</h3><p>动态规划。遍历数组，每到一个点 ，我们就去判断是否可以到达当前点；如果可以，就记录true，否则为 false，最后判断是否可以到达最后一个点。</p>
+<h2 id="26-合并区间-LeetCode56-Medium"><a href="#26-合并区间-LeetCode56-Medium" class="headerlink" title="26. 合并区间 LeetCode56 Medium *"></a>26. <a href="https://leetcode.cn/problems/merge-intervals/">合并区间</a> LeetCode56 Medium *</h2><h3 id="题目-25"><a href="#题目-25" class="headerlink" title="题目"></a>题目</h3><p>以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] &#x3D; [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。</p>
+<h3 id="思路一-20"><a href="#思路一-20" class="headerlink" title="思路一"></a>思路一</h3><p>先将列表中的区间按照左端点升序排序。定义一个新的数组，用于存储新的数组区间，新数组的第一个值为原数组的第一个值。然后从第二个值开始遍历原数组，比较当前区间的最小值是否大于新数组最后一个区间的最大值， 如果满足则push进入新的数组；又或者比较当前区间的最大值是否大于新新数组的随后一个区间的最大值，若满足则将新数组的最后一个区间的最大值替换成当前区间的最大值。</p>
+<h3 id="注意-15"><a href="#注意-15" class="headerlink" title="注意"></a>注意</h3><p>要先进行原数组排序操作，可以降低做题难度。</p>
+<h2 id="27-不同路径-LeetCode62-Medium"><a href="#27-不同路径-LeetCode62-Medium" class="headerlink" title="27. 不同路径 LeetCode62 Medium *"></a>27. <a href="https://leetcode.cn/problems/unique-paths/">不同路径</a> LeetCode62 Medium *</h2><h3 id="题目-26"><a href="#题目-26" class="headerlink" title="题目"></a>题目</h3><p>一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。</p>
+<p>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。</p>
+<p>问总共有多少条不同的路径？</p>
+<h3 id="思路一-21"><a href="#思路一-21" class="headerlink" title="思路一"></a>思路一</h3><p>动态规划。利用双层for循环，状态转移方程为 dp[i][j] &#x3D; dp[i − 1][j] + dp[i][j − 1]。</p>
+<h3 id="思路二-15"><a href="#思路二-15" class="headerlink" title="思路二"></a>思路二</h3><p>深度优先搜索+记忆化数组。dfs[i][j] &#x3D; dfs[i − 1][j] + dfs[i][j − 1]。开辟一个记忆数组记录结果。</p>
+<h3 id="思路三-1"><a href="#思路三-1" class="headerlink" title="思路三"></a>思路三</h3><p>组合数学。从左上角到右下角的过程中，我们需要移动 m+n-2 次，其中有 m-1次向下移动，n-1次向右移动。因此路径的总数，就等于从 m+n-2次移动中选择 m-1次向下移动的方案数。</p>
+<h2 id="28-最小路径和-LeetCode64-Medium"><a href="#28-最小路径和-LeetCode64-Medium" class="headerlink" title="28. 最小路径和 LeetCode64 Medium"></a>28. <a href="https://leetcode.cn/problems/minimum-path-sum/">最小路径和</a> LeetCode64 Medium</h2><h3 id="题目-27"><a href="#题目-27" class="headerlink" title="题目"></a>题目</h3><p>给定一个包含非负整数的 <code>*m* x *n*</code> 网格 <code>grid</code> ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。</p>
+<p><strong>说明：</strong>每次只能向下或者向右移动一步。</p>
+<h3 id="思路一-22"><a href="#思路一-22" class="headerlink" title="思路一"></a>思路一</h3><p>动态规划。创建二维数组dp[i][j]，与原始网格的大小相同，dp[i][j]表示从左上角出发到 (i,j)(i,j) 位置的最小路径和。元素对应的最小路径和等于其上方相邻元素与其左方相邻元素两者对应的最小路径和中的最小值加上当前元素的值。最后得到dp[m-1][n-1]即为从网格左上角到网格右下角的最小路径和。</p>
+<h2 id="29-爬楼梯-LeetCode70-Easy"><a href="#29-爬楼梯-LeetCode70-Easy" class="headerlink" title="29. 爬楼梯 LeetCode70 Easy *"></a>29. <a href="https://leetcode.cn/problems/climbing-stairs/">爬楼梯</a> LeetCode70 Easy *</h2><h3 id="题目-28"><a href="#题目-28" class="headerlink" title="题目"></a>题目</h3><p>假设你正在爬楼梯。需要 <code>n</code> 阶你才能到达楼顶。</p>
+<p>每次你可以爬 <code>1</code> 或 <code>2</code> 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
+<h3 id="思路一-23"><a href="#思路一-23" class="headerlink" title="思路一"></a>思路一</h3><p>递归+记忆化数组。递归函数：f(n) &#x3D; f(n − 1) + f(n − 2)，创建一个记忆化数组，记录楼层计算过的结果，降低时间复杂度。</p>
+<h3 id="思路二-16"><a href="#思路二-16" class="headerlink" title="思路二"></a>思路二</h3><p>动态规划+滚动数组。f(n) &#x3D; f(n − 1) + f(n − 2)。但是由于这里的f(n)只和 f(n - 1) 与 f(n - 2)有关，所以可以用滚动数组思想.</p>
+<h2 id="30-编辑距离-LeetCode72-Hard"><a href="#30-编辑距离-LeetCode72-Hard" class="headerlink" title="30. 编辑距离 LeetCode72 Hard"></a>30. <a href="https://leetcode.cn/problems/edit-distance/">编辑距离</a> LeetCode72 Hard</h2><h3 id="题目-29"><a href="#题目-29" class="headerlink" title="题目"></a>题目</h3><p>给你两个单词 word1 和 word2， 请返回将 word1 转换成 word2 所使用的最少操作数  。</p>
+<p>你可以对一个单词进行如下三种操作：</p>
+<p>插入一个字符<br>删除一个字符<br>替换一个字符</p>
+<h2 id="31-颜色分类-LeetCode75-Medium"><a href="#31-颜色分类-LeetCode75-Medium" class="headerlink" title="31. 颜色分类 LeetCode75 Medium *"></a>31. <a href="https://leetcode.cn/problems/sort-colors/">颜色分类</a> LeetCode75 Medium *</h2><h3 id="题目-30"><a href="#题目-30" class="headerlink" title="题目"></a>题目</h3><p>给定一个包含红色、白色和蓝色、共 n 个元素的数组 nums ，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
+<p>我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
+<p>必须在不使用库的sort函数的情况下解决这个问题。</p>
+<p><strong>进阶：</strong></p>
+<ul>
+<li>你可以不使用代码库中的排序函数来解决这道题吗？</li>
+<li>你能想出一个仅使用常数空间的一趟扫描算法吗？</li>
+</ul>
+<h3 id="思路一-24"><a href="#思路一-24" class="headerlink" title="思路一"></a>思路一</h3><p> 双指针遍历.设定一头一尾两个指针 begin 和 end，然后利用for循环从头开始遍历数组。如果遇到 0，则将该数值与begin指向的值交换，并且使begin++。 如果遇到 2，则将该数值与end指向的值交换，并且使end–。 如果遇到 1，则不做操作。</p>
+]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法 101-JavaScript描述（政采云）</title>
+    <url>/2022/07/29/%E7%AE%97%E6%B3%95-101-JavaScript%E6%8F%8F%E8%BF%B0%EF%BC%88%E6%94%BF%E9%87%87%E4%BA%91%EF%BC%89/</url>
+    <content><![CDATA[<p>未完善…</p>
+<h2 id="1-字符串"><a href="#1-字符串" class="headerlink" title="1. 字符串"></a>1. 字符串</h2><h3 id="1-1-整数反转-LeetCode7-Medium"><a href="#1-1-整数反转-LeetCode7-Medium" class="headerlink" title="1.1 整数反转 LeetCode7 Medium"></a>1.1 <a href="https://leetcode.cn/problems/reverse-integer/">整数反转</a> LeetCode7 Medium</h3><h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><p>给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。</p>
+<p>如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。</p>
+<p>假设环境不允许存储 64 位整数（有符号或无符号）。</p>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>主要思想是将数字转换为字符串，运用字符串方法求解。先通过typeof判断所给数据是否为number类型，然后运用String()函数将其转换为字符串，再运用split()方法转换为数组，之后运用数组的reverse()方法翻转数组，再运用join()方法变成字符串。最后使用Number函数转成数字。</p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>注意判断边界情况以及数字正负号的处理。</p>
+<h3 id="1-2-有效的字母异位词-LeetCode242-Easy"><a href="#1-2-有效的字母异位词-LeetCode242-Easy" class="headerlink" title="1.2 有效的字母异位词 LeetCode242 Easy"></a>1.2 <a href="https://leetcode.cn/problems/valid-anagram/">有效的字母异位词</a> LeetCode242 Easy</h3><h4 id="题目-1"><a href="#题目-1" class="headerlink" title="题目"></a>题目</h4><p>给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。</p>
+<p>注意：若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。</p>
+<h4 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h4><p>先将字符串转为数组，在运用sort()方法进行排序，最后再转为字符串进行比较。</p>
+<h4 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h4><p>js中数组不能直接比较。</p>
+<h4 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h4><p>创建一个对象，运用for of遍历其中一个字符串，统计每个字符出现的次数并将其作为新建对象的键值。然后再次使用for of遍历另一个字符串，处理键值。最后使用for in遍历那个对象，判断每个键值是否为0，得出结果。</p>
+<h4 id="注意-2"><a href="#注意-2" class="headerlink" title="注意"></a>注意</h4><p>在运用for in和for of时应使用方括号运算符，不能使用点运算符。因为方括号运算符中的表示变量，而点运算符表示字符串。</p>
+<h3 id="1-3-字符串转换整数-atoi-LeetCode8-Medium"><a href="#1-3-字符串转换整数-atoi-LeetCode8-Medium" class="headerlink" title="1.3 字符串转换整数 (atoi) LeetCode8 Medium"></a>1.3 <a href="https://leetcode.cn/problems/string-to-integer-atoi/">字符串转换整数 (atoi)</a> LeetCode8 Medium</h3><h4 id="题目-2"><a href="#题目-2" class="headerlink" title="题目"></a>题目</h4><p>请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C&#x2F;C++ 中的 atoi 函数）。</p>
+<p>函数 myAtoi(string s) 的算法如下：</p>
+<p>读入字符串并丢弃无用的前导空格<br>检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。<br>读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。<br>将前面步骤读入的这些数字转换为整数（即，”123” -&gt; 123， “0032” -&gt; 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。<br>如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。<br>返回整数作为最终结果。<br>注意：</p>
+<p>本题中的空白字符只包括空格字符 ‘ ‘ 。<br>除前导空格或数字后的其余字符串外，请勿忽略任何其他字符。</p>
+<h4 id="思路一-1"><a href="#思路一-1" class="headerlink" title="思路一"></a>思路一</h4><p>先运用string的trim()方法去除字符串两端空格，再利用正则表达式提取满足条件的字符，最后判断是否超过边界。</p>
+<h4 id="注意-3"><a href="#注意-3" class="headerlink" title="注意"></a>注意</h4><p>注意需判断是否超过边界。</p>
+<h4 id="思路二-1"><a href="#思路二-1" class="headerlink" title="思路二"></a>思路二</h4><p>先运用string的trim()方法去除字符串两端空格，再利用行 parseInt（）将字符串转为数字，最后判断是否超过边界。</p>
+<h4 id="注意-4"><a href="#注意-4" class="headerlink" title="注意"></a>注意</h4><p>注意需判断是否超过边界。</p>
+<h3 id="1-4-外观数列-LeetCode38-Medium"><a href="#1-4-外观数列-LeetCode38-Medium" class="headerlink" title="1.4 外观数列 LeetCode38 Medium"></a>1.4 <a href="https://leetcode.cn/problems/count-and-say/">外观数列</a> LeetCode38 Medium</h3><h4 id="题目-3"><a href="#题目-3" class="headerlink" title="题目"></a>题目</h4><p>给定一个正整数 n ，输出外观数列的第 n 项。</p>
+<p>「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。</p>
+<p>你可以将其视作是由递归公式定义的数字字符串序列：</p>
+<p>countAndSay(1) &#x3D; “1”<br>countAndSay(n) 是对 countAndSay(n-1) 的描述，然后转换成另一个数字字符串。<br>前五项如下：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.     <span class="hljs-number">1</span><br><span class="hljs-attribute">2</span>.     <span class="hljs-number">11</span><br><span class="hljs-attribute">3</span>.     <span class="hljs-number">21</span><br><span class="hljs-attribute">4</span>.     <span class="hljs-number">1211</span><br><span class="hljs-attribute">5</span>.     <span class="hljs-number">111221</span><br></code></pre></td></tr></table></figure>
+
+<p>第一项是数字 1<br>描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 “11”<br>描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 “21”<br>描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 “1211”<br>描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 “111221”<br>要 描述 一个数字字符串，首先要将字符串分割为 最小 数量的组，每个组都由连续的最多 相同字符 组成。然后对于每个组，先描述字符的数量，然后描述字符，形成一个描述组。要将描述转换为数字字符串，先将每组中的字符数量用数字替换，再将所有描述组连接起来。</p>
+<h4 id="思路一-2"><a href="#思路一-2" class="headerlink" title="思路一"></a>思路一</h4><p>运用递归的思想。要得到第n项，即处理第n-1项的结果，运用string的replace（）方法以及正则表达式进行处理替换，终止条件为n&#x3D;&#x3D;&#x3D;1返回’1’。</p>
+<h4 id="注意-5"><a href="#注意-5" class="headerlink" title="注意"></a>注意</h4><p>注意正则表达式的写法&#x2F;(\d)\1**{0,}**&#x2F;g，因至少重复0次，另外注意模板字符串的运用使用使用&#96;&#96;反引号包裹${}。</p>
+<h4 id="思路二-2"><a href="#思路二-2" class="headerlink" title="思路二"></a>思路二</h4><p>递归法是由 n 到 1 计算相应的值并层层返回的，循环法正好相反，循环法由 1 计算到 n。然后将最终值返回。处理方法和递归的方法一致。</p>
+<h4 id="注意-6"><a href="#注意-6" class="headerlink" title="注意"></a>注意</h4><p>注意正则表达式的写法&#x2F;(\d)\1**{0,}**&#x2F;g，因至少重复0次，另外注意模板字符串的运用使用使用&#96;&#96;反引号包裹${}。</p>
+<h3 id="1-5-反转字符串-LeetCode344-Easy"><a href="#1-5-反转字符串-LeetCode344-Easy" class="headerlink" title="1.5 反转字符串 LeetCode344 Easy"></a>1.5 <a href="https://leetcode.cn/problems/reverse-string/">反转字符串</a> LeetCode344 Easy</h3><h4 id="题目-4"><a href="#题目-4" class="headerlink" title="题目"></a>题目</h4><p>编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一 问题。你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。</p>
+<h4 id="思路一-3"><a href="#思路一-3" class="headerlink" title="思路一"></a>思路一</h4><p>直接运用数组的reverse()方法。</p>
+<h4 id="注意-7"><a href="#注意-7" class="headerlink" title="注意"></a>注意</h4><p>无注意事项。</p>
+<h4 id="思路二-3"><a href="#思路二-3" class="headerlink" title="思路二"></a>思路二</h4><p>写一个循环，进行首尾替换。可以引入中间变量或运用解构赋值。</p>
+<h3 id="1-10-最长回文子串-LeetCode5-Medium"><a href="#1-10-最长回文子串-LeetCode5-Medium" class="headerlink" title="1.10 最长回文子串 LeetCode5 Medium"></a>1.10 <a href="https://leetcode.cn/problems/longest-palindromic-substring/">最长回文子串</a> LeetCode5 Medium</h3><h4 id="题目-5"><a href="#题目-5" class="headerlink" title="题目"></a>题目</h4><p>给你一个字符串 <code>s</code>，找到 <code>s</code> 中最长的回文子串。</p>
+<h4 id="思路一-4"><a href="#思路一-4" class="headerlink" title="思路一"></a>思路一</h4><p>暴力解法。用三个嵌套的for循环，列举所有的子串并判断其是否为回文子串，每次判断后记录此子串并与前一次的子串进行长度比较选取较大的子串。</p>
+<h4 id="思路二-4"><a href="#思路二-4" class="headerlink" title="思路二"></a>思路二</h4><p>中心扩展。回文子串一定是对称的，所以我们可以每次选择一个中心，然后从中心向两边扩展判断左右字符是否相等。 中心点的选取有两种情况： 当长度为奇数时，以单个字符为中心； 当长度为偶数时，以两个字符之间的空隙为中心。</p>
+<h4 id="注意-8"><a href="#注意-8" class="headerlink" title="注意"></a>注意</h4><p>String的slice方法，<strong>s.slice(++i,j)<strong>在执行时</strong>第一个参数为i</strong>而非i+1,应写为++i。</p>
+<h4 id="思路三"><a href="#思路三" class="headerlink" title="思路三"></a>思路三</h4><p>动态规划。动态规划算法的核心就是记住已经解决过的子问题的解。根据字符串的长度，建立一个矩阵 dp, 通过不同情况的判断条件，通过 dp[i][j]表示 s[i] 至 s[j] 所代 表的子串是否是回文子串。不同长度的子串，根据不同的条件进行判断是否为回文子串。长度为 1，一定回文 ；长度为 2 或 3，判断首尾是否相同：s[i] &#x3D;&#x3D;&#x3D; s[j] ；长度 &gt; 3, 首尾字符相同，且去掉首尾之后的子串仍为回文。</p>
+<h4 id="注意-9"><a href="#注意-9" class="headerlink" title="注意"></a>注意</h4><p>使用双层for循环遍历时，注意外层表示长度，内层表示字符串的开始位置。如果外层表示开始位置，内层表示长度，则在长度&gt;3时判断<strong>去掉首尾之后的子串</strong>是否为回文会有误。</p>
+<h2 id="2-数学"><a href="#2-数学" class="headerlink" title="2. 数学"></a>2. 数学</h2><h3 id="2-1-罗马数字转整数-LeetCode13-Easy"><a href="#2-1-罗马数字转整数-LeetCode13-Easy" class="headerlink" title="2.1 罗马数字转整数 LeetCode13 Easy"></a>2.1 <a href="https://leetcode.cn/problems/roman-to-integer/">罗马数字转整数</a> LeetCode13 Easy</h3><h4 id="题目-6"><a href="#题目-6" class="headerlink" title="题目"></a>题目</h4><p>罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</p>
+<p>字符          数值<br>I             1<br>V             5<br>X             10<br>L             50<br>C             100<br>D             500<br>M             1000<br>例如， 罗马数字 2 写做 II ，即为两个并列的 1 。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p>
+<p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p>
+<p>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。<br>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。<br>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。<br>给定一个罗马数字，将其转换成整数。</p>
+<h4 id="思路一-5"><a href="#思路一-5" class="headerlink" title="思路一"></a>思路一</h4><p>运用for循环进行遍历，判断是否属于每一种特殊情况并做相关处理以及不属于特殊情况的处理方法。</p>
+<h4 id="注意-10"><a href="#注意-10" class="headerlink" title="注意"></a>注意</h4><p>属于特殊情况时，循环计数应+1并写上<code>continue;</code>语句。</p>
+<h4 id="思路二-5"><a href="#思路二-5" class="headerlink" title="思路二"></a>思路二</h4><p>使用对象包含每一种特殊情况的取值，然后在罗马数字中遍历此对象，运用sString的includes（）方法判断是否存在特殊情况并作出相应处理，然后运用正则表达式的replace（）方法，替换为空字符串。最后再做常规处理，即无特殊情况的处理。</p>
+<h4 id="注意-11"><a href="#注意-11" class="headerlink" title="注意"></a>注意</h4><p>运用for of遍历以及使用对象包含每一种特殊情况的取值的方法，正则表达式的replace（）方法不改变原字符串.</p>
+<h3 id="2-2-Fizz-Buzz-LeetCode412-Easy"><a href="#2-2-Fizz-Buzz-LeetCode412-Easy" class="headerlink" title="2.2 Fizz Buzz LeetCode412 Easy"></a>2.2 <a href="https://leetcode.cn/problems/fizz-buzz/">Fizz Buzz</a> LeetCode412 Easy</h3><h4 id="题目-7"><a href="#题目-7" class="headerlink" title="题目"></a>题目</h4><p>给你一个整数 n ，找出从 1 到 n 各个整数的 Fizz Buzz 表示，并用字符串数组 answer（下标从 1 开始）返回结果，其中：</p>
+<p>answer[i] &#x3D;&#x3D; “FizzBuzz” 如果 i 同时是 3 和 5 的倍数。<br>answer[i] &#x3D;&#x3D; “Fizz” 如果 i 是 3 的倍数。<br>answer[i] &#x3D;&#x3D; “Buzz” 如果 i 是 5 的倍数。<br>answer[i] &#x3D;&#x3D; i （以字符串形式）如果上述条件全不满足。</p>
+<h4 id="思路一-6"><a href="#思路一-6" class="headerlink" title="思路一"></a>思路一</h4><p>for循环，判断属于哪种情况并做相应处理，再通过Array的push方法在数组末添加元素。</p>
+<h2 id="3-数组"><a href="#3-数组" class="headerlink" title="3. 数组"></a>3. 数组</h2><h3 id="3-1-轮转数组-LeetCode189-Medium"><a href="#3-1-轮转数组-LeetCode189-Medium" class="headerlink" title="3.1 轮转数组 LeetCode189 Medium"></a>3.1 <a href="https://leetcode.cn/problems/rotate-array/">轮转数组</a> LeetCode189 Medium</h3><h4 id="题目-8"><a href="#题目-8" class="headerlink" title="题目"></a>题目</h4><p>给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。</p>
+<h4 id="思路一-7"><a href="#思路一-7" class="headerlink" title="思路一"></a>思路一</h4><p>首先计算出需要截取的数组元素的长度，即 k &#x3D; k % nums.length;然后运用Array的splice()方法，截取需要移动的成员，再通过数组的扩展运算符 <code>... </code>并运用Array的unshift()方法，放到数组前面。</p>
+<h4 id="注意-12"><a href="#注意-12" class="headerlink" title="注意"></a>注意</h4><p>注意需计算出需要截取的数组元素的长度，可降低时间复杂度，另外需区分Array的splice()和slice()的区别，前者会改变原数组，后者不会改变。</p>
+<h4 id="思路二-6"><a href="#思路二-6" class="headerlink" title="思路二"></a>思路二</h4><p>1.首先计算出需要循环移动的次数； 2. 通过数组的 unshift() 和 pop() 方法实现旋转，循环执行 k 次。</p>
+<h4 id="注意-13"><a href="#注意-13" class="headerlink" title="注意"></a>注意</h4><p>先使用pop()方法，再使用unshift()方法，unshift()方法将把它的参数插入数组的头部，并将已经存在的元素顺次地移到较高的下标处，这种处理不会占用额外空间。</p>
+<h3 id="3-2-只出现一次的数字-LeetCode136-Easy"><a href="#3-2-只出现一次的数字-LeetCode136-Easy" class="headerlink" title="3.2 只出现一次的数字 LeetCode136 Easy"></a>3.2 <a href="https://leetcode.cn/problems/single-number/">只出现一次的数字</a> LeetCode136 Easy</h3><h4 id="题目-9"><a href="#题目-9" class="headerlink" title="题目"></a>题目</h4><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出 现了一次的元素。</p>
+<h4 id="思路一-8"><a href="#思路一-8" class="headerlink" title="思路一"></a>思路一</h4><p>使用reduce方法,将数组的一个元素与下一个元素做异或比较。由于有一个数只出现了一次，其他数皆出现了两次，最后相同的数都会异或成0，唯一出现的数与0异或就会得到其本身。</p>
+<h4 id="注意-14"><a href="#注意-14" class="headerlink" title="注意"></a>注意</h4><p>主要是对于异或的运用。</p>
+<h3 id="3-3-两数之和-LeetCode1-Easy"><a href="#3-3-两数之和-LeetCode1-Easy" class="headerlink" title="3.3 两数之和 LeetCode1 Easy"></a>3.3 <a href="https://leetcode.cn/problems/two-sum/">两数之和</a> LeetCode1 Easy</h3><h4 id="题目-10"><a href="#题目-10" class="headerlink" title="题目"></a>题目</h4><p>给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<p><strong>进阶：</strong>你可以想出一个时间复杂度小于 <code>O(n2)</code> 的算法吗？</p>
+<h4 id="思路一-9"><a href="#思路一-9" class="headerlink" title="思路一"></a>思路一</h4><p>通过双重循环，暴力枚举每一种组合，再通过判断语句，如果两数满足和为target，则返回它们的数组下标。</p>
+<h4 id="注意-15"><a href="#注意-15" class="headerlink" title="注意"></a>注意</h4><p>因为题目要求元素在答案里不能重复出现，且可以按任何顺序返回答案，所以部分组合已经遍历过，无需重复遍历。</p>
+<h4 id="思路二-7"><a href="#思路二-7" class="headerlink" title="思路二"></a>思路二</h4><p>利用哈希表，运用Array的some()方法进行处理，将每个元素的值和它的索引加到表中，检查每个元素所对应的目标元素（target - nums[i]）是否存在于表中。</p>
+<h4 id="注意-16"><a href="#注意-16" class="headerlink" title="注意"></a>注意</h4><p>判断成立的条件应为<code>typeof lookup[target - v] ===&quot;number&quot;</code>，如果为<code>lookup[target - v]</code>在下标为<strong>0</strong>时会判断错误。</p>
+<h3 id="3-4-旋转图像-LeetCode48-Medium"><a href="#3-4-旋转图像-LeetCode48-Medium" class="headerlink" title="3.4 旋转图像  LeetCode48 Medium"></a>3.4 <a href="https://leetcode.cn/problems/rotate-image/">旋转图像</a>  LeetCode48 Medium</h3><h4 id="题目-11"><a href="#题目-11" class="headerlink" title="题目"></a>题目</h4><p>给定一个 n × n 的二维矩阵表示一个图像，将图像顺时针旋转 90 度。 必须在原地旋转图像，需要直接修改输入的二维矩阵，不要使用另一个矩阵来旋转图像。</p>
+<h4 id="思路一-10"><a href="#思路一-10" class="headerlink" title="思路一"></a>思路一</h4><p>先将矩阵沿左上角到右下角的对角线进行对称,运用for双层循环，内层循环的计数值的初始值为外层循环的计数值，然后将矩阵沿垂直中线对称即可。运用for双层循环，内层循环计数值小于Math.floor(n &#x2F; 2)，n为矩阵长度。</p>
+<h4 id="注意-17"><a href="#注意-17" class="headerlink" title="注意"></a>注意</h4><p>注意两个for双层循环的内层循环计数值的初始值即范围。</p>
+<h3 id="3-5-删除有序数组中的重复项-LeetCode26-Easy"><a href="#3-5-删除有序数组中的重复项-LeetCode26-Easy" class="headerlink" title="3.5 删除有序数组中的重复项  LeetCode26 Easy"></a>3.5 <a href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array/">删除有序数组中的重复项</a>  LeetCode26 Easy</h3><h4 id="题目-12"><a href="#题目-12" class="headerlink" title="题目"></a>题目</h4><p>给你一个 升序排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。元素的 相对顺序 应该保持 一致 。</p>
+<p>由于在某些语言中不能改变数组的长度，所以必须将结果放在数组nums的第一部分。更规范地说，如果在删除重复项之后有 k 个元素，那么 nums 的前 k 个元素应该保存最终结果。</p>
+<p>将最终结果插入 nums 的前 k 个位置后返回 k 。</p>
+<p>不要使用额外的空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。</p>
+<p>判题标准:</p>
+<p>系统会用下面的代码来测试你的题解:</p>
+<p>int[] nums &#x3D; […]; &#x2F;&#x2F; 输入数组<br>int[] expectedNums &#x3D; […]; &#x2F;&#x2F; 长度正确的期望答案</p>
+<p>int k &#x3D; removeDuplicates(nums); &#x2F;&#x2F; 调用</p>
+<p>assert k &#x3D;&#x3D; expectedNums.length;<br>for (int i &#x3D; 0; i &lt; k; i++) {<br>    assert nums[i] &#x3D;&#x3D; expectedNums[i];<br>}<br>如果所有断言都通过，那么您的题解将被 通过。</p>
+<h4 id="思路一-11"><a href="#思路一-11" class="headerlink" title="思路一"></a>思路一</h4><p>运用for循环，在循环时，如果后面的数与当前循环的值相同，则利用Array的splice()方法，删除当前数，数组长度减一。</p>
+<h4 id="注意-18"><a href="#注意-18" class="headerlink" title="注意"></a>注意</h4><p>注意删除数组中的数后，应注意数组长度和循环计数值的关系，，处理后数组长度减一，splice()方法的用法，第一个参数是删除开始位置，第二个参数值删除个数，且改变原数组。</p>
+<h4 id="思路二-8"><a href="#思路二-8" class="headerlink" title="思路二"></a>思路二</h4><p>我们用 一个数组 来记录不重复的下标数量，第一个数必定不是重复的，即 nums[0] 肯定是不重复的， 所以从第二项（即 nums[1]）开始，遍历数组，判断该下标的值跟不重复的数组最后一个元素 nums[count] 是否相同，如果不相同，将该元素值赋值给 nums[count + 1] ，然后 count++，继续遍 历。待遍历结束时，我们可以通过 count 数量来判断不重复元素个数，因为 count 是从 0 开始的， 故返回的新数组的长度为 count + 1。</p>
+<h4 id="注意-19"><a href="#注意-19" class="headerlink" title="注意"></a>注意</h4><p>注意从第二项开始遍历。</p>
+<h3 id="3-14-字母异位词分组-LeetCode49-Medium"><a href="#3-14-字母异位词分组-LeetCode49-Medium" class="headerlink" title="3.14 字母异位词分组 LeetCode49 Medium"></a>3.14 <a href="https://leetcode.cn/problems/group-anagrams/">字母异位词分组</a> LeetCode49 Medium</h3><h4 id="题目-13"><a href="#题目-13" class="headerlink" title="题目"></a>题目</h4><p>给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。</p>
+<p>字母异位词 是由重新排列源单词的字母得到的一个新单词，所有源单词中的字母通常恰好只用一次。</p>
+<h4 id="思路一-12"><a href="#思路一-12" class="headerlink" title="思路一"></a>思路一</h4><p>排序分类。先创建个空对象，用于储存字母异位词，然后创建个空数组，用与返回结果。遍历数组里的元素，将每个字母异位词进行排序，并将排序后的字符串作为 key，可知 key 值一样的即为字母异位 词，将他们置于同一个数组中， 待上述遍历结束，再遍历对象，将 对象的每一个值，push 到数组中。</p>
+<h4 id="思路二-9"><a href="#思路二-9" class="headerlink" title="思路二"></a>思路二</h4><p>计数分类。和思路一的不同在于判断两个字符串是否为字母异位词的方法不同。我们先遍历数组，每次都创建一个长度为 26，元素全是 0 的数组，用于记录每个单词中每个字符出现的次数；然后将其转化为字符串作为 key，将 key 值一样的字母异位词置于同一个数组中。最 后返回数组。</p>
+<h4 id="注意-20"><a href="#注意-20" class="headerlink" title="注意"></a>注意</h4><p>数组间不能直接判断是否相同，可以运用JSON.stringify()转换数组为字符串进行判断</p>
+<h3 id="3-15-三数之和-LeetCode15-Medium"><a href="#3-15-三数之和-LeetCode15-Medium" class="headerlink" title="3.15 三数之和 LeetCode15 Medium"></a>3.15 <a href="https://leetcode.cn/problems/3sum/">三数之和</a> LeetCode15 Medium</h3><h4 id="题目-14"><a href="#题目-14" class="headerlink" title="题目"></a>题目</h4><p>给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c &#x3D; 0 ？请你找出所有和为 0 且不重复的三元组。</p>
+<p>注意：答案中不可以包含重复的三元组。</p>
+<h4 id="思路一-13"><a href="#思路一-13" class="headerlink" title="思路一"></a>思路一</h4><p>首先对数组进行排序，便于在插入的时候去重，进行双指针遍历时，遇到重复的数就方便跳过。设两个指针指向数组首尾，每次计算两个指针所指数与每次遍历的数三数之和，因为数组已经从小到大排序了，所以如果三数之和大于0则尾指针前移，小于0则首指针后移，如果等于0则添加此组合，并进行去重。</p>
+<h4 id="注意-21"><a href="#注意-21" class="headerlink" title="注意"></a>注意</h4><p>在数组中因避免这种写法：while(left&lt;right&amp;&amp;r&#x3D;&#x3D;&#x3D;<strong>nums[right-1])</strong>{right–;}，在加粗出容易超出边界。</p>
+<h4 id="思路二-10"><a href="#思路二-10" class="headerlink" title="思路二"></a>思路二</h4><p>三重循环，但是<strong>时间会超时</strong>，不做详解。</p>
+<h3 id="3-16-无重复字符的最长子串-LeetCode3-Medium"><a href="#3-16-无重复字符的最长子串-LeetCode3-Medium" class="headerlink" title="3.16 无重复字符的最长子串 LeetCode3 Medium"></a>3.16 <a href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/">无重复字符的最长子串</a> LeetCode3 Medium</h3><h4 id="题目-15"><a href="#题目-15" class="headerlink" title="题目"></a>题目</h4><p>给定一个字符串 <code>s</code> ，请你找出其中不含有重复字符的 <strong>最长子串</strong> 的长度。</p>
+<h4 id="思路一-14"><a href="#思路一-14" class="headerlink" title="思路一"></a>思路一</h4><p>初始化一个数组和最大值， 从前向后遍历字符串， 如果该字符不在数组中（使用Array的indexOf()方法进行判断），则把字符 push 到数组中，并且比较记录下当前最大值。 否则就从头部向外shift字符直到该重复字符被移除（也可以使用slice（）方法直接截断数组,<code>a.slice(a.indexOf(s[i])+1,i+1)</code>）， 如此循环直到结束。</p>
+<h4 id="思路二-11"><a href="#思路二-11" class="headerlink" title="思路二"></a>思路二</h4><p>通过for (char of s){}遍历字符串，记录当前正在遍历的不重复字串的子集 string ， 在遍历过程中不断地添加不重复字符，遇到重复字符则截断 string 达到 string 内补字符不重复的条件。</p>
+<h2 id="4-链表"><a href="#4-链表" class="headerlink" title="4. 链表"></a>4. 链表</h2><h3 id="4-1-回文链表-LeetCode234-Easy"><a href="#4-1-回文链表-LeetCode234-Easy" class="headerlink" title="4.1 回文链表  LeetCode234 Easy"></a>4.1 <a href="https://leetcode.cn/problems/palindrome-linked-list/">回文链表</a>  LeetCode234 Easy</h3><h4 id="题目-16"><a href="#题目-16" class="headerlink" title="题目"></a>题目</h4><p>请判断一个链表是否为回文链表。<strong>进阶：</strong>你能否用 <code>O(n)</code> 时间复杂度和 <code>O(1)</code> 空间复杂度解决此题？</p>
+<h4 id="思路一-15"><a href="#思路一-15" class="headerlink" title="思路一"></a>思路一</h4><p>主要思想为字符串拼接比较，遍历链表，定义两个临时变量为空字符串，做处理<code>a=a+head.val;b=head.val+b;</code>存储正、反两个拼接的字符串， 比较正、反字符串是否相同。</p>
+<h4 id="思路二-12"><a href="#思路二-12" class="headerlink" title="思路二"></a>思路二</h4><p>定义一个全局指针初始化值为head，用于正序遍历，运用调用递归函数进行链表的逆序遍历，递归出口为 head 为 null，返回true，即遍历结束，判断正序遍历的节点值是否全部都等于逆序遍历的节点值。</p>
+<h4 id="注意-22"><a href="#注意-22" class="headerlink" title="注意"></a>注意</h4><p>注意此方法的空间复杂度为0(n),另外注意递归的使用方法。</p>
+<h3 id="4-2-环形链表-LeetCode141-Easy"><a href="#4-2-环形链表-LeetCode141-Easy" class="headerlink" title="4.2 环形链表  LeetCode141 Easy"></a>4.2 <a href="https://leetcode.cn/problems/linked-list-cycle/">环形链表</a>  LeetCode141 Easy</h3><h4 id="题目-17"><a href="#题目-17" class="headerlink" title="题目"></a>题目</h4><p>给你一个链表的头节点 head ，判断链表中是否有环。</p>
+<p>如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况。</p>
+<p>如果链表中存在环 ，则返回 true 。 否则，返回 false 。</p>
+<p><strong>进阶：</strong>你能用 <code>O(1)</code>（即，常量）内存解决此问题吗？</p>
+<h4 id="思路一-16"><a href="#思路一-16" class="headerlink" title="思路一"></a>思路一</h4><p>定义两个指针，即快慢指针，利用while循环，循环条件为快指针不为空以及快指针的next不为空。两个指针同时出发，快指针一次走两步，慢指针一次走一步。 如果快指针和慢指针相遇，则证明此链表是环形链表，不相遇则不是环形链表。</p>
+<h4 id="注意-23"><a href="#注意-23" class="headerlink" title="注意"></a>注意</h4><p>注意while循环条件为快指针不为空以及快指针的next不为空。</p>
+<h4 id="思路二-13"><a href="#思路二-13" class="headerlink" title="思路二"></a>思路二</h4><p>利用哈希表数据结构，使用Es6的Map数据结构，新建一个空的Map对象，在while中进行遍历，每次循环在Map中新增一个键值对，键名为当前节点，键值为1，遍历中，判断Map 对象中是否存在相同节点且值为 1，即判断该节点是否已经遍历过了，则可得出该链表是否为环形链表。</p>
+<h4 id="注意-24"><a href="#注意-24" class="headerlink" title="注意"></a>注意</h4><p>注意该方法空间复杂度为O（n），另外注意Map用法。</p>
+<h4 id="思路三-1"><a href="#思路三-1" class="headerlink" title="思路三"></a>思路三</h4><p>运用ES6中新引入的一种数据类型–Symbol，它代表独一无二的值:</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><code class="hljs abnf">let s1 <span class="hljs-operator">=</span> Symbol()<span class="hljs-comment">;</span><br>let s2 <span class="hljs-operator">=</span> Symbol()<span class="hljs-comment">;</span><br><br><span class="hljs-attribute">s1</span> <span class="hljs-operator">=</span><span class="hljs-operator">=</span><span class="hljs-operator">=</span> s2 // false<br></code></pre></td></tr></table></figure>
+
+<p>在遍历中将每个节点的 val 值改为用 Symbol 创建的独一无二的值，若循环过程中存在节点的 val 等于这个值，那么证明当前不是第一次循环到该节点，即链表为环形链表，反之不是。</p>
+<h3 id="4-3-删除链表中的节点-LeetCode237-Easy"><a href="#4-3-删除链表中的节点-LeetCode237-Easy" class="headerlink" title="4.3 删除链表中的节点  LeetCode237 Easy"></a>4.3 <a href="https://leetcode.cn/problems/delete-node-in-a-linked-list/">删除链表中的节点</a>  LeetCode237 Easy</h3><h4 id="题目-18"><a href="#题目-18" class="headerlink" title="题目"></a>题目</h4><p>请编写一个函数，用于 删除单链表中某个特定节点 。在设计函数时需要注意，你无法访问链表的头节点 head ，只能直接访问 要被删除的节点 。</p>
+<p>题目数据保证需要删除的节点 不是末尾节点 。</p>
+<h4 id="思路一-17"><a href="#思路一-17" class="headerlink" title="思路一"></a>思路一</h4><p>删除给定的节点，在获取当前节点后，将下一个节点的值赋给当前节点， 然后将当前节点指向下下个节点，完成删除。</p>
+<h4 id="思路二-14"><a href="#思路二-14" class="headerlink" title="思路二"></a>思路二</h4><p>利用Object.assign() 方法， Object.assign(a,b) 能合并两个对象(a和b)，并覆盖到第一个参数(a)所指的地址上（可以改变地址），让node.next覆盖 node，<strong>即node的所有属性都是node.next的所有属性，包括next和val.</strong></p>
+<h4 id="注意-25"><a href="#注意-25" class="headerlink" title="注意"></a>注意</h4><p>Object.assign(node,node.next)，即node的所有属性都是node.next的所有属性，包括next和val.</p>
+<h3 id="4-4-反转链表-LeetCode206-Easy"><a href="#4-4-反转链表-LeetCode206-Easy" class="headerlink" title="4.4 反转链表  LeetCode206 Easy"></a>4.4 <a href="https://leetcode.cn/problems/reverse-linked-list/">反转链表</a>  LeetCode206 Easy</h3><h4 id="题目-19"><a href="#题目-19" class="headerlink" title="题目"></a>题目</h4><p>给你单链表的头节点 <code>head</code> ，请你反转链表，并返回反转后的链表。</p>
+<p><strong>进阶：</strong>链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题</p>
+<h4 id="思路一-18"><a href="#思路一-18" class="headerlink" title="思路一"></a>思路一</h4><p>用迭代的方法实现. 先存储其前一个节点，在遍历链表过程中，申请一个新的临时空间用于前后元素交换。</p>
+<h4 id="思路二-15"><a href="#思路二-15" class="headerlink" title="思路二"></a>思路二</h4><p>用递归的方法实现。</p>
+<h4 id="注意-26"><a href="#注意-26" class="headerlink" title="注意"></a>注意</h4><p>注意每层递归函数都返回反转前的尾结点，也就是反转后的头节点（<strong>返回的结点是不变的，且此返回值不对后续处理造成影响</strong>），此外为了防止链表循环，需要将head.next设置为空。还有再次注意到js中null表示空，这需要与c语言中NULL做区分。</p>
+<h3 id="4-5-删除链表的倒数第-N-个结点-LeetCode19-Medium"><a href="#4-5-删除链表的倒数第-N-个结点-LeetCode19-Medium" class="headerlink" title="4.5 删除链表的倒数第 N 个结点  LeetCode19 Medium"></a>4.5 <a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">删除链表的倒数第 N 个结点</a>  LeetCode19 Medium</h3><h4 id="题目-20"><a href="#题目-20" class="headerlink" title="题目"></a>题目</h4><p>给你一个链表，删除链表的倒数第 <code>n</code> 个结点，并且返回链表的头结点。</p>
+<p><strong>进阶：</strong>你能尝试使用一趟扫描实现吗？</p>
+<h4 id="思路一-19"><a href="#思路一-19" class="headerlink" title="思路一"></a>思路一</h4><p> 双指针法。先设first和second指向head，让first 指针前进 n，如果 first为空，说明要删除的节点正是 head 节点，那么直接返回 head 的下一个节点。如果不为空，则让让 second 从 head 开始和 first 一起前进，直到 first 到了最后，此时 second 的下一个节点就是要删除的节点，做出 second.next &#x3D; second.next.next处理。</p>
+<h4 id="注意-27"><a href="#注意-27" class="headerlink" title="注意"></a>注意</h4><p>注意first为空时的处理，还有<strong>second.next &#x3D; second.next.nex</strong>t这一步，而不是second.next&#x3D;first，这仅适用于n为2时。</p>
+<h4 id="思路二-16"><a href="#思路二-16" class="headerlink" title="思路二"></a>思路二</h4><p> 单向链表成为双向链表。先遍历，让单向链表成为双向链表，先找到其尾节点，从这个节点向前查找，n–，直到n&#x3D;1时，此时的节点就是我们要找的节点，然后直接删除。</p>
+<h3 id="4-6-合并两个有序链表-LeetCode21-Easy"><a href="#4-6-合并两个有序链表-LeetCode21-Easy" class="headerlink" title="4.6 合并两个有序链表  LeetCode21 Easy"></a>4.6 <a href="https://leetcode.cn/problems/merge-two-sorted-lists/">合并两个有序链表</a>  LeetCode21 Easy</h3><h4 id="题目-21"><a href="#题目-21" class="headerlink" title="题目"></a>题目</h4><p>将两个升序链表合并为一个新的 <strong>升序</strong> 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 </p>
+<h4 id="思路一-20"><a href="#思路一-20" class="headerlink" title="思路一"></a>思路一</h4><p>创建一个新链表，通过判断两个链表当前值，将较小值放到新链表的下个节点，较小值的链表重新赋值为其下一节点，直到参数链表都为空时结束。</p>
+<h4 id="思路二-17"><a href="#思路二-17" class="headerlink" title="思路二"></a>思路二</h4><p>用递归的方式， 若两个链表中有一个链表为空，则返回另一个链表,依次比较两个链表中首项的大小，保留数值小的为链表当前值，直到一个链表参数为空则结束。</p>
+<h3 id="4-7-两数相加-LeetCode2-Medium"><a href="#4-7-两数相加-LeetCode2-Medium" class="headerlink" title="4.7 两数相加  LeetCode2 Medium"></a>4.7 <a href="https://leetcode.cn/problems/add-two-numbers/">两数相加</a>  LeetCode2 Medium</h3><h4 id="题目-22"><a href="#题目-22" class="headerlink" title="题目"></a>题目</h4><p>给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。</p>
+<p>请你将两个数相加，并以相同形式返回一个表示和的链表。</p>
+<p>你可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
+<h4 id="思路一-21"><a href="#思路一-21" class="headerlink" title="思路一"></a>思路一</h4><p>由于输入的两个链表都是<strong>逆序</strong>存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。</p>
+<h4 id="注意-28"><a href="#注意-28" class="headerlink" title="注意"></a>注意</h4><p>注意需要保存进位值用于下一位相加，另外当链表遍历完时，如果进位值大于0，应<strong>再加一个结点存储进位值</strong>。</p>
+<h4 id="思路二-18"><a href="#思路二-18" class="headerlink" title="思路二"></a>思路二</h4><p>将输入的链表转换为逆序的字符串（<strong>字符串</strong>可以更容易的取出每一位数，无论是正序取出还是逆序取出），再将字符串转换为数（可以考虑使用BigInt,确保精度），然后将两个链表转换的数相加，再转换为字符串，然后逆序放入新的链表。</p>
+<h2 id="5-二叉树"><a href="#5-二叉树" class="headerlink" title="5. 二叉树"></a>5. 二叉树</h2><h3 id="5-1-最小栈-LeetCode155-Medium"><a href="#5-1-最小栈-LeetCode155-Medium" class="headerlink" title="5.1 最小栈  LeetCode155 Medium"></a>5.1 <a href="https://leetcode.cn/problems/min-stack/">最小栈</a>  LeetCode155 Medium</h3><h4 id="题目-23"><a href="#题目-23" class="headerlink" title="题目"></a>题目</h4><p>设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。</p>
+<p>实现 MinStack 类:</p>
+<p>MinStack() 初始化堆栈对象。<br>void push(int val) 将元素val推入堆栈。<br>void pop() 删除堆栈顶部的元素。<br>int top() 获取堆栈顶部的元素。<br>int getMin() 获取堆栈中的最小元素。</p>
+<h4 id="思路一-22"><a href="#思路一-22" class="headerlink" title="思路一"></a>思路一</h4><p> 创建最小元素栈时，开辟两个数组，一个用于存储压栈元素，另一个用于存储最小元素序列。push栈数据同时，存储当前栈中最小元素，pop栈数据的同时pop最小元素栈栈顶数据.</p>
+<h4 id="思路二-19"><a href="#思路二-19" class="headerlink" title="思路二"></a>思路二</h4><p>用一个 min 变量保存最小值,min初始值为0（只要不超出数值范围均可，因为后面在第一次push时，会将入栈的值赋值给min，但是建议为0，因为不容易出现溢出），每次push操作压栈时,保存的是入栈的值和最小值min的差值，而不是入栈的值。pop出栈时，通过 min 值和栈顶的值得到。</p>
+<h4 id="注意-29"><a href="#注意-29" class="headerlink" title="注意"></a>注意</h4><p>注意仅第一次push时，会将入栈的值赋值给min（需要对数组的长度进行判断），另外在top方法中应注意处理数组长度为1时，直接返回数组中唯一的值，不需要再加min,因为数组的第一个值就是min.最后注意在两数差值有溢出风险。</p>
+<h2 id="6-动态规划"><a href="#6-动态规划" class="headerlink" title="6. 动态规划"></a>6. 动态规划</h2><h3 id="6-1-最大子数组和-LeetCode53-Medium"><a href="#6-1-最大子数组和-LeetCode53-Medium" class="headerlink" title="6.1 最大子数组和 LeetCode53 Medium"></a>6.1 <a href="https://leetcode.cn/problems/maximum-subarray/">最大子数组和</a> LeetCode53 Medium</h3><h4 id="题目-24"><a href="#题目-24" class="headerlink" title="题目"></a>题目</h4><p>给你一个整数数组 <code>nums</code> ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p><strong>子数组</strong> 是数组中的一个连续部分。</p>
+<p><strong>进阶：</strong>如果你已经实现复杂度为 <code>O(n)</code> 的解法，尝试使用更为精妙的 <strong>分治法</strong> 求解。</p>
+<h4 id="思路一-23"><a href="#思路一-23" class="headerlink" title="思路一"></a>思路一</h4><p>从数组获取第一个值为最大值和中间值 ,遍历数组，如果中间值大于0,则和中间值相加，相加结果和最大值比较，较大值赋值给最大值。如果中间值小于0，则将当前值作为中间值。</p>
+<h4 id="思路二-20"><a href="#思路二-20" class="headerlink" title="思路二"></a>思路二</h4><p>分治方法。运用递归，每次求得左右两半部分各自最大子数组和，然后处理两个部分一起的最大子数组和。递归结束条件为左右下标相等。</p>
+<h3 id="6-2-爬楼梯-LeetCode70-Easy"><a href="#6-2-爬楼梯-LeetCode70-Easy" class="headerlink" title="6.2 爬楼梯 LeetCode70 Easy"></a>6.2 <a href="https://leetcode.cn/problems/climbing-stairs/">爬楼梯</a> LeetCode70 Easy</h3><h4 id="题目-25"><a href="#题目-25" class="headerlink" title="题目"></a>题目</h4><p>假设你正在爬楼梯。需要 <code>n</code> 阶你才能到达楼顶。</p>
+<p>每次你可以爬 <code>1</code> 或 <code>2</code> 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
+<h4 id="思路一-24"><a href="#思路一-24" class="headerlink" title="思路一"></a>思路一</h4><p>递归+记忆化数组。递归函数：f(n) &#x3D; f(n − 1) + f(n − 2)，创建一个记忆化数组，记录楼层计算过的结果，降低时间复杂度。</p>
+<h4 id="思路二-21"><a href="#思路二-21" class="headerlink" title="思路二"></a>思路二</h4><p>动态规划+滚动数组。f(n) &#x3D; f(n − 1) + f(n − 2)。但是由于这里的f(n)只和 f(n - 1) 与 f(n - 2)有关，所以可以用滚动数组思想.</p>
+<h3 id="6-6-跳跃游戏-LeetCode55-Medium"><a href="#6-6-跳跃游戏-LeetCode55-Medium" class="headerlink" title="6.6 跳跃游戏 LeetCode55 Medium"></a>6.6 <a href="https://leetcode.cn/problems/jump-game/">跳跃游戏</a> LeetCode55 Medium</h3><h4 id="题目-26"><a href="#题目-26" class="headerlink" title="题目"></a>题目</h4><p>给定一个非负整数数组 <code>nums</code> ，你最初位于数组的 <strong>第一个下标</strong> 。</p>
+<p>数组中的每个元素代表你在该位置可以跳跃的最大长度。</p>
+<p>判断你是否能够到达最后一个下标。</p>
+<h4 id="思路一-25"><a href="#思路一-25" class="headerlink" title="思路一"></a>思路一</h4><p>贪心。先初始化最远位置为0，然后遍历数组，如果当前位置能到达，并且当前位置+跳数&gt;最远位置，就更新最远位置， 每次循环都比较当前最远位置和当前数组下标，如果最远距离小于等于当前下标就返回false。</p>
+<h4 id="思路二-22"><a href="#思路二-22" class="headerlink" title="思路二"></a>思路二</h4><p>动态规划。遍历数组，每到一个点 ，我们就去判断是否可以到达当前点；如果可以，就记录true，否则为 false，最后判断是否可以到达最后一个点。</p>
+<h3 id="6-7-不同路径-LeetCode62-Medium"><a href="#6-7-不同路径-LeetCode62-Medium" class="headerlink" title="6.7 不同路径 LeetCode62 Medium"></a>6.7 <a href="https://leetcode.cn/problems/unique-paths/">不同路径</a> LeetCode62 Medium</h3><h4 id="题目-27"><a href="#题目-27" class="headerlink" title="题目"></a>题目</h4><p>一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。</p>
+<p>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。</p>
+<p>问总共有多少条不同的路径？</p>
+<h4 id="思路一-26"><a href="#思路一-26" class="headerlink" title="思路一"></a>思路一</h4><p>动态规划。利用双层for循环，状态转移方程为 dp[i][j] &#x3D; dp[i − 1][j] + dp[i][j − 1]。</p>
+<h4 id="思路二-23"><a href="#思路二-23" class="headerlink" title="思路二"></a>思路二</h4><p>深度优先搜索+记忆化数组。dfs[i][j] &#x3D; dfs[i − 1][j] + dfs[i][j − 1]。开辟一个记忆数组记录结果。</p>
+<h4 id="思路三-2"><a href="#思路三-2" class="headerlink" title="思路三"></a>思路三</h4><p>组合数学。从左上角到右下角的过程中，我们需要移动 m+n-2 次，其中有 m-1次向下移动，n-1次向右移动。因此路径的总数，就等于从 m+n-2次移动中选择 m-1次向下移动的方案数。</p>
+<h2 id="7-回溯算法"><a href="#7-回溯算法" class="headerlink" title="7. 回溯算法"></a>7. 回溯算法</h2><h3 id="7-1-括号生成-LeetCode22-Medium"><a href="#7-1-括号生成-LeetCode22-Medium" class="headerlink" title="7.1 括号生成 LeetCode22 Medium"></a>7.1 <a href="https://leetcode.cn/problems/generate-parentheses/">括号生成</a> LeetCode22 Medium</h3><h4 id="题目-28"><a href="#题目-28" class="headerlink" title="题目"></a>题目</h4><p>数字 <code>n</code> 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 <strong>有效的</strong> 括号组合。</p>
+<h4 id="思路一-27"><a href="#思路一-27" class="headerlink" title="思路一"></a>思路一</h4><p>采用回溯法，如果自定义的字符串长度刚好满足条件，那么就说明这个组合是正确的的，把它放入数组。 否则，递归执行添加左括号，添加右括号的操作。递归结束条件为结果字符串长度等于左右括号的总个数（2n），则返回最终结果。</p>
+<h3 id="7-3-电话号码的字母组合-LeetCode17-Medium"><a href="#7-3-电话号码的字母组合-LeetCode17-Medium" class="headerlink" title="7.3 电话号码的字母组合 LeetCode17 Medium"></a>7.3 <a href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/">电话号码的字母组合</a> LeetCode17 Medium</h3><h4 id="题目-29"><a href="#题目-29" class="headerlink" title="题目"></a>题目</h4><p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
+<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/11/09/200px-telephone-keypad2svg.png"></p>
+<h4 id="思路一-28"><a href="#思路一-28" class="headerlink" title="思路一"></a>思路一</h4><p>利用队列的先进先出的特点，把队列中的第一个元素拿出，再与后面的挨个拼接</p>
+<ol>
+<li>先在队列中插入一个空字符 </li>
+<li>取出队列中的第一个元素，与后一位数字对应的字符进行挨个拼接 。</li>
+<li>重复第二步，直到结束。</li>
+</ol>
+<h4 id="注意-30"><a href="#注意-30" class="headerlink" title="注意"></a>注意</h4><p><code>let a = [1, 2, 3];</code></p>
+<p><code>let b = a;</code></p>
+<p><code>let c = a;</code></p>
+<p>此代码中a,b,c仍然是<strong>同一个地址</strong>。</p>
+<h4 id="思路二-24"><a href="#思路二-24" class="headerlink" title="思路二"></a>思路二</h4><p>回溯。可以穷举所有的可能性，找到所有的可能性。回溯过程中维护一个字符串，表示已有的字母排列。 如果有数字需要被输入，就遍历数字对应的字母进行组合 。 当发现没有数字输入时，说明已经走完了，得到结果。</p>
+<h3 id="7-4-全排列-LeetCode46-Medium"><a href="#7-4-全排列-LeetCode46-Medium" class="headerlink" title="7.4 全排列 LeetCode46 Medium"></a>7.4 <a href="https://leetcode.cn/problems/permutations/">全排列</a> LeetCode46 Medium</h3><h4 id="题目-30"><a href="#题目-30" class="headerlink" title="题目"></a>题目</h4><p>给定一个不含重复数字的数组 <code>nums</code> ，返回其 <em>所有可能的全排列</em> 。你可以 <strong>按任意顺序</strong> 返回答案。</p>
+<h4 id="思路一-29"><a href="#思路一-29" class="headerlink" title="思路一"></a>思路一</h4><p>回溯法.构造一颗生成树，遍历需要全排列的数组，将不同位置的数字与目前树结合起来 ,重复该操作直到需要全排列的数组长度为 0，即表明完成了全排列，因为数字不能重复，所以在每次遍历后应对数组做出处理，之后传入剩余的数组。</p>
+<h4 id="注意-31"><a href="#注意-31" class="headerlink" title="注意"></a>注意</h4><p>在递归中应注意不要使用数组的push()方法，最好使用扩展运算符。</p>
+<h4 id="思路二-25"><a href="#思路二-25" class="headerlink" title="思路二"></a>思路二</h4><p>插值排列法。遍历需要全排列的数组，将不同位置的数字抽离出来，插入到剩余数组的不同位置，即可得到该数字与另一个数组的全排列结果。 将一个固定的数字，插入到另一个数组 的全排列结果的不同位置， 遍历需要全排列的数组，将不同的数字连接到不同的树上继续全排列剩下的数组与生成的树，当剩余数组长度为0时，表明完成了全排列。</p>
+<h2 id="8-排序算法"><a href="#8-排序算法" class="headerlink" title="8. 排序算法"></a>8. 排序算法</h2><h3 id="8-9-搜索旋转排序数组-LeetCode33-Medium"><a href="#8-9-搜索旋转排序数组-LeetCode33-Medium" class="headerlink" title="8.9 搜索旋转排序数组 LeetCode33 Medium"></a>8.9 <a href="https://leetcode.cn/problems/search-in-rotated-sorted-array/">搜索旋转排序数组</a> LeetCode33 Medium</h3><h4 id="题目-31"><a href="#题目-31" class="headerlink" title="题目"></a>题目</h4><p>整数数组 nums 按升序排列，数组中的值 互不相同 。</p>
+<p>在传递给函数之前，nums 在预先未知的某个下标 k（0 &lt;&#x3D; k &lt; nums.length）上进行了 旋转，使数组变为 [nums[k], nums[k+1], …, nums[n-1], nums[0], nums[1], …, nums[k-1]]（下标 从 0 开始 计数）。例如， [0,1,2,4,5,6,7] 在下标 3 处经旋转后可能变为 [4,5,6,7,0,1,2] 。</p>
+<p>给你 旋转后 的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。</p>
+<p>你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。</p>
+<h4 id="思路一-30"><a href="#思路一-30" class="headerlink" title="思路一"></a>思路一</h4><p>先用<code>Math.min.apply(null, nums)</code>和<code>Math.max.apply(null, nums)</code>计算数组中的最大最小值。当目标值大于数组最后一位时，数组查询位置从 0 到数字中在最大位置，当目标值小于等于数组最后一位时，数组查询位置从数组中最小值的位置开始，到数组的最后一 位。 循环二分查询，计算定位数组的中间值，数组的值等于目标查询结束。</p>
+<h4 id="注意-32"><a href="#注意-32" class="headerlink" title="注意"></a>注意</h4><p>此方法时间复杂度不为 O(log n)，因为求了最大值与最小值。</p>
+<h4 id="思路二-26"><a href="#思路二-26" class="headerlink" title="思路二"></a>思路二</h4><p>定义左右值分别为数组第一个和最后一个的下标 ，中间下标值为最大最小值的平均数 ，如果数组中间数等于目标直接返回下标 。数组的中间值小于数组最后一个值，后半部分还处于升序，如果目标值在这部分数组中，则左下标等于中间值+1，代表目标值在后半部分数组，反之重新定义右下标为中间值-1，目标在前半数组。 数组中间值大于数组最后一个值，代表前半部分数组处于升序，如果目标在前半数组中，右标 更新为中间值-1，反之，左下标更新为中间值+1。循环二分查询，计算定位数组的中间值，数组的值等于目标查询结束。</p>
+<h4 id="注意-33"><a href="#注意-33" class="headerlink" title="注意"></a>注意</h4><p>二分查找主要是同过目标值与中间值进行比较，从而直接确定目标值在哪一部分。如果<strong>不是</strong>升序或降序数组，则需要进一步确定目标值位置。</p>
+<h3 id="8-10-在排序数组中查找元素的第一个和最后一个位置-LeetCode34-Medium"><a href="#8-10-在排序数组中查找元素的第一个和最后一个位置-LeetCode34-Medium" class="headerlink" title="8.10 在排序数组中查找元素的第一个和最后一个位置 LeetCode34 Medium"></a>8.10 <a href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/">在排序数组中查找元素的第一个和最后一个位置</a> LeetCode34 Medium</h3><h4 id="题目-32"><a href="#题目-32" class="headerlink" title="题目"></a>题目</h4><p>给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。</p>
+<p>如果数组中不存在目标值 target，返回 [-1, -1]。</p>
+<p>你必须设计并实现时间复杂度为 O(log n) 的算法解决此问题</p>
+<h4 id="思路一-31"><a href="#思路一-31" class="headerlink" title="思路一"></a>思路一</h4><p>二分查找，找到左边第一个不小于目标值的位置 ,然后从位置开始到最后，二分查找，确定右边最后一个符合条件值的位置 ，最后校验下标是否符合，得到结果。</p>
+<h3 id="8-12-颜色分类-LeetCode75-Medium"><a href="#8-12-颜色分类-LeetCode75-Medium" class="headerlink" title="8.12. 颜色分类 LeetCode75 Medium"></a>8.12. <a href="https://leetcode.cn/problems/sort-colors/">颜色分类</a> LeetCode75 Medium</h3><h4 id="题目-33"><a href="#题目-33" class="headerlink" title="题目"></a>题目</h4><p>给定一个包含红色、白色和蓝色、共 n 个元素的数组 nums ，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
+<p>我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
+<p>必须在不使用库的sort函数的情况下解决这个问题。</p>
+<p><strong>进阶：</strong></p>
+<ul>
+<li>你可以不使用代码库中的排序函数来解决这道题吗？</li>
+<li>你能想出一个仅使用常数空间的一趟扫描算法吗？</li>
+</ul>
+<h4 id="思路一-32"><a href="#思路一-32" class="headerlink" title="思路一"></a>思路一</h4><p> 双指针遍历.设定一头一尾两个指针 begin 和 end，然后利用for循环从头开始遍历数组。如果遇到 0，则将该数值与begin指向的值交换，并且使begin++。 如果遇到 2，则将该数值与end指向的值交换，并且使end–。 如果遇到 1，则不做操作。</p>
+<h3 id="8-15-合并区间-LeetCode56-Medium"><a href="#8-15-合并区间-LeetCode56-Medium" class="headerlink" title="8.15 合并区间 LeetCode56 Medium"></a>8.15 <a href="https://leetcode.cn/problems/merge-intervals/">合并区间</a> LeetCode56 Medium</h3><h4 id="题目-34"><a href="#题目-34" class="headerlink" title="题目"></a>题目</h4><p>以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] &#x3D; [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。</p>
+<h4 id="思路一-33"><a href="#思路一-33" class="headerlink" title="思路一"></a>思路一</h4><p>先将列表中的区间按照左端点升序排序。定义一个新的数组，用于存储新的数组区间，新数组的第一个值为原数组的第一个值。然后从第二个值开始遍历原数组，比较当前区间的最小值是否大于新数组最后一个区间的最大值， 如果满足则push进入新的数组；又或者比较当前区间的最大值是否大于新新数组的随后一个区间的最大值，若满足则将新数组的最后一个区间的最大值替换成当前区间的最大值。</p>
+<h4 id="注意-34"><a href="#注意-34" class="headerlink" title="注意"></a>注意</h4><p>要先进行原数组排序操作，可以降低做题难度。</p>
+<h2 id="9-栈和队列"><a href="#9-栈和队列" class="headerlink" title="9. 栈和队列"></a>9. 栈和队列</h2><h3 id="9-6-有效的括号-LeetCode20-Easy"><a href="#9-6-有效的括号-LeetCode20-Easy" class="headerlink" title="9.6 有效的括号 LeetCode20 Easy"></a>9.6 <a href="https://leetcode.cn/problems/valid-parentheses/">有效的括号</a> LeetCode20 Easy</h3><h4 id="题目-35"><a href="#题目-35" class="headerlink" title="题目"></a>题目</h4><p>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串 s ，判断字符串是否有效。</p>
+<p>有效字符串需满足：</p>
+<p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。</p>
+<h4 id="思路一-34"><a href="#思路一-34" class="headerlink" title="思路一"></a>思路一</h4><p>利用<strong>头插法</strong>建立链栈，如果使用尾插法建立则不易删除节点（即出栈操作）。在遇到左括号的时候，将其入栈。在遇到右括号的时候，刚好就可以与栈中的左括号进行匹配，如果正确，就把左括号出栈 。 如果最终栈为空，说明全部匹配成功。</p>
+<h4 id="注意-35"><a href="#注意-35" class="headerlink" title="注意"></a>注意</h4><p>注意<strong>JS的垃圾回收机制</strong>。在链表中:</p>
+<p><code>let a = new ListNode(1);</code></p>
+<p><code>let b = a;</code></p>
+<p><code>a = null;</code></p>
+<p>b仍然指向新建的空间，不为空。</p>
+<p>另外需要使用<strong>头插法</strong>建立链表。</p>
+<h4 id="思路二-27"><a href="#思路二-27" class="headerlink" title="思路二"></a>思路二</h4><p>用 Map 数据类型，建立数组栈。在遇到左括号的时候，将其入栈。在遇到右括号的时候，刚好就可以与栈中的左括号进行匹配，如果正确，就把左括号出栈 。 如果最终栈为空，说明全部匹配成功。</p>
+]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+</search>

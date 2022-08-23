@@ -1,0 +1,580 @@
+
+
+<!DOCTYPE html>
+<html lang="en" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>算法 101-JavaScript描述（政采云） - 芝叶</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="未完善…
+1. 字符串1.1 整数反转 LeetCod...">
+  <meta name="author" content="芝叶">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: true
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: false,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: true,
+        path: 'search.xml'
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+        <i class="iconfont iconsearch j-navbar-search"></i>
+      
+    </div>
+    <div class="center">算法 101-JavaScript描述（政采云）</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/html/game.html " class="underline "> 游戏</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  <a target="_blank" href="https://github.com/Yeatsczx">CZX - 2022</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/234031-1656430831f0e2.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">算法 101-JavaScript描述（政采云）</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>July 29, 2022</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>15715</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <p>未完善…</p>
+<h2 id="1-字符串"><a href="#1-字符串" class="headerlink" title="1. 字符串"></a>1. 字符串</h2><h3 id="1-1-整数反转-LeetCode7-Medium"><a href="#1-1-整数反转-LeetCode7-Medium" class="headerlink" title="1.1 整数反转 LeetCode7 Medium"></a>1.1 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-integer/">整数反转</a> LeetCode7 Medium</h3><h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><p>给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。</p>
+<p>如果反转后整数超过 32 位的有符号整数的范围 [−231,  231 − 1] ，就返回 0。</p>
+<p>假设环境不允许存储 64 位整数（有符号或无符号）。</p>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>主要思想是将数字转换为字符串，运用字符串方法求解。先通过typeof判断所给数据是否为number类型，然后运用String()函数将其转换为字符串，再运用split()方法转换为数组，之后运用数组的reverse()方法翻转数组，再运用join()方法变成字符串。最后使用Number函数转成数字。</p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>注意判断边界情况以及数字正负号的处理。</p>
+<h3 id="1-2-有效的字母异位词-LeetCode242-Easy"><a href="#1-2-有效的字母异位词-LeetCode242-Easy" class="headerlink" title="1.2 有效的字母异位词 LeetCode242 Easy"></a>1.2 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-anagram/">有效的字母异位词</a> LeetCode242 Easy</h3><h4 id="题目-1"><a href="#题目-1" class="headerlink" title="题目"></a>题目</h4><p>给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。</p>
+<p>注意：若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。</p>
+<h4 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h4><p>先将字符串转为数组，在运用sort()方法进行排序，最后再转为字符串进行比较。</p>
+<h4 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h4><p>js中数组不能直接比较。</p>
+<h4 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h4><p>创建一个对象，运用for of遍历其中一个字符串，统计每个字符出现的次数并将其作为新建对象的键值。然后再次使用for of遍历另一个字符串，处理键值。最后使用for in遍历那个对象，判断每个键值是否为0，得出结果。</p>
+<h4 id="注意-2"><a href="#注意-2" class="headerlink" title="注意"></a>注意</h4><p>在运用for in和for of时应使用方括号运算符，不能使用点运算符。因为方括号运算符中的表示变量，而点运算符表示字符串。</p>
+<h3 id="1-3-字符串转换整数-atoi-LeetCode8-Medium"><a href="#1-3-字符串转换整数-atoi-LeetCode8-Medium" class="headerlink" title="1.3 字符串转换整数 (atoi) LeetCode8 Medium"></a>1.3 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/string-to-integer-atoi/">字符串转换整数 (atoi)</a> LeetCode8 Medium</h3><h4 id="题目-2"><a href="#题目-2" class="headerlink" title="题目"></a>题目</h4><p>请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C&#x2F;C++ 中的 atoi 函数）。</p>
+<p>函数 myAtoi(string s) 的算法如下：</p>
+<p>读入字符串并丢弃无用的前导空格<br>检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。<br>读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。<br>将前面步骤读入的这些数字转换为整数（即，”123” -&gt; 123， “0032” -&gt; 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。<br>如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。<br>返回整数作为最终结果。<br>注意：</p>
+<p>本题中的空白字符只包括空格字符 ‘ ‘ 。<br>除前导空格或数字后的其余字符串外，请勿忽略任何其他字符。</p>
+<h4 id="思路一-1"><a href="#思路一-1" class="headerlink" title="思路一"></a>思路一</h4><p>先运用string的trim()方法去除字符串两端空格，再利用正则表达式提取满足条件的字符，最后判断是否超过边界。</p>
+<h4 id="注意-3"><a href="#注意-3" class="headerlink" title="注意"></a>注意</h4><p>注意需判断是否超过边界。</p>
+<h4 id="思路二-1"><a href="#思路二-1" class="headerlink" title="思路二"></a>思路二</h4><p>先运用string的trim()方法去除字符串两端空格，再利用行 parseInt（）将字符串转为数字，最后判断是否超过边界。</p>
+<h4 id="注意-4"><a href="#注意-4" class="headerlink" title="注意"></a>注意</h4><p>注意需判断是否超过边界。</p>
+<h3 id="1-4-外观数列-LeetCode38-Medium"><a href="#1-4-外观数列-LeetCode38-Medium" class="headerlink" title="1.4 外观数列 LeetCode38 Medium"></a>1.4 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-and-say/">外观数列</a> LeetCode38 Medium</h3><h4 id="题目-3"><a href="#题目-3" class="headerlink" title="题目"></a>题目</h4><p>给定一个正整数 n ，输出外观数列的第 n 项。</p>
+<p>「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。</p>
+<p>你可以将其视作是由递归公式定义的数字字符串序列：</p>
+<p>countAndSay(1) &#x3D; “1”<br>countAndSay(n) 是对 countAndSay(n-1) 的描述，然后转换成另一个数字字符串。<br>前五项如下：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.     <span class="hljs-number">1</span><br><span class="hljs-attribute">2</span>.     <span class="hljs-number">11</span><br><span class="hljs-attribute">3</span>.     <span class="hljs-number">21</span><br><span class="hljs-attribute">4</span>.     <span class="hljs-number">1211</span><br><span class="hljs-attribute">5</span>.     <span class="hljs-number">111221</span><br></code></pre></td></tr></table></figure>
+
+<p>第一项是数字 1<br>描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 “11”<br>描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 “21”<br>描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 “1211”<br>描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 “111221”<br>要 描述 一个数字字符串，首先要将字符串分割为 最小 数量的组，每个组都由连续的最多 相同字符 组成。然后对于每个组，先描述字符的数量，然后描述字符，形成一个描述组。要将描述转换为数字字符串，先将每组中的字符数量用数字替换，再将所有描述组连接起来。</p>
+<h4 id="思路一-2"><a href="#思路一-2" class="headerlink" title="思路一"></a>思路一</h4><p>运用递归的思想。要得到第n项，即处理第n-1项的结果，运用string的replace（）方法以及正则表达式进行处理替换，终止条件为n&#x3D;&#x3D;&#x3D;1返回’1’。</p>
+<h4 id="注意-5"><a href="#注意-5" class="headerlink" title="注意"></a>注意</h4><p>注意正则表达式的写法&#x2F;(\d)\1**{0,}**&#x2F;g，因至少重复0次，另外注意模板字符串的运用使用使用&#96;&#96;反引号包裹${}。</p>
+<h4 id="思路二-2"><a href="#思路二-2" class="headerlink" title="思路二"></a>思路二</h4><p>递归法是由 n 到 1 计算相应的值并层层返回的，循环法正好相反，循环法由 1 计算到 n。然后将最终值返回。处理方法和递归的方法一致。</p>
+<h4 id="注意-6"><a href="#注意-6" class="headerlink" title="注意"></a>注意</h4><p>注意正则表达式的写法&#x2F;(\d)\1**{0,}**&#x2F;g，因至少重复0次，另外注意模板字符串的运用使用使用&#96;&#96;反引号包裹${}。</p>
+<h3 id="1-5-反转字符串-LeetCode344-Easy"><a href="#1-5-反转字符串-LeetCode344-Easy" class="headerlink" title="1.5 反转字符串 LeetCode344 Easy"></a>1.5 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-string/">反转字符串</a> LeetCode344 Easy</h3><h4 id="题目-4"><a href="#题目-4" class="headerlink" title="题目"></a>题目</h4><p>编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一 问题。你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。</p>
+<h4 id="思路一-3"><a href="#思路一-3" class="headerlink" title="思路一"></a>思路一</h4><p>直接运用数组的reverse()方法。</p>
+<h4 id="注意-7"><a href="#注意-7" class="headerlink" title="注意"></a>注意</h4><p>无注意事项。</p>
+<h4 id="思路二-3"><a href="#思路二-3" class="headerlink" title="思路二"></a>思路二</h4><p>写一个循环，进行首尾替换。可以引入中间变量或运用解构赋值。</p>
+<h3 id="1-10-最长回文子串-LeetCode5-Medium"><a href="#1-10-最长回文子串-LeetCode5-Medium" class="headerlink" title="1.10 最长回文子串 LeetCode5 Medium"></a>1.10 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-palindromic-substring/">最长回文子串</a> LeetCode5 Medium</h3><h4 id="题目-5"><a href="#题目-5" class="headerlink" title="题目"></a>题目</h4><p>给你一个字符串 <code>s</code>，找到 <code>s</code> 中最长的回文子串。</p>
+<h4 id="思路一-4"><a href="#思路一-4" class="headerlink" title="思路一"></a>思路一</h4><p>暴力解法。用三个嵌套的for循环，列举所有的子串并判断其是否为回文子串，每次判断后记录此子串并与前一次的子串进行长度比较选取较大的子串。</p>
+<h4 id="思路二-4"><a href="#思路二-4" class="headerlink" title="思路二"></a>思路二</h4><p>中心扩展。回文子串一定是对称的，所以我们可以每次选择一个中心，然后从中心向两边扩展判断左右字符是否相等。 中心点的选取有两种情况： 当长度为奇数时，以单个字符为中心； 当长度为偶数时，以两个字符之间的空隙为中心。</p>
+<h4 id="注意-8"><a href="#注意-8" class="headerlink" title="注意"></a>注意</h4><p>String的slice方法，<strong>s.slice(++i,j)<strong>在执行时</strong>第一个参数为i</strong>而非i+1,应写为++i。</p>
+<h4 id="思路三"><a href="#思路三" class="headerlink" title="思路三"></a>思路三</h4><p>动态规划。动态规划算法的核心就是记住已经解决过的子问题的解。根据字符串的长度，建立一个矩阵 dp, 通过不同情况的判断条件，通过 dp[i][j]表示 s[i] 至 s[j] 所代 表的子串是否是回文子串。不同长度的子串，根据不同的条件进行判断是否为回文子串。长度为 1，一定回文 ；长度为 2 或 3，判断首尾是否相同：s[i] &#x3D;&#x3D;&#x3D; s[j] ；长度 &gt; 3, 首尾字符相同，且去掉首尾之后的子串仍为回文。</p>
+<h4 id="注意-9"><a href="#注意-9" class="headerlink" title="注意"></a>注意</h4><p>使用双层for循环遍历时，注意外层表示长度，内层表示字符串的开始位置。如果外层表示开始位置，内层表示长度，则在长度&gt;3时判断<strong>去掉首尾之后的子串</strong>是否为回文会有误。</p>
+<h2 id="2-数学"><a href="#2-数学" class="headerlink" title="2. 数学"></a>2. 数学</h2><h3 id="2-1-罗马数字转整数-LeetCode13-Easy"><a href="#2-1-罗马数字转整数-LeetCode13-Easy" class="headerlink" title="2.1 罗马数字转整数 LeetCode13 Easy"></a>2.1 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/roman-to-integer/">罗马数字转整数</a> LeetCode13 Easy</h3><h4 id="题目-6"><a href="#题目-6" class="headerlink" title="题目"></a>题目</h4><p>罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</p>
+<p>字符          数值<br>I             1<br>V             5<br>X             10<br>L             50<br>C             100<br>D             500<br>M             1000<br>例如， 罗马数字 2 写做 II ，即为两个并列的 1 。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p>
+<p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p>
+<p>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。<br>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。<br>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。<br>给定一个罗马数字，将其转换成整数。</p>
+<h4 id="思路一-5"><a href="#思路一-5" class="headerlink" title="思路一"></a>思路一</h4><p>运用for循环进行遍历，判断是否属于每一种特殊情况并做相关处理以及不属于特殊情况的处理方法。</p>
+<h4 id="注意-10"><a href="#注意-10" class="headerlink" title="注意"></a>注意</h4><p>属于特殊情况时，循环计数应+1并写上<code>continue;</code>语句。</p>
+<h4 id="思路二-5"><a href="#思路二-5" class="headerlink" title="思路二"></a>思路二</h4><p>使用对象包含每一种特殊情况的取值，然后在罗马数字中遍历此对象，运用sString的includes（）方法判断是否存在特殊情况并作出相应处理，然后运用正则表达式的replace（）方法，替换为空字符串。最后再做常规处理，即无特殊情况的处理。</p>
+<h4 id="注意-11"><a href="#注意-11" class="headerlink" title="注意"></a>注意</h4><p>运用for of遍历以及使用对象包含每一种特殊情况的取值的方法，正则表达式的replace（）方法不改变原字符串.</p>
+<h3 id="2-2-Fizz-Buzz-LeetCode412-Easy"><a href="#2-2-Fizz-Buzz-LeetCode412-Easy" class="headerlink" title="2.2 Fizz Buzz LeetCode412 Easy"></a>2.2 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/fizz-buzz/">Fizz Buzz</a> LeetCode412 Easy</h3><h4 id="题目-7"><a href="#题目-7" class="headerlink" title="题目"></a>题目</h4><p>给你一个整数 n ，找出从 1 到 n 各个整数的 Fizz Buzz 表示，并用字符串数组 answer（下标从 1 开始）返回结果，其中：</p>
+<p>answer[i] &#x3D;&#x3D; “FizzBuzz” 如果 i 同时是 3 和 5 的倍数。<br>answer[i] &#x3D;&#x3D; “Fizz” 如果 i 是 3 的倍数。<br>answer[i] &#x3D;&#x3D; “Buzz” 如果 i 是 5 的倍数。<br>answer[i] &#x3D;&#x3D; i （以字符串形式）如果上述条件全不满足。</p>
+<h4 id="思路一-6"><a href="#思路一-6" class="headerlink" title="思路一"></a>思路一</h4><p>for循环，判断属于哪种情况并做相应处理，再通过Array的push方法在数组末添加元素。</p>
+<h2 id="3-数组"><a href="#3-数组" class="headerlink" title="3. 数组"></a>3. 数组</h2><h3 id="3-1-轮转数组-LeetCode189-Medium"><a href="#3-1-轮转数组-LeetCode189-Medium" class="headerlink" title="3.1 轮转数组 LeetCode189 Medium"></a>3.1 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rotate-array/">轮转数组</a> LeetCode189 Medium</h3><h4 id="题目-8"><a href="#题目-8" class="headerlink" title="题目"></a>题目</h4><p>给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。</p>
+<h4 id="思路一-7"><a href="#思路一-7" class="headerlink" title="思路一"></a>思路一</h4><p>首先计算出需要截取的数组元素的长度，即 k &#x3D; k % nums.length;然后运用Array的splice()方法，截取需要移动的成员，再通过数组的扩展运算符 <code>... </code>并运用Array的unshift()方法，放到数组前面。</p>
+<h4 id="注意-12"><a href="#注意-12" class="headerlink" title="注意"></a>注意</h4><p>注意需计算出需要截取的数组元素的长度，可降低时间复杂度，另外需区分Array的splice()和slice()的区别，前者会改变原数组，后者不会改变。</p>
+<h4 id="思路二-6"><a href="#思路二-6" class="headerlink" title="思路二"></a>思路二</h4><p>1.首先计算出需要循环移动的次数； 2. 通过数组的 unshift() 和 pop() 方法实现旋转，循环执行 k 次。</p>
+<h4 id="注意-13"><a href="#注意-13" class="headerlink" title="注意"></a>注意</h4><p>先使用pop()方法，再使用unshift()方法，unshift()方法将把它的参数插入数组的头部，并将已经存在的元素顺次地移到较高的下标处，这种处理不会占用额外空间。</p>
+<h3 id="3-2-只出现一次的数字-LeetCode136-Easy"><a href="#3-2-只出现一次的数字-LeetCode136-Easy" class="headerlink" title="3.2 只出现一次的数字 LeetCode136 Easy"></a>3.2 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/single-number/">只出现一次的数字</a> LeetCode136 Easy</h3><h4 id="题目-9"><a href="#题目-9" class="headerlink" title="题目"></a>题目</h4><p>给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出 现了一次的元素。</p>
+<h4 id="思路一-8"><a href="#思路一-8" class="headerlink" title="思路一"></a>思路一</h4><p>使用reduce方法,将数组的一个元素与下一个元素做异或比较。由于有一个数只出现了一次，其他数皆出现了两次，最后相同的数都会异或成0，唯一出现的数与0异或就会得到其本身。</p>
+<h4 id="注意-14"><a href="#注意-14" class="headerlink" title="注意"></a>注意</h4><p>主要是对于异或的运用。</p>
+<h3 id="3-3-两数之和-LeetCode1-Easy"><a href="#3-3-两数之和-LeetCode1-Easy" class="headerlink" title="3.3 两数之和 LeetCode1 Easy"></a>3.3 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/">两数之和</a> LeetCode1 Easy</h3><h4 id="题目-10"><a href="#题目-10" class="headerlink" title="题目"></a>题目</h4><p>给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出 和为目标值 target  的那 两个 整数，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。</p>
+<p>你可以按任意顺序返回答案。</p>
+<p><strong>进阶：</strong>你可以想出一个时间复杂度小于 <code>O(n2)</code> 的算法吗？</p>
+<h4 id="思路一-9"><a href="#思路一-9" class="headerlink" title="思路一"></a>思路一</h4><p>通过双重循环，暴力枚举每一种组合，再通过判断语句，如果两数满足和为target，则返回它们的数组下标。</p>
+<h4 id="注意-15"><a href="#注意-15" class="headerlink" title="注意"></a>注意</h4><p>因为题目要求元素在答案里不能重复出现，且可以按任何顺序返回答案，所以部分组合已经遍历过，无需重复遍历。</p>
+<h4 id="思路二-7"><a href="#思路二-7" class="headerlink" title="思路二"></a>思路二</h4><p>利用哈希表，运用Array的some()方法进行处理，将每个元素的值和它的索引加到表中，检查每个元素所对应的目标元素（target - nums[i]）是否存在于表中。</p>
+<h4 id="注意-16"><a href="#注意-16" class="headerlink" title="注意"></a>注意</h4><p>判断成立的条件应为<code>typeof lookup[target - v] ===&quot;number&quot;</code>，如果为<code>lookup[target - v]</code>在下标为<strong>0</strong>时会判断错误。</p>
+<h3 id="3-4-旋转图像-LeetCode48-Medium"><a href="#3-4-旋转图像-LeetCode48-Medium" class="headerlink" title="3.4 旋转图像  LeetCode48 Medium"></a>3.4 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rotate-image/">旋转图像</a>  LeetCode48 Medium</h3><h4 id="题目-11"><a href="#题目-11" class="headerlink" title="题目"></a>题目</h4><p>给定一个 n × n 的二维矩阵表示一个图像，将图像顺时针旋转 90 度。 必须在原地旋转图像，需要直接修改输入的二维矩阵，不要使用另一个矩阵来旋转图像。</p>
+<h4 id="思路一-10"><a href="#思路一-10" class="headerlink" title="思路一"></a>思路一</h4><p>先将矩阵沿左上角到右下角的对角线进行对称,运用for双层循环，内层循环的计数值的初始值为外层循环的计数值，然后将矩阵沿垂直中线对称即可。运用for双层循环，内层循环计数值小于Math.floor(n &#x2F; 2)，n为矩阵长度。</p>
+<h4 id="注意-17"><a href="#注意-17" class="headerlink" title="注意"></a>注意</h4><p>注意两个for双层循环的内层循环计数值的初始值即范围。</p>
+<h3 id="3-5-删除有序数组中的重复项-LeetCode26-Easy"><a href="#3-5-删除有序数组中的重复项-LeetCode26-Easy" class="headerlink" title="3.5 删除有序数组中的重复项  LeetCode26 Easy"></a>3.5 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-duplicates-from-sorted-array/">删除有序数组中的重复项</a>  LeetCode26 Easy</h3><h4 id="题目-12"><a href="#题目-12" class="headerlink" title="题目"></a>题目</h4><p>给你一个 升序排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。元素的 相对顺序 应该保持 一致 。</p>
+<p>由于在某些语言中不能改变数组的长度，所以必须将结果放在数组nums的第一部分。更规范地说，如果在删除重复项之后有 k 个元素，那么 nums 的前 k 个元素应该保存最终结果。</p>
+<p>将最终结果插入 nums 的前 k 个位置后返回 k 。</p>
+<p>不要使用额外的空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。</p>
+<p>判题标准:</p>
+<p>系统会用下面的代码来测试你的题解:</p>
+<p>int[] nums &#x3D; […]; &#x2F;&#x2F; 输入数组<br>int[] expectedNums &#x3D; […]; &#x2F;&#x2F; 长度正确的期望答案</p>
+<p>int k &#x3D; removeDuplicates(nums); &#x2F;&#x2F; 调用</p>
+<p>assert k &#x3D;&#x3D; expectedNums.length;<br>for (int i &#x3D; 0; i &lt; k; i++) {<br>    assert nums[i] &#x3D;&#x3D; expectedNums[i];<br>}<br>如果所有断言都通过，那么您的题解将被 通过。</p>
+<h4 id="思路一-11"><a href="#思路一-11" class="headerlink" title="思路一"></a>思路一</h4><p>运用for循环，在循环时，如果后面的数与当前循环的值相同，则利用Array的splice()方法，删除当前数，数组长度减一。</p>
+<h4 id="注意-18"><a href="#注意-18" class="headerlink" title="注意"></a>注意</h4><p>注意删除数组中的数后，应注意数组长度和循环计数值的关系，，处理后数组长度减一，splice()方法的用法，第一个参数是删除开始位置，第二个参数值删除个数，且改变原数组。</p>
+<h4 id="思路二-8"><a href="#思路二-8" class="headerlink" title="思路二"></a>思路二</h4><p>我们用 一个数组 来记录不重复的下标数量，第一个数必定不是重复的，即 nums[0] 肯定是不重复的， 所以从第二项（即 nums[1]）开始，遍历数组，判断该下标的值跟不重复的数组最后一个元素 nums[count] 是否相同，如果不相同，将该元素值赋值给 nums[count + 1] ，然后 count++，继续遍 历。待遍历结束时，我们可以通过 count 数量来判断不重复元素个数，因为 count 是从 0 开始的， 故返回的新数组的长度为 count + 1。</p>
+<h4 id="注意-19"><a href="#注意-19" class="headerlink" title="注意"></a>注意</h4><p>注意从第二项开始遍历。</p>
+<h3 id="3-14-字母异位词分组-LeetCode49-Medium"><a href="#3-14-字母异位词分组-LeetCode49-Medium" class="headerlink" title="3.14 字母异位词分组 LeetCode49 Medium"></a>3.14 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/group-anagrams/">字母异位词分组</a> LeetCode49 Medium</h3><h4 id="题目-13"><a href="#题目-13" class="headerlink" title="题目"></a>题目</h4><p>给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。</p>
+<p>字母异位词 是由重新排列源单词的字母得到的一个新单词，所有源单词中的字母通常恰好只用一次。</p>
+<h4 id="思路一-12"><a href="#思路一-12" class="headerlink" title="思路一"></a>思路一</h4><p>排序分类。先创建个空对象，用于储存字母异位词，然后创建个空数组，用与返回结果。遍历数组里的元素，将每个字母异位词进行排序，并将排序后的字符串作为 key，可知 key 值一样的即为字母异位 词，将他们置于同一个数组中， 待上述遍历结束，再遍历对象，将 对象的每一个值，push 到数组中。</p>
+<h4 id="思路二-9"><a href="#思路二-9" class="headerlink" title="思路二"></a>思路二</h4><p>计数分类。和思路一的不同在于判断两个字符串是否为字母异位词的方法不同。我们先遍历数组，每次都创建一个长度为 26，元素全是 0 的数组，用于记录每个单词中每个字符出现的次数；然后将其转化为字符串作为 key，将 key 值一样的字母异位词置于同一个数组中。最 后返回数组。</p>
+<h4 id="注意-20"><a href="#注意-20" class="headerlink" title="注意"></a>注意</h4><p>数组间不能直接判断是否相同，可以运用JSON.stringify()转换数组为字符串进行判断</p>
+<h3 id="3-15-三数之和-LeetCode15-Medium"><a href="#3-15-三数之和-LeetCode15-Medium" class="headerlink" title="3.15 三数之和 LeetCode15 Medium"></a>3.15 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/3sum/">三数之和</a> LeetCode15 Medium</h3><h4 id="题目-14"><a href="#题目-14" class="headerlink" title="题目"></a>题目</h4><p>给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c &#x3D; 0 ？请你找出所有和为 0 且不重复的三元组。</p>
+<p>注意：答案中不可以包含重复的三元组。</p>
+<h4 id="思路一-13"><a href="#思路一-13" class="headerlink" title="思路一"></a>思路一</h4><p>首先对数组进行排序，便于在插入的时候去重，进行双指针遍历时，遇到重复的数就方便跳过。设两个指针指向数组首尾，每次计算两个指针所指数与每次遍历的数三数之和，因为数组已经从小到大排序了，所以如果三数之和大于0则尾指针前移，小于0则首指针后移，如果等于0则添加此组合，并进行去重。</p>
+<h4 id="注意-21"><a href="#注意-21" class="headerlink" title="注意"></a>注意</h4><p>在数组中因避免这种写法：while(left&lt;right&amp;&amp;r&#x3D;&#x3D;&#x3D;<strong>nums[right-1])</strong>{right–;}，在加粗出容易超出边界。</p>
+<h4 id="思路二-10"><a href="#思路二-10" class="headerlink" title="思路二"></a>思路二</h4><p>三重循环，但是<strong>时间会超时</strong>，不做详解。</p>
+<h3 id="3-16-无重复字符的最长子串-LeetCode3-Medium"><a href="#3-16-无重复字符的最长子串-LeetCode3-Medium" class="headerlink" title="3.16 无重复字符的最长子串 LeetCode3 Medium"></a>3.16 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/">无重复字符的最长子串</a> LeetCode3 Medium</h3><h4 id="题目-15"><a href="#题目-15" class="headerlink" title="题目"></a>题目</h4><p>给定一个字符串 <code>s</code> ，请你找出其中不含有重复字符的 <strong>最长子串</strong> 的长度。</p>
+<h4 id="思路一-14"><a href="#思路一-14" class="headerlink" title="思路一"></a>思路一</h4><p>初始化一个数组和最大值， 从前向后遍历字符串， 如果该字符不在数组中（使用Array的indexOf()方法进行判断），则把字符 push 到数组中，并且比较记录下当前最大值。 否则就从头部向外shift字符直到该重复字符被移除（也可以使用slice（）方法直接截断数组,<code>a.slice(a.indexOf(s[i])+1,i+1)</code>）， 如此循环直到结束。</p>
+<h4 id="思路二-11"><a href="#思路二-11" class="headerlink" title="思路二"></a>思路二</h4><p>通过for (char of s){}遍历字符串，记录当前正在遍历的不重复字串的子集 string ， 在遍历过程中不断地添加不重复字符，遇到重复字符则截断 string 达到 string 内补字符不重复的条件。</p>
+<h2 id="4-链表"><a href="#4-链表" class="headerlink" title="4. 链表"></a>4. 链表</h2><h3 id="4-1-回文链表-LeetCode234-Easy"><a href="#4-1-回文链表-LeetCode234-Easy" class="headerlink" title="4.1 回文链表  LeetCode234 Easy"></a>4.1 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/palindrome-linked-list/">回文链表</a>  LeetCode234 Easy</h3><h4 id="题目-16"><a href="#题目-16" class="headerlink" title="题目"></a>题目</h4><p>请判断一个链表是否为回文链表。<strong>进阶：</strong>你能否用 <code>O(n)</code> 时间复杂度和 <code>O(1)</code> 空间复杂度解决此题？</p>
+<h4 id="思路一-15"><a href="#思路一-15" class="headerlink" title="思路一"></a>思路一</h4><p>主要思想为字符串拼接比较，遍历链表，定义两个临时变量为空字符串，做处理<code>a=a+head.val;b=head.val+b;</code>存储正、反两个拼接的字符串， 比较正、反字符串是否相同。</p>
+<h4 id="思路二-12"><a href="#思路二-12" class="headerlink" title="思路二"></a>思路二</h4><p>定义一个全局指针初始化值为head，用于正序遍历，运用调用递归函数进行链表的逆序遍历，递归出口为 head 为 null，返回true，即遍历结束，判断正序遍历的节点值是否全部都等于逆序遍历的节点值。</p>
+<h4 id="注意-22"><a href="#注意-22" class="headerlink" title="注意"></a>注意</h4><p>注意此方法的空间复杂度为0(n),另外注意递归的使用方法。</p>
+<h3 id="4-2-环形链表-LeetCode141-Easy"><a href="#4-2-环形链表-LeetCode141-Easy" class="headerlink" title="4.2 环形链表  LeetCode141 Easy"></a>4.2 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/linked-list-cycle/">环形链表</a>  LeetCode141 Easy</h3><h4 id="题目-17"><a href="#题目-17" class="headerlink" title="题目"></a>题目</h4><p>给你一个链表的头节点 head ，判断链表中是否有环。</p>
+<p>如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况。</p>
+<p>如果链表中存在环 ，则返回 true 。 否则，返回 false 。</p>
+<p><strong>进阶：</strong>你能用 <code>O(1)</code>（即，常量）内存解决此问题吗？</p>
+<h4 id="思路一-16"><a href="#思路一-16" class="headerlink" title="思路一"></a>思路一</h4><p>定义两个指针，即快慢指针，利用while循环，循环条件为快指针不为空以及快指针的next不为空。两个指针同时出发，快指针一次走两步，慢指针一次走一步。 如果快指针和慢指针相遇，则证明此链表是环形链表，不相遇则不是环形链表。</p>
+<h4 id="注意-23"><a href="#注意-23" class="headerlink" title="注意"></a>注意</h4><p>注意while循环条件为快指针不为空以及快指针的next不为空。</p>
+<h4 id="思路二-13"><a href="#思路二-13" class="headerlink" title="思路二"></a>思路二</h4><p>利用哈希表数据结构，使用Es6的Map数据结构，新建一个空的Map对象，在while中进行遍历，每次循环在Map中新增一个键值对，键名为当前节点，键值为1，遍历中，判断Map 对象中是否存在相同节点且值为 1，即判断该节点是否已经遍历过了，则可得出该链表是否为环形链表。</p>
+<h4 id="注意-24"><a href="#注意-24" class="headerlink" title="注意"></a>注意</h4><p>注意该方法空间复杂度为O（n），另外注意Map用法。</p>
+<h4 id="思路三-1"><a href="#思路三-1" class="headerlink" title="思路三"></a>思路三</h4><p>运用ES6中新引入的一种数据类型–Symbol，它代表独一无二的值:</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs abnf">let s1 <span class="hljs-operator">=</span> Symbol()<span class="hljs-comment">;</span><br>let s2 <span class="hljs-operator">=</span> Symbol()<span class="hljs-comment">;</span><br><br><span class="hljs-attribute">s1</span> <span class="hljs-operator">=</span><span class="hljs-operator">=</span><span class="hljs-operator">=</span> s2 // false<br></code></pre></td></tr></table></figure>
+
+<p>在遍历中将每个节点的 val 值改为用 Symbol 创建的独一无二的值，若循环过程中存在节点的 val 等于这个值，那么证明当前不是第一次循环到该节点，即链表为环形链表，反之不是。</p>
+<h3 id="4-3-删除链表中的节点-LeetCode237-Easy"><a href="#4-3-删除链表中的节点-LeetCode237-Easy" class="headerlink" title="4.3 删除链表中的节点  LeetCode237 Easy"></a>4.3 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/delete-node-in-a-linked-list/">删除链表中的节点</a>  LeetCode237 Easy</h3><h4 id="题目-18"><a href="#题目-18" class="headerlink" title="题目"></a>题目</h4><p>请编写一个函数，用于 删除单链表中某个特定节点 。在设计函数时需要注意，你无法访问链表的头节点 head ，只能直接访问 要被删除的节点 。</p>
+<p>题目数据保证需要删除的节点 不是末尾节点 。</p>
+<h4 id="思路一-17"><a href="#思路一-17" class="headerlink" title="思路一"></a>思路一</h4><p>删除给定的节点，在获取当前节点后，将下一个节点的值赋给当前节点， 然后将当前节点指向下下个节点，完成删除。</p>
+<h4 id="思路二-14"><a href="#思路二-14" class="headerlink" title="思路二"></a>思路二</h4><p>利用Object.assign() 方法， Object.assign(a,b) 能合并两个对象(a和b)，并覆盖到第一个参数(a)所指的地址上（可以改变地址），让node.next覆盖 node，<strong>即node的所有属性都是node.next的所有属性，包括next和val.</strong></p>
+<h4 id="注意-25"><a href="#注意-25" class="headerlink" title="注意"></a>注意</h4><p>Object.assign(node,node.next)，即node的所有属性都是node.next的所有属性，包括next和val.</p>
+<h3 id="4-4-反转链表-LeetCode206-Easy"><a href="#4-4-反转链表-LeetCode206-Easy" class="headerlink" title="4.4 反转链表  LeetCode206 Easy"></a>4.4 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-linked-list/">反转链表</a>  LeetCode206 Easy</h3><h4 id="题目-19"><a href="#题目-19" class="headerlink" title="题目"></a>题目</h4><p>给你单链表的头节点 <code>head</code> ，请你反转链表，并返回反转后的链表。</p>
+<p><strong>进阶：</strong>链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题</p>
+<h4 id="思路一-18"><a href="#思路一-18" class="headerlink" title="思路一"></a>思路一</h4><p>用迭代的方法实现. 先存储其前一个节点，在遍历链表过程中，申请一个新的临时空间用于前后元素交换。</p>
+<h4 id="思路二-15"><a href="#思路二-15" class="headerlink" title="思路二"></a>思路二</h4><p>用递归的方法实现。</p>
+<h4 id="注意-26"><a href="#注意-26" class="headerlink" title="注意"></a>注意</h4><p>注意每层递归函数都返回反转前的尾结点，也就是反转后的头节点（<strong>返回的结点是不变的，且此返回值不对后续处理造成影响</strong>），此外为了防止链表循环，需要将head.next设置为空。还有再次注意到js中null表示空，这需要与c语言中NULL做区分。</p>
+<h3 id="4-5-删除链表的倒数第-N-个结点-LeetCode19-Medium"><a href="#4-5-删除链表的倒数第-N-个结点-LeetCode19-Medium" class="headerlink" title="4.5 删除链表的倒数第 N 个结点  LeetCode19 Medium"></a>4.5 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/">删除链表的倒数第 N 个结点</a>  LeetCode19 Medium</h3><h4 id="题目-20"><a href="#题目-20" class="headerlink" title="题目"></a>题目</h4><p>给你一个链表，删除链表的倒数第 <code>n</code> 个结点，并且返回链表的头结点。</p>
+<p><strong>进阶：</strong>你能尝试使用一趟扫描实现吗？</p>
+<h4 id="思路一-19"><a href="#思路一-19" class="headerlink" title="思路一"></a>思路一</h4><p> 双指针法。先设first和second指向head，让first 指针前进 n，如果 first为空，说明要删除的节点正是 head 节点，那么直接返回 head 的下一个节点。如果不为空，则让让 second 从 head 开始和 first 一起前进，直到 first 到了最后，此时 second 的下一个节点就是要删除的节点，做出 second.next &#x3D; second.next.next处理。</p>
+<h4 id="注意-27"><a href="#注意-27" class="headerlink" title="注意"></a>注意</h4><p>注意first为空时的处理，还有<strong>second.next &#x3D; second.next.nex</strong>t这一步，而不是second.next&#x3D;first，这仅适用于n为2时。</p>
+<h4 id="思路二-16"><a href="#思路二-16" class="headerlink" title="思路二"></a>思路二</h4><p> 单向链表成为双向链表。先遍历，让单向链表成为双向链表，先找到其尾节点，从这个节点向前查找，n–，直到n&#x3D;1时，此时的节点就是我们要找的节点，然后直接删除。</p>
+<h3 id="4-6-合并两个有序链表-LeetCode21-Easy"><a href="#4-6-合并两个有序链表-LeetCode21-Easy" class="headerlink" title="4.6 合并两个有序链表  LeetCode21 Easy"></a>4.6 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/merge-two-sorted-lists/">合并两个有序链表</a>  LeetCode21 Easy</h3><h4 id="题目-21"><a href="#题目-21" class="headerlink" title="题目"></a>题目</h4><p>将两个升序链表合并为一个新的 <strong>升序</strong> 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 </p>
+<h4 id="思路一-20"><a href="#思路一-20" class="headerlink" title="思路一"></a>思路一</h4><p>创建一个新链表，通过判断两个链表当前值，将较小值放到新链表的下个节点，较小值的链表重新赋值为其下一节点，直到参数链表都为空时结束。</p>
+<h4 id="思路二-17"><a href="#思路二-17" class="headerlink" title="思路二"></a>思路二</h4><p>用递归的方式， 若两个链表中有一个链表为空，则返回另一个链表,依次比较两个链表中首项的大小，保留数值小的为链表当前值，直到一个链表参数为空则结束。</p>
+<h3 id="4-7-两数相加-LeetCode2-Medium"><a href="#4-7-两数相加-LeetCode2-Medium" class="headerlink" title="4.7 两数相加  LeetCode2 Medium"></a>4.7 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/add-two-numbers/">两数相加</a>  LeetCode2 Medium</h3><h4 id="题目-22"><a href="#题目-22" class="headerlink" title="题目"></a>题目</h4><p>给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。</p>
+<p>请你将两个数相加，并以相同形式返回一个表示和的链表。</p>
+<p>你可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p>
+<h4 id="思路一-21"><a href="#思路一-21" class="headerlink" title="思路一"></a>思路一</h4><p>由于输入的两个链表都是<strong>逆序</strong>存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。</p>
+<h4 id="注意-28"><a href="#注意-28" class="headerlink" title="注意"></a>注意</h4><p>注意需要保存进位值用于下一位相加，另外当链表遍历完时，如果进位值大于0，应<strong>再加一个结点存储进位值</strong>。</p>
+<h4 id="思路二-18"><a href="#思路二-18" class="headerlink" title="思路二"></a>思路二</h4><p>将输入的链表转换为逆序的字符串（<strong>字符串</strong>可以更容易的取出每一位数，无论是正序取出还是逆序取出），再将字符串转换为数（可以考虑使用BigInt,确保精度），然后将两个链表转换的数相加，再转换为字符串，然后逆序放入新的链表。</p>
+<h2 id="5-二叉树"><a href="#5-二叉树" class="headerlink" title="5. 二叉树"></a>5. 二叉树</h2><h3 id="5-1-最小栈-LeetCode155-Medium"><a href="#5-1-最小栈-LeetCode155-Medium" class="headerlink" title="5.1 最小栈  LeetCode155 Medium"></a>5.1 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/min-stack/">最小栈</a>  LeetCode155 Medium</h3><h4 id="题目-23"><a href="#题目-23" class="headerlink" title="题目"></a>题目</h4><p>设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。</p>
+<p>实现 MinStack 类:</p>
+<p>MinStack() 初始化堆栈对象。<br>void push(int val) 将元素val推入堆栈。<br>void pop() 删除堆栈顶部的元素。<br>int top() 获取堆栈顶部的元素。<br>int getMin() 获取堆栈中的最小元素。</p>
+<h4 id="思路一-22"><a href="#思路一-22" class="headerlink" title="思路一"></a>思路一</h4><p> 创建最小元素栈时，开辟两个数组，一个用于存储压栈元素，另一个用于存储最小元素序列。push栈数据同时，存储当前栈中最小元素，pop栈数据的同时pop最小元素栈栈顶数据.</p>
+<h4 id="思路二-19"><a href="#思路二-19" class="headerlink" title="思路二"></a>思路二</h4><p>用一个 min 变量保存最小值,min初始值为0（只要不超出数值范围均可，因为后面在第一次push时，会将入栈的值赋值给min，但是建议为0，因为不容易出现溢出），每次push操作压栈时,保存的是入栈的值和最小值min的差值，而不是入栈的值。pop出栈时，通过 min 值和栈顶的值得到。</p>
+<h4 id="注意-29"><a href="#注意-29" class="headerlink" title="注意"></a>注意</h4><p>注意仅第一次push时，会将入栈的值赋值给min（需要对数组的长度进行判断），另外在top方法中应注意处理数组长度为1时，直接返回数组中唯一的值，不需要再加min,因为数组的第一个值就是min.最后注意在两数差值有溢出风险。</p>
+<h2 id="6-动态规划"><a href="#6-动态规划" class="headerlink" title="6. 动态规划"></a>6. 动态规划</h2><h3 id="6-1-最大子数组和-LeetCode53-Medium"><a href="#6-1-最大子数组和-LeetCode53-Medium" class="headerlink" title="6.1 最大子数组和 LeetCode53 Medium"></a>6.1 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-subarray/">最大子数组和</a> LeetCode53 Medium</h3><h4 id="题目-24"><a href="#题目-24" class="headerlink" title="题目"></a>题目</h4><p>给你一个整数数组 <code>nums</code> ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
+<p><strong>子数组</strong> 是数组中的一个连续部分。</p>
+<p><strong>进阶：</strong>如果你已经实现复杂度为 <code>O(n)</code> 的解法，尝试使用更为精妙的 <strong>分治法</strong> 求解。</p>
+<h4 id="思路一-23"><a href="#思路一-23" class="headerlink" title="思路一"></a>思路一</h4><p>从数组获取第一个值为最大值和中间值 ,遍历数组，如果中间值大于0,则和中间值相加，相加结果和最大值比较，较大值赋值给最大值。如果中间值小于0，则将当前值作为中间值。</p>
+<h4 id="思路二-20"><a href="#思路二-20" class="headerlink" title="思路二"></a>思路二</h4><p>分治方法。运用递归，每次求得左右两半部分各自最大子数组和，然后处理两个部分一起的最大子数组和。递归结束条件为左右下标相等。</p>
+<h3 id="6-2-爬楼梯-LeetCode70-Easy"><a href="#6-2-爬楼梯-LeetCode70-Easy" class="headerlink" title="6.2 爬楼梯 LeetCode70 Easy"></a>6.2 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/climbing-stairs/">爬楼梯</a> LeetCode70 Easy</h3><h4 id="题目-25"><a href="#题目-25" class="headerlink" title="题目"></a>题目</h4><p>假设你正在爬楼梯。需要 <code>n</code> 阶你才能到达楼顶。</p>
+<p>每次你可以爬 <code>1</code> 或 <code>2</code> 个台阶。你有多少种不同的方法可以爬到楼顶呢？</p>
+<h4 id="思路一-24"><a href="#思路一-24" class="headerlink" title="思路一"></a>思路一</h4><p>递归+记忆化数组。递归函数：f(n) &#x3D; f(n − 1) + f(n − 2)，创建一个记忆化数组，记录楼层计算过的结果，降低时间复杂度。</p>
+<h4 id="思路二-21"><a href="#思路二-21" class="headerlink" title="思路二"></a>思路二</h4><p>动态规划+滚动数组。f(n) &#x3D; f(n − 1) + f(n − 2)。但是由于这里的f(n)只和 f(n - 1) 与 f(n - 2)有关，所以可以用滚动数组思想.</p>
+<h3 id="6-6-跳跃游戏-LeetCode55-Medium"><a href="#6-6-跳跃游戏-LeetCode55-Medium" class="headerlink" title="6.6 跳跃游戏 LeetCode55 Medium"></a>6.6 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/jump-game/">跳跃游戏</a> LeetCode55 Medium</h3><h4 id="题目-26"><a href="#题目-26" class="headerlink" title="题目"></a>题目</h4><p>给定一个非负整数数组 <code>nums</code> ，你最初位于数组的 <strong>第一个下标</strong> 。</p>
+<p>数组中的每个元素代表你在该位置可以跳跃的最大长度。</p>
+<p>判断你是否能够到达最后一个下标。</p>
+<h4 id="思路一-25"><a href="#思路一-25" class="headerlink" title="思路一"></a>思路一</h4><p>贪心。先初始化最远位置为0，然后遍历数组，如果当前位置能到达，并且当前位置+跳数&gt;最远位置，就更新最远位置， 每次循环都比较当前最远位置和当前数组下标，如果最远距离小于等于当前下标就返回false。</p>
+<h4 id="思路二-22"><a href="#思路二-22" class="headerlink" title="思路二"></a>思路二</h4><p>动态规划。遍历数组，每到一个点 ，我们就去判断是否可以到达当前点；如果可以，就记录true，否则为 false，最后判断是否可以到达最后一个点。</p>
+<h3 id="6-7-不同路径-LeetCode62-Medium"><a href="#6-7-不同路径-LeetCode62-Medium" class="headerlink" title="6.7 不同路径 LeetCode62 Medium"></a>6.7 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/unique-paths/">不同路径</a> LeetCode62 Medium</h3><h4 id="题目-27"><a href="#题目-27" class="headerlink" title="题目"></a>题目</h4><p>一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。</p>
+<p>机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。</p>
+<p>问总共有多少条不同的路径？</p>
+<h4 id="思路一-26"><a href="#思路一-26" class="headerlink" title="思路一"></a>思路一</h4><p>动态规划。利用双层for循环，状态转移方程为 dp[i][j] &#x3D; dp[i − 1][j] + dp[i][j − 1]。</p>
+<h4 id="思路二-23"><a href="#思路二-23" class="headerlink" title="思路二"></a>思路二</h4><p>深度优先搜索+记忆化数组。dfs[i][j] &#x3D; dfs[i − 1][j] + dfs[i][j − 1]。开辟一个记忆数组记录结果。</p>
+<h4 id="思路三-2"><a href="#思路三-2" class="headerlink" title="思路三"></a>思路三</h4><p>组合数学。从左上角到右下角的过程中，我们需要移动 m+n-2 次，其中有 m-1次向下移动，n-1次向右移动。因此路径的总数，就等于从 m+n-2次移动中选择 m-1次向下移动的方案数。</p>
+<h2 id="7-回溯算法"><a href="#7-回溯算法" class="headerlink" title="7. 回溯算法"></a>7. 回溯算法</h2><h3 id="7-1-括号生成-LeetCode22-Medium"><a href="#7-1-括号生成-LeetCode22-Medium" class="headerlink" title="7.1 括号生成 LeetCode22 Medium"></a>7.1 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/generate-parentheses/">括号生成</a> LeetCode22 Medium</h3><h4 id="题目-28"><a href="#题目-28" class="headerlink" title="题目"></a>题目</h4><p>数字 <code>n</code> 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 <strong>有效的</strong> 括号组合。</p>
+<h4 id="思路一-27"><a href="#思路一-27" class="headerlink" title="思路一"></a>思路一</h4><p>采用回溯法，如果自定义的字符串长度刚好满足条件，那么就说明这个组合是正确的的，把它放入数组。 否则，递归执行添加左括号，添加右括号的操作。递归结束条件为结果字符串长度等于左右括号的总个数（2n），则返回最终结果。</p>
+<h3 id="7-3-电话号码的字母组合-LeetCode17-Medium"><a href="#7-3-电话号码的字母组合-LeetCode17-Medium" class="headerlink" title="7.3 电话号码的字母组合 LeetCode17 Medium"></a>7.3 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/">电话号码的字母组合</a> LeetCode17 Medium</h3><h4 id="题目-29"><a href="#题目-29" class="headerlink" title="题目"></a>题目</h4><p>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
+<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。</p>
+<p><img   class="lazyload" data-original="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2021/11/09/200px-telephone-keypad2svg.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<h4 id="思路一-28"><a href="#思路一-28" class="headerlink" title="思路一"></a>思路一</h4><p>利用队列的先进先出的特点，把队列中的第一个元素拿出，再与后面的挨个拼接</p>
+<ol>
+<li>先在队列中插入一个空字符 </li>
+<li>取出队列中的第一个元素，与后一位数字对应的字符进行挨个拼接 。</li>
+<li>重复第二步，直到结束。</li>
+</ol>
+<h4 id="注意-30"><a href="#注意-30" class="headerlink" title="注意"></a>注意</h4><p><code>let a = [1, 2, 3];</code></p>
+<p><code>let b = a;</code></p>
+<p><code>let c = a;</code></p>
+<p>此代码中a,b,c仍然是<strong>同一个地址</strong>。</p>
+<h4 id="思路二-24"><a href="#思路二-24" class="headerlink" title="思路二"></a>思路二</h4><p>回溯。可以穷举所有的可能性，找到所有的可能性。回溯过程中维护一个字符串，表示已有的字母排列。 如果有数字需要被输入，就遍历数字对应的字母进行组合 。 当发现没有数字输入时，说明已经走完了，得到结果。</p>
+<h3 id="7-4-全排列-LeetCode46-Medium"><a href="#7-4-全排列-LeetCode46-Medium" class="headerlink" title="7.4 全排列 LeetCode46 Medium"></a>7.4 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/permutations/">全排列</a> LeetCode46 Medium</h3><h4 id="题目-30"><a href="#题目-30" class="headerlink" title="题目"></a>题目</h4><p>给定一个不含重复数字的数组 <code>nums</code> ，返回其 <em>所有可能的全排列</em> 。你可以 <strong>按任意顺序</strong> 返回答案。</p>
+<h4 id="思路一-29"><a href="#思路一-29" class="headerlink" title="思路一"></a>思路一</h4><p>回溯法.构造一颗生成树，遍历需要全排列的数组，将不同位置的数字与目前树结合起来 ,重复该操作直到需要全排列的数组长度为 0，即表明完成了全排列，因为数字不能重复，所以在每次遍历后应对数组做出处理，之后传入剩余的数组。</p>
+<h4 id="注意-31"><a href="#注意-31" class="headerlink" title="注意"></a>注意</h4><p>在递归中应注意不要使用数组的push()方法，最好使用扩展运算符。</p>
+<h4 id="思路二-25"><a href="#思路二-25" class="headerlink" title="思路二"></a>思路二</h4><p>插值排列法。遍历需要全排列的数组，将不同位置的数字抽离出来，插入到剩余数组的不同位置，即可得到该数字与另一个数组的全排列结果。 将一个固定的数字，插入到另一个数组 的全排列结果的不同位置， 遍历需要全排列的数组，将不同的数字连接到不同的树上继续全排列剩下的数组与生成的树，当剩余数组长度为0时，表明完成了全排列。</p>
+<h2 id="8-排序算法"><a href="#8-排序算法" class="headerlink" title="8. 排序算法"></a>8. 排序算法</h2><h3 id="8-9-搜索旋转排序数组-LeetCode33-Medium"><a href="#8-9-搜索旋转排序数组-LeetCode33-Medium" class="headerlink" title="8.9 搜索旋转排序数组 LeetCode33 Medium"></a>8.9 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/search-in-rotated-sorted-array/">搜索旋转排序数组</a> LeetCode33 Medium</h3><h4 id="题目-31"><a href="#题目-31" class="headerlink" title="题目"></a>题目</h4><p>整数数组 nums 按升序排列，数组中的值 互不相同 。</p>
+<p>在传递给函数之前，nums 在预先未知的某个下标 k（0 &lt;&#x3D; k &lt; nums.length）上进行了 旋转，使数组变为 [nums[k], nums[k+1], …, nums[n-1], nums[0], nums[1], …, nums[k-1]]（下标 从 0 开始 计数）。例如， [0,1,2,4,5,6,7] 在下标 3 处经旋转后可能变为 [4,5,6,7,0,1,2] 。</p>
+<p>给你 旋转后 的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。</p>
+<p>你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。</p>
+<h4 id="思路一-30"><a href="#思路一-30" class="headerlink" title="思路一"></a>思路一</h4><p>先用<code>Math.min.apply(null, nums)</code>和<code>Math.max.apply(null, nums)</code>计算数组中的最大最小值。当目标值大于数组最后一位时，数组查询位置从 0 到数字中在最大位置，当目标值小于等于数组最后一位时，数组查询位置从数组中最小值的位置开始，到数组的最后一 位。 循环二分查询，计算定位数组的中间值，数组的值等于目标查询结束。</p>
+<h4 id="注意-32"><a href="#注意-32" class="headerlink" title="注意"></a>注意</h4><p>此方法时间复杂度不为 O(log n)，因为求了最大值与最小值。</p>
+<h4 id="思路二-26"><a href="#思路二-26" class="headerlink" title="思路二"></a>思路二</h4><p>定义左右值分别为数组第一个和最后一个的下标 ，中间下标值为最大最小值的平均数 ，如果数组中间数等于目标直接返回下标 。数组的中间值小于数组最后一个值，后半部分还处于升序，如果目标值在这部分数组中，则左下标等于中间值+1，代表目标值在后半部分数组，反之重新定义右下标为中间值-1，目标在前半数组。 数组中间值大于数组最后一个值，代表前半部分数组处于升序，如果目标在前半数组中，右标 更新为中间值-1，反之，左下标更新为中间值+1。循环二分查询，计算定位数组的中间值，数组的值等于目标查询结束。</p>
+<h4 id="注意-33"><a href="#注意-33" class="headerlink" title="注意"></a>注意</h4><p>二分查找主要是同过目标值与中间值进行比较，从而直接确定目标值在哪一部分。如果<strong>不是</strong>升序或降序数组，则需要进一步确定目标值位置。</p>
+<h3 id="8-10-在排序数组中查找元素的第一个和最后一个位置-LeetCode34-Medium"><a href="#8-10-在排序数组中查找元素的第一个和最后一个位置-LeetCode34-Medium" class="headerlink" title="8.10 在排序数组中查找元素的第一个和最后一个位置 LeetCode34 Medium"></a>8.10 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/">在排序数组中查找元素的第一个和最后一个位置</a> LeetCode34 Medium</h3><h4 id="题目-32"><a href="#题目-32" class="headerlink" title="题目"></a>题目</h4><p>给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。</p>
+<p>如果数组中不存在目标值 target，返回 [-1, -1]。</p>
+<p>你必须设计并实现时间复杂度为 O(log n) 的算法解决此问题</p>
+<h4 id="思路一-31"><a href="#思路一-31" class="headerlink" title="思路一"></a>思路一</h4><p>二分查找，找到左边第一个不小于目标值的位置 ,然后从位置开始到最后，二分查找，确定右边最后一个符合条件值的位置 ，最后校验下标是否符合，得到结果。</p>
+<h3 id="8-12-颜色分类-LeetCode75-Medium"><a href="#8-12-颜色分类-LeetCode75-Medium" class="headerlink" title="8.12. 颜色分类 LeetCode75 Medium"></a>8.12. <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-colors/">颜色分类</a> LeetCode75 Medium</h3><h4 id="题目-33"><a href="#题目-33" class="headerlink" title="题目"></a>题目</h4><p>给定一个包含红色、白色和蓝色、共 n 个元素的数组 nums ，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
+<p>我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
+<p>必须在不使用库的sort函数的情况下解决这个问题。</p>
+<p><strong>进阶：</strong></p>
+<ul>
+<li>你可以不使用代码库中的排序函数来解决这道题吗？</li>
+<li>你能想出一个仅使用常数空间的一趟扫描算法吗？</li>
+</ul>
+<h4 id="思路一-32"><a href="#思路一-32" class="headerlink" title="思路一"></a>思路一</h4><p> 双指针遍历.设定一头一尾两个指针 begin 和 end，然后利用for循环从头开始遍历数组。如果遇到 0，则将该数值与begin指向的值交换，并且使begin++。 如果遇到 2，则将该数值与end指向的值交换，并且使end–。 如果遇到 1，则不做操作。</p>
+<h3 id="8-15-合并区间-LeetCode56-Medium"><a href="#8-15-合并区间-LeetCode56-Medium" class="headerlink" title="8.15 合并区间 LeetCode56 Medium"></a>8.15 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/merge-intervals/">合并区间</a> LeetCode56 Medium</h3><h4 id="题目-34"><a href="#题目-34" class="headerlink" title="题目"></a>题目</h4><p>以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] &#x3D; [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。</p>
+<h4 id="思路一-33"><a href="#思路一-33" class="headerlink" title="思路一"></a>思路一</h4><p>先将列表中的区间按照左端点升序排序。定义一个新的数组，用于存储新的数组区间，新数组的第一个值为原数组的第一个值。然后从第二个值开始遍历原数组，比较当前区间的最小值是否大于新数组最后一个区间的最大值， 如果满足则push进入新的数组；又或者比较当前区间的最大值是否大于新新数组的随后一个区间的最大值，若满足则将新数组的最后一个区间的最大值替换成当前区间的最大值。</p>
+<h4 id="注意-34"><a href="#注意-34" class="headerlink" title="注意"></a>注意</h4><p>要先进行原数组排序操作，可以降低做题难度。</p>
+<h2 id="9-栈和队列"><a href="#9-栈和队列" class="headerlink" title="9. 栈和队列"></a>9. 栈和队列</h2><h3 id="9-6-有效的括号-LeetCode20-Easy"><a href="#9-6-有效的括号-LeetCode20-Easy" class="headerlink" title="9.6 有效的括号 LeetCode20 Easy"></a>9.6 <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-parentheses/">有效的括号</a> LeetCode20 Easy</h3><h4 id="题目-35"><a href="#题目-35" class="headerlink" title="题目"></a>题目</h4><p>给定一个只包括 ‘(‘，’)’，’{‘，’}’，’[‘，’]’ 的字符串 s ，判断字符串是否有效。</p>
+<p>有效字符串需满足：</p>
+<p>左括号必须用相同类型的右括号闭合。<br>左括号必须以正确的顺序闭合。</p>
+<h4 id="思路一-34"><a href="#思路一-34" class="headerlink" title="思路一"></a>思路一</h4><p>利用<strong>头插法</strong>建立链栈，如果使用尾插法建立则不易删除节点（即出栈操作）。在遇到左括号的时候，将其入栈。在遇到右括号的时候，刚好就可以与栈中的左括号进行匹配，如果正确，就把左括号出栈 。 如果最终栈为空，说明全部匹配成功。</p>
+<h4 id="注意-35"><a href="#注意-35" class="headerlink" title="注意"></a>注意</h4><p>注意<strong>JS的垃圾回收机制</strong>。在链表中:</p>
+<p><code>let a = new ListNode(1);</code></p>
+<p><code>let b = a;</code></p>
+<p><code>a = null;</code></p>
+<p>b仍然指向新建的空间，不为空。</p>
+<p>另外需要使用<strong>头插法</strong>建立链表。</p>
+<h4 id="思路二-27"><a href="#思路二-27" class="headerlink" title="思路二"></a>思路二</h4><p>用 Map 数据类型，建立数组栈。在遇到左括号的时候，将其入栈。在遇到右括号的时候，刚好就可以与栈中的左括号进行匹配，如果正确，就把左括号出栈 。 如果最终栈为空，说明全部匹配成功。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>芝叶</li>
+    <li><strong>本文链接：</strong><a href="https://yeats.vercel.app/2022/07/29/%E7%AE%97%E6%B3%95-101-JavaScript%E6%8F%8F%E8%BF%B0%EF%BC%88%E6%94%BF%E9%87%87%E4%BA%91%EF%BC%89/index.html" title="https:&#x2F;&#x2F;yeats.vercel.app&#x2F;2022&#x2F;07&#x2F;29&#x2F;%E7%AE%97%E6%B3%95-101-JavaScript%E6%8F%8F%E8%BF%B0%EF%BC%88%E6%94%BF%E9%87%87%E4%BA%91%EF%BC%89&#x2F;index.html">https:&#x2F;&#x2F;yeats.vercel.app&#x2F;2022&#x2F;07&#x2F;29&#x2F;%E7%AE%97%E6%B3%95-101-JavaScript%E6%8F%8F%E8%BF%B0%EF%BC%88%E6%94%BF%E9%87%87%E4%BA%91%EF%BC%89&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2022/08/13/%F0%9F%94%A5-LeetCode-%E7%83%AD%E9%A2%98-HOT-100/"><i class="iconfont iconleft"></i>🔥 LeetCode 热题 HOT 100</a>
+    <a href="/2022/07/19/%E4%BB%8E0%E5%88%B01%E5%AE%9E%E7%8E%B0H5%E6%B8%B8%E6%88%8F/">从0到1实现H5游戏<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">1. 字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%95%B4%E6%95%B0%E5%8F%8D%E8%BD%AC-LeetCode7-Medium"><span class="toc-text">1.1 整数反转 LeetCode7 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%9C%89%E6%95%88%E7%9A%84%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D-LeetCode242-Easy"><span class="toc-text">1.2 有效的字母异位词 LeetCode242 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E6%95%B4%E6%95%B0-atoi-LeetCode8-Medium"><span class="toc-text">1.3 字符串转换整数 (atoi) LeetCode8 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%A4%96%E8%A7%82%E6%95%B0%E5%88%97-LeetCode38-Medium"><span class="toc-text">1.4 外观数列 LeetCode38 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E5%8F%8D%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2-LeetCode344-Easy"><span class="toc-text">1.5 反转字符串 LeetCode344 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-10-%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2-LeetCode5-Medium"><span class="toc-text">1.10 最长回文子串 LeetCode5 Medium</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E5%AD%A6"><span class="toc-text">2. 数学</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%BD%97%E9%A9%AC%E6%95%B0%E5%AD%97%E8%BD%AC%E6%95%B4%E6%95%B0-LeetCode13-Easy"><span class="toc-text">2.1 罗马数字转整数 LeetCode13 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Fizz-Buzz-LeetCode412-Easy"><span class="toc-text">2.2 Fizz Buzz LeetCode412 Easy</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%95%B0%E7%BB%84"><span class="toc-text">3. 数组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E8%BD%AE%E8%BD%AC%E6%95%B0%E7%BB%84-LeetCode189-Medium"><span class="toc-text">3.1 轮转数组 LeetCode189 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E6%95%B0%E5%AD%97-LeetCode136-Easy"><span class="toc-text">3.2 只出现一次的数字 LeetCode136 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C-LeetCode1-Easy"><span class="toc-text">3.3 两数之和 LeetCode1 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E6%97%8B%E8%BD%AC%E5%9B%BE%E5%83%8F-LeetCode48-Medium"><span class="toc-text">3.4 旋转图像  LeetCode48 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E5%88%A0%E9%99%A4%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E9%A1%B9-LeetCode26-Easy"><span class="toc-text">3.5 删除有序数组中的重复项  LeetCode26 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-14-%E5%AD%97%E6%AF%8D%E5%BC%82%E4%BD%8D%E8%AF%8D%E5%88%86%E7%BB%84-LeetCode49-Medium"><span class="toc-text">3.14 字母异位词分组 LeetCode49 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-15-%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C-LeetCode15-Medium"><span class="toc-text">3.15 三数之和 LeetCode15 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-16-%E6%97%A0%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2-LeetCode3-Medium"><span class="toc-text">3.16 无重复字符的最长子串 LeetCode3 Medium</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%93%BE%E8%A1%A8"><span class="toc-text">4. 链表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%9B%9E%E6%96%87%E9%93%BE%E8%A1%A8-LeetCode234-Easy"><span class="toc-text">4.1 回文链表  LeetCode234 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E7%8E%AF%E5%BD%A2%E9%93%BE%E8%A1%A8-LeetCode141-Easy"><span class="toc-text">4.2 环形链表  LeetCode141 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9-LeetCode237-Easy"><span class="toc-text">4.3 删除链表中的节点  LeetCode237 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8-LeetCode206-Easy"><span class="toc-text">4.4 反转链表  LeetCode206 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E5%88%A0%E9%99%A4%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%AC-N-%E4%B8%AA%E7%BB%93%E7%82%B9-LeetCode19-Medium"><span class="toc-text">4.5 删除链表的倒数第 N 个结点  LeetCode19 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E9%93%BE%E8%A1%A8-LeetCode21-Easy"><span class="toc-text">4.6 合并两个有序链表  LeetCode21 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-%E4%B8%A4%E6%95%B0%E7%9B%B8%E5%8A%A0-LeetCode2-Medium"><span class="toc-text">4.7 两数相加  LeetCode2 Medium</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-text">5. 二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%9C%80%E5%B0%8F%E6%A0%88-LeetCode155-Medium"><span class="toc-text">5.1 最小栈  LeetCode155 Medium</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-text">6. 动态规划</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E6%9C%80%E5%A4%A7%E5%AD%90%E6%95%B0%E7%BB%84%E5%92%8C-LeetCode53-Medium"><span class="toc-text">6.1 最大子数组和 LeetCode53 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E7%88%AC%E6%A5%BC%E6%A2%AF-LeetCode70-Easy"><span class="toc-text">6.2 爬楼梯 LeetCode70 Easy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-6-%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F-LeetCode55-Medium"><span class="toc-text">6.6 跳跃游戏 LeetCode55 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-7-%E4%B8%8D%E5%90%8C%E8%B7%AF%E5%BE%84-LeetCode62-Medium"><span class="toc-text">6.7 不同路径 LeetCode62 Medium</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95"><span class="toc-text">7. 回溯算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E6%8B%AC%E5%8F%B7%E7%94%9F%E6%88%90-LeetCode22-Medium"><span class="toc-text">7.1 括号生成 LeetCode22 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88-LeetCode17-Medium"><span class="toc-text">7.3 电话号码的字母组合 LeetCode17 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E5%85%A8%E6%8E%92%E5%88%97-LeetCode46-Medium"><span class="toc-text">7.4 全排列 LeetCode46 Medium</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="toc-text">8. 排序算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-9-%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84-LeetCode33-Medium"><span class="toc-text">8.9 搜索旋转排序数组 LeetCode33 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-10-%E5%9C%A8%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E6%9F%A5%E6%89%BE%E5%85%83%E7%B4%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%92%8C%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE-LeetCode34-Medium"><span class="toc-text">8.10 在排序数组中查找元素的第一个和最后一个位置 LeetCode34 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-12-%E9%A2%9C%E8%89%B2%E5%88%86%E7%B1%BB-LeetCode75-Medium"><span class="toc-text">8.12. 颜色分类 LeetCode75 Medium</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-15-%E5%90%88%E5%B9%B6%E5%8C%BA%E9%97%B4-LeetCode56-Medium"><span class="toc-text">8.15 合并区间 LeetCode56 Medium</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97"><span class="toc-text">9. 栈和队列</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-6-%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7-LeetCode20-Easy"><span class="toc-text">9.6 有效的括号 LeetCode20 Easy</span></a></li></ol></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="https://github.com/Yeatsczx"
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:engineerczx@foxmail.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail "></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  <a target="_blank" href="https://github.com/Yeatsczx">CZX - 2022</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+    <div class="search">
+  <div class="search-container">
+    <div class="search-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <div class="search-input-wrapper">
+      <i class="search-input-icon iconfont iconsearch"></i>
+      <input class="search-input" type="search" id="search-input" placeholder="Search..." autofocus autocomplete="off"
+        autocorrect="off" autocapitalize="off">
+    </div>
+    <div class="search-output" id="search-output"></div>
+  </div>
+</div>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/tororo.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script defer src='https://hm.baidu.com/hm.js?cdb8957a9ec8323f89c80310f82d9fb6'></script>
+
+
+
+
+
+
+
+
+
+
+
+</html>
