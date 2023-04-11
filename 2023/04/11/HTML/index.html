@@ -1,0 +1,539 @@
+
+
+<!DOCTYPE html>
+<html lang="en" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>HTML - 芝叶</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="基本标签HTML的基本骨架：
+123456789101...">
+  <meta name="author" content="芝叶">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: true
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: false,
+        type: 'url',
+        image: 'https://pic.izhaoo.com/weapp-code.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: true,
+        path: 'search.xml'
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+        <i class="iconfont iconsearch j-navbar-search"></i>
+      
+    </div>
+    <div class="center">HTML</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/html/game.html " class="underline "> 游戏</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  <a target="_blank" href="https://github.com/Yeatsczx">CZX - 2022</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/160158-1541059318e139.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">HTML</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>April 11, 2023</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>6159</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="基本标签"><a href="#基本标签" class="headerlink" title="基本标签"></a>基本标签</h2><p>HTML的基本骨架：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Document<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="lt-DOCTYPE-gt-标签"><a href="#lt-DOCTYPE-gt-标签" class="headerlink" title="&lt;!DOCTYPE&gt;标签"></a>&lt;!DOCTYPE&gt;标签</h2><!DOCTYPE><p>文档类型声明标签（注意不是HTML标签），用于告诉浏览器使用的是哪种版本的HTML来显示网页。</p>
+<p><code>&lt;!DOCTYPE html&gt;</code>表明当前页面采取的是HTML5版本来显示网页。</p>
+<h2 id="HTML标签"><a href="#HTML标签" class="headerlink" title="HTML标签"></a>HTML标签</h2><p>HTML标签，页面中最大的标签，作为文档的<strong>根标签</strong>。</p>
+<p>存在属性lang，表示文档的语言，支持的值主要为”en”：英语；”zh-CN”：中文……</p>
+<h2 id="meta标签"><a href="#meta标签" class="headerlink" title="meta标签"></a>meta标签</h2><p>meta表示“元”，即基本的配置项目。</p>
+<p><code>&lt;meta charset=&quot;UTF-8&quot;&gt;</code>用来规定HTML文档使用的字符编码，utf-8是目前最常用的字符集编码方式，</p>
+<h2 id="标题标签"><a href="#标题标签" class="headerlink" title="标题标签"></a>标题标签</h2><p><code>&lt;h1&gt; - &lt;h6&gt;</code>，一个标题独占一行。</p>
+<h2 id="段落标签"><a href="#段落标签" class="headerlink" title="段落标签"></a>段落标签</h2><p><code>&lt;p&gt;</code>段落标签。文本在一个段落中会根据浏览器窗口大小自动换行。段落和段落之间会存在空隙。</p>
+<h2 id="换行标签"><a href="#换行标签" class="headerlink" title="换行标签"></a>换行标签</h2><p><code>&lt;br/&gt;</code>（单标签）</p>
+<h2 id="文本格式化标签"><a href="#文本格式化标签" class="headerlink" title="文本格式化标签"></a>文本格式化标签</h2><p>文字加粗：<code>&lt;strong&gt;</code>或<code>&lt;b&gt;</code></p>
+<p>文字倾斜：<code>&lt;em&gt;</code>或<code>&lt;i&gt;</code></p>
+<p>删除线：<code>&lt;del&gt;</code>或<code>&lt;s&gt;</code></p>
+<p>下划线：<code>&lt;ins&gt;</code>或<code>&lt;u&gt;</code></p>
+<h2 id="lt-div-gt-和-lt-span-gt-标签"><a href="#lt-div-gt-和-lt-span-gt-标签" class="headerlink" title="&lt;div&gt;和&lt;span&gt;标签"></a>&lt;div&gt;和&lt;span&gt;标签</h2><p>没有语义，代表一个盒子用来装内容。</p>
+<p><code>&lt;div&gt;</code>可以理解为一个大盒子，一行只能放一个。</p>
+<p><code>&lt;span&gt;</code>可以理解为一个小盒子，一行可以放很多个。</p>
+<h2 id="图像标签"><a href="#图像标签" class="headerlink" title="图像标签"></a>图像标签</h2><p><code>&lt;img src=&quot;图片URL&quot; /&gt;</code></p>
+<p>图像标签的属性：</p>
+<ul>
+<li>src是<code>&lt;img&gt;</code>标签的的必须属性，用于指定图像文件的路径和文件名。</li>
+<li>alt，替换文本，图片不能显示时显示的文字。</li>
+<li>title，提示文本，鼠标放到图像上，显示的文字。</li>
+<li>width，设置图像的宽度，单位px可以不写。</li>
+<li>height，设置图像的高度，单位px可以不写。（width和height可以只修改一个，另一个会等比例缩放）</li>
+<li>border，设置图像的边框粗细，单位px可以不写。</li>
+</ul>
+<h2 id="超链接标签"><a href="#超链接标签" class="headerlink" title="超链接标签"></a>超链接标签</h2><p><code>&lt;a href=&quot;跳转目标&quot; target=&quot;目标窗口的弹出方式&quot;&gt;文本或图像&lt;/a&gt;</code></p>
+<p><code>&lt;a&gt;</code>标签用于定义超链接，作用是从一个页面链接到另一个页面。</p>
+<p>链接分类：</p>
+<ul>
+<li>外部链接：例如<code>&lt;a href=&quot;http://www.baidu.com&quot;&gt;百度&lt;/a&gt;</code>。</li>
+<li>内部链接：网站内部页面之间的相互链接，直接链接内部页面名称即可。例如：<code>&lt;a href=&quot;index.html&quot;&gt;首页&lt;/a&gt;</code>。</li>
+<li>空链接：如果当时没有确定链接目标，例如：<code>&lt;a href=&quot;#&quot;&gt;首页&lt;/a&gt;</code>。</li>
+<li>下载链接：如果href里面地址是一个文件（.exe）或压缩包（.zip），会下载这个文件。</li>
+<li>网页元素链接：在网页中的各种网页元素，如文本、图像、视频、表格、音频等都可以添加超链接。</li>
+<li>锚点链接：当我们点击链接，可以快速定位到页面中的某个位置。使用方法：</li>
+</ul>
+<ol>
+<li>在链接文本的href属性中，设置属性值为<code>#名字</code>的形式，如：<code>&lt;a href=&quot;#first&quot;&gt;第一点&lt;/a&gt;</code>。</li>
+<li>找到目标位置标签，里面添加一个<code>id属性=刚才的名字</code>，如：<code>&lt;h1 id=&quot;first&quot;&gt;第一点介绍&lt;/h1&gt;</code>。</li>
+</ol>
+<p>超链接标签的属性：</p>
+<ul>
+<li>href，必须属性，用于指定链接目标的url地址。</li>
+<li>target，用于指定链接页面的的打开方式，其中_self为默认值，表示当前窗口打开页面，__blank为在新窗口中打开页面。</li>
+</ul>
+<h2 id="注释标签"><a href="#注释标签" class="headerlink" title="注释标签"></a>注释标签</h2><p><code>&lt;!--注释语句--&gt;</code>，注释语句便于阅读和理解，不在页面中显示。</p>
+<h2 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h2><p>在HTML页面中，一些特殊的符号很难或者不方便直接使用，此时我们就可以使用下面的字符来代替：</p>
+<ul>
+<li><code>&amp;nbsp;</code>表示空格。</li>
+<li><code>&amp;lt;</code>表示 &lt; 符号。</li>
+<li><code>&amp;gt;</code>表示 &gt; 符号。</li>
+</ul>
+<h2 id="表格标签"><a href="#表格标签" class="headerlink" title="表格标签"></a>表格标签</h2><h3 id="基本标签-1"><a href="#基本标签-1" class="headerlink" title="基本标签"></a>基本标签</h3><p>表格主要用于展示数据。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-section">&lt;table&gt;</span><br>        <span class="hljs-section">&lt;tr&gt;</span><br>            <span class="hljs-section">&lt;td&gt;</span><span class="hljs-section">&lt;/td&gt;</span><br>        <span class="hljs-section">&lt;/tr&gt;</span><br><span class="hljs-section">&lt;/table&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><code>&lt;table&gt;</code>是用于定义表格的标签。</p>
+<p><code>&lt;tr&gt;</code>用于定义表格中的行，必须嵌套在<code>&lt;table&gt;</code>中。</p>
+<p><code>&lt;td&gt;</code>是用于定义表格中的单元格，必须嵌套在<code>&lt;tr&gt;</code>中。</p>
+<h3 id="表头单元格标签"><a href="#表头单元格标签" class="headerlink" title="表头单元格标签"></a>表头单元格标签</h3><p>一般表头单元格位于表格的第一行或第一列，表头单元格的文本内容加粗居中显示。</p>
+<p><code>&lt;th&gt;</code>标签表示HTML表格的表头部分。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-section">&lt;table&gt;</span><br>        <span class="hljs-section">&lt;tr&gt;</span><br>            <span class="hljs-section">&lt;th&gt;</span><span class="hljs-section">&lt;/th&gt;</span><br>        <span class="hljs-section">&lt;/tr&gt;</span><br><span class="hljs-section">&lt;/table&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="表格属性"><a href="#表格属性" class="headerlink" title="表格属性"></a>表格属性</h3><ul>
+<li>align：left、center、right。规定表格相对周围元素的对齐方式（注意是整个表格的位置）。</li>
+<li>border：””或像素值。规定表格单元是否拥有边框，默认为””，表示没有边框。</li>
+<li>cellpadding：像素值。规定单元边沿与其内容之间的空白，默认为1像素。</li>
+<li>cellspacing：像素值。规定单元格之间的空白，默认为2像素。</li>
+<li>width：像素值或百分比。规定表格的宽度。</li>
+<li>height:像素值或百分比。规定表格的高度。</li>
+</ul>
+<h3 id="表格结构标签"><a href="#表格结构标签" class="headerlink" title="表格结构标签"></a>表格结构标签</h3><p>表格标签<code>&lt;thead&gt;</code>，<code>&lt;tbody&gt;</code>可以更好地分清表格结构。</p>
+<ul>
+<li><code>&lt;thead&gt;</code>表示表格的头部区域。</li>
+<li><code>&lt;tbody&gt;</code>表示表格的主体区域。</li>
+</ul>
+<h3 id="合并单元格"><a href="#合并单元格" class="headerlink" title="合并单元格"></a>合并单元格</h3><p>合并单元格方式：</p>
+<ul>
+<li>跨行合并：rowspan&#x3D;”合并单元格个数”。</li>
+<li>跨列合并：colspan&#x3D;”合并单元格个数”。</li>
+</ul>
+<p>目标单元格（写合并代码）：</p>
+<ul>
+<li>跨行：最上侧的单元格为目标单元格，在此单元格上写合并代码。</li>
+<li>跨列：最左侧的单元格为目标单元格，在此单元格上写合并代码。</li>
+</ul>
+<h2 id="列表标签"><a href="#列表标签" class="headerlink" title="列表标签"></a>列表标签</h2><p>表格是用来展示数据的，那么列表就是用来布局的。</p>
+<p>列表分为：无序列表，有序列表、自定义列表。</p>
+<h3 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h3><p><code>&lt;ul&gt;</code>标签表示HTML页面中的无序列表。</p>
+<p><code>&lt;li&gt;</code>标签表示无序列表<code>&lt;ul&gt;</code>标签中的列表项，列表项前存在项目符号圆点。</p>
+<p><code>&lt;ul&gt;</code>中只能嵌套<code>&lt;li&gt;</code>，直接在<code>&lt;ul&gt;</code>中输入其它标签或文字是不被允许的。	</p>
+<p><code>&lt;li&gt;</code>相当于一个容器，可以容纳其它元素。</p>
+<p>无序列表会自带css属性，可以通过CSS设置list-style:none去掉。</p>
+<h3 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h3><p>有序列表即为有排列顺序的列表，其各个列表项会按照一定的顺序排列定义。</p>
+<p><code>&lt;ol&gt;</code>标签用于定义有序列表，列表排序以数字来显示。</p>
+<p><code>&lt;li&gt;</code>标签用于定义列表项，列表项前存在项目符号有序数字。</p>
+<p><code>&lt;ol&gt;</code>中只能嵌套<code>&lt;li&gt;</code>，直接在<code>&lt;ul&gt;</code>中输入其它标签或文字是不被允许的。	</p>
+<p><code>&lt;li&gt;</code>相当于一个容器，可以容纳其它元素。</p>
+<p>有序列表会自带css属性，可以通过CSS设置。</p>
+<h3 id="自定义列表"><a href="#自定义列表" class="headerlink" title="自定义列表"></a>自定义列表</h3><p>自定义列表常用于对术语或名词进行解释和描述。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dl</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dt</span>&gt;</span>名词<span class="hljs-tag">&lt;/<span class="hljs-name">dt</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dd</span>&gt;</span>解释一<span class="hljs-tag">&lt;/<span class="hljs-name">dd</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dd</span>&gt;</span>解释二<span class="hljs-tag">&lt;/<span class="hljs-name">dd</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dl</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><code>&lt;dl&gt;</code>标签用于定义描述列表。</p>
+<p><code>&lt;dt&gt;</code>标签用于定义项目&#x2F;名字。</p>
+<p><code>&lt;dd&gt;</code>标签用于描述项目&#x2F;名字。</p>
+<p><code>&lt;dl&gt;</code>中只能包含<code>&lt;dt&gt;</code>和<code>&lt;dd&gt;</code>。</p>
+<p><code>&lt;dt&gt;</code>和<code>&lt;dd&gt;</code>中可以放其它标签。</p>
+<h2 id="表单标签"><a href="#表单标签" class="headerlink" title="表单标签"></a>表单标签</h2><p>一个完整的表单通常由表单域、表单控件（也称表单元素）和提示信息3个部分构成。</p>
+<h3 id="表单域"><a href="#表单域" class="headerlink" title="表单域"></a>表单域</h3><p>表单域是一个包含表单元素的区域。</p>
+<p><code>&lt;form&gt;</code>标签用于定义表单域，以实现用户信息的收集和传递。<code>&lt;form&gt;</code>会把它范围内的表单元素信息提交给服务器。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf">&lt;form action<span class="hljs-operator">=</span><span class="hljs-string">&quot;url地址&quot;</span> method<span class="hljs-operator">=</span><span class="hljs-string">&quot;提交方式&quot;</span> name<span class="hljs-operator">=</span><span class="hljs-string">&quot;表单域名称&quot;</span>&gt;<br>        各种表单元素控件<br>&lt;/form&gt;<br></code></pre></td></tr></table></figure>
+
+<p>属性：</p>
+<ul>
+<li>action：url地址。用于指定接收并处理表单数据的服务器的url地址。</li>
+<li>method：get&#x2F;post。用于设置表单数据的提交方式，其取值为get&#x2F;post。</li>
+<li>name：名称。用于指定表单的名称，以区分同一个页面中的多个表单域。</li>
+</ul>
+<h3 id="表单控件（表单元素）"><a href="#表单控件（表单元素）" class="headerlink" title="表单控件（表单元素）"></a>表单控件（表单元素）</h3><ol>
+<li>input输入表单元素。</li>
+<li>select下拉表单元素。</li>
+<li>textarea文本域元素。</li>
+</ol>
+<h4 id="lt-input-gt-表单元素"><a href="#lt-input-gt-表单元素" class="headerlink" title="&lt;input&gt;表单元素"></a><code>&lt;input&gt;</code>表单元素</h4><p><code>&lt;input&gt;</code>标签用于收集用户信息。</p>
+<p>在<code>&lt;input&gt;</code>标签中有一个type属性，根据不同的type属性值，输入字段拥有很多种形式。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lua">&lt;<span class="hljs-built_in">input</span> <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;属性值&quot;</span>&gt;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>&lt;input&gt;</code>标签为单标签。</li>
+<li>type属性设置不同的属性值来指定不同的控件类型:</li>
+</ul>
+<p>![](E:\笔记\笔记图片\Screenshot 2022-12-18 121332.png)</p>
+<p><code>&lt;input&gt;</code>中还有其他属性：</p>
+<ul>
+<li>name：属性值自定义。定义input元素的名称，注意radio单选按钮和checkbox复选框中name属性应相同，特别是在单选按钮中，只有name属性值相同，才能实现多选一效果。</li>
+<li>value：属性值自定义。规定input元素的值，会在文本框中显示，单选按钮和复选框中不会显示。</li>
+<li>checked：属性值为checked或者省略。主要针对单选按钮和复选框，规定此input元素首次加载时应当被选中。</li>
+<li>maxlength:正整数。规定此输入字段中的字符的最大长度。</li>
+</ul>
+<h5 id="lt-label-gt-标签"><a href="#lt-label-gt-标签" class="headerlink" title="&lt;label&gt;标签"></a><code>&lt;label&gt;</code>标签</h5><p><code>&lt;label&gt;</code>标签为input元素定义标注（标签）。</p>
+<p><code>&lt;label&gt;</code>标签用于绑定一个表单元素，当点击<code>&lt;label&gt;</code>标签内的文本时，浏览器就会自动将焦点（光标）转到或者选择对应的表单元素上，用来增加用户体验。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;label <span class="hljs-attribute">for</span>=<span class="hljs-string">&quot;sex&quot;</span>&gt;男&lt;/label&gt;<br>&lt;input <span class="hljs-attribute">type</span>=<span class="hljs-string">&quot;radio&quot;</span> <span class="hljs-attribute">id</span>=<span class="hljs-string">&quot;sex&quot;</span> &gt;<br></code></pre></td></tr></table></figure>
+
+<p><code>&lt;label&gt;</code>标签的for属性应当与相关元素的id属性相同。</p>
+<h3 id="lt-select-gt-表单元素"><a href="#lt-select-gt-表单元素" class="headerlink" title="&lt;select&gt;表单元素"></a><code>&lt;select&gt;</code>表单元素</h3><p>在页面，如果有多个选项让用户选择，并且想要节约页面空间时，我们可以使用<code>&lt;select&gt;</code>标签控件定义下拉列表。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">option</span> &gt;</span>****<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">option</span> &gt;</span>****<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">option</span> &gt;</span>****<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><code>&lt;select&gt;</code>中至少包含一对<code>&lt;option&gt;</code>。</p>
+<p>在<code>&lt;option&gt;</code>中定义selected属性时，当前项即为默认选中项。</p>
+<h3 id="lt-textarea-gt-表单元素"><a href="#lt-textarea-gt-表单元素" class="headerlink" title="&lt;textarea&gt;表单元素"></a><code>&lt;textarea&gt;</code>表单元素</h3><p>当用户输入内容较多情况下，就不能使用文本框表单了，此时可以使用<code>&lt;textarea&gt;</code>标签。</p>
+<p><code>&lt;textarea&gt;</code>标签是用于定义多行文本输入的控件。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">&lt;textarea <span class="hljs-attribute">cols</span>=<span class="hljs-string">&quot;每行中的字符数&quot;</span> <span class="hljs-attribute">rows</span>=<span class="hljs-string">&quot;显示的行数&quot;</span>&gt;&lt;/textarea&gt;<br></code></pre></td></tr></table></figure>
+
+<p>存在cols和rows属性。</p>
+<h2 id="HTML5部分新特性"><a href="#HTML5部分新特性" class="headerlink" title="HTML5部分新特性"></a>HTML5部分新特性</h2><h3 id="HTML5新增的语义化标签"><a href="#HTML5新增的语义化标签" class="headerlink" title="HTML5新增的语义化标签"></a>HTML5新增的语义化标签</h3><ul>
+<li>&lt;header&gt;头部标签</li>
+<li>&lt;nav&gt;导航标签</li>
+<li>&lt;article&gt;内容标签</li>
+<li>&lt;section&gt;定义文档某个区域</li>
+<li>&lt;aside&gt;侧边栏标签</li>
+<li>&lt;footer&gt;尾部标签</li>
+</ul>
+<h3 id="HTML5新增的多媒体标签"><a href="#HTML5新增的多媒体标签" class="headerlink" title="HTML5新增的多媒体标签"></a>HTML5新增的多媒体标签</h3><h4 id="lt-video-gt-视频"><a href="#lt-video-gt-视频" class="headerlink" title="&lt;video&gt;视频"></a>&lt;video&gt;视频</h4><p>&lt;video&gt;支持三种视频格式（mp4,webm,ogg），mp4兼容性更好。</p>
+<p>属性：</p>
+<p>![](E:\笔记\笔记图片\Screenshot 2023-01-11 142712.png)</p>
+<h4 id="lt-audio-gt-音频"><a href="#lt-audio-gt-音频" class="headerlink" title="&lt;audio&gt;音频"></a>&lt;audio&gt;音频</h4><p>&lt;audio&gt;支持三种音频格式（mp3,wav,ogg），mp3兼容性更好。</p>
+<p>![](E:\笔记\笔记图片\Screenshot 2023-01-11 143127.png) </p>
+<p>谷歌浏览器把视频和音频自动播放禁止了。</p>
+<h3 id="HTML5新增的input类型"><a href="#HTML5新增的input类型" class="headerlink" title="HTML5新增的input类型"></a>HTML5新增的input类型</h3><p>![](E:\笔记\笔记图片\Screenshot 2023-01-11 201438.png)</p>
+<h3 id="HTML5新增的表单属性"><a href="#HTML5新增的表单属性" class="headerlink" title="HTML5新增的表单属性"></a>HTML5新增的表单属性</h3><p>![](E:\笔记\笔记图片\Screenshot 2023-01-11 202147.png)</p>
+<p>可以通过：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">input</span><span class="hljs-selector-pseudo">::placeholder</span> &#123;<br>	<span class="hljs-attribute">color</span>: blue;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>修改placeholder里的字体颜色。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>芝叶</li>
+    <li><strong>本文链接：</strong><a href="https://yeatsczx.github.io/2023/04/11/HTML/index.html" title="https:&#x2F;&#x2F;yeatsczx.github.io&#x2F;2023&#x2F;04&#x2F;11&#x2F;HTML&#x2F;index.html">https:&#x2F;&#x2F;yeatsczx.github.io&#x2F;2023&#x2F;04&#x2F;11&#x2F;HTML&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+        
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li></ul> 
+
+        
+  <nav class="nav">
+    <a href="/2023/04/11/CSS/"><i class="iconfont iconleft"></i>CSS</a>
+    <a href="/2023/04/10/%E6%89%8B%E6%92%95%E4%BB%A3%E7%A0%81/">手撕代码<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A0%87%E7%AD%BE"><span class="toc-text">基本标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-DOCTYPE-gt-%E6%A0%87%E7%AD%BE"><span class="toc-text">&lt;!DOCTYPE&gt;标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML%E6%A0%87%E7%AD%BE"><span class="toc-text">HTML标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#meta%E6%A0%87%E7%AD%BE"><span class="toc-text">meta标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E9%A2%98%E6%A0%87%E7%AD%BE"><span class="toc-text">标题标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AE%B5%E8%90%BD%E6%A0%87%E7%AD%BE"><span class="toc-text">段落标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%A2%E8%A1%8C%E6%A0%87%E7%AD%BE"><span class="toc-text">换行标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%A0%87%E7%AD%BE"><span class="toc-text">文本格式化标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lt-div-gt-%E5%92%8C-lt-span-gt-%E6%A0%87%E7%AD%BE"><span class="toc-text">&lt;div&gt;和&lt;span&gt;标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E6%A0%87%E7%AD%BE"><span class="toc-text">图像标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%85%E9%93%BE%E6%8E%A5%E6%A0%87%E7%AD%BE"><span class="toc-text">超链接标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A%E6%A0%87%E7%AD%BE"><span class="toc-text">注释标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6"><span class="toc-text">特殊字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC%E6%A0%87%E7%AD%BE"><span class="toc-text">表格标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A0%87%E7%AD%BE-1"><span class="toc-text">基本标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%A4%B4%E5%8D%95%E5%85%83%E6%A0%BC%E6%A0%87%E7%AD%BE"><span class="toc-text">表头单元格标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC%E5%B1%9E%E6%80%A7"><span class="toc-text">表格属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC%E7%BB%93%E6%9E%84%E6%A0%87%E7%AD%BE"><span class="toc-text">表格结构标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E5%8D%95%E5%85%83%E6%A0%BC"><span class="toc-text">合并单元格</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E6%A0%87%E7%AD%BE"><span class="toc-text">列表标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8"><span class="toc-text">有序列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%97%E8%A1%A8"><span class="toc-text">自定义列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E6%A0%87%E7%AD%BE"><span class="toc-text">表单标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E5%9F%9F"><span class="toc-text">表单域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E6%8E%A7%E4%BB%B6%EF%BC%88%E8%A1%A8%E5%8D%95%E5%85%83%E7%B4%A0%EF%BC%89"><span class="toc-text">表单控件（表单元素）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lt-select-gt-%E8%A1%A8%E5%8D%95%E5%85%83%E7%B4%A0"><span class="toc-text">&lt;select&gt;表单元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lt-textarea-gt-%E8%A1%A8%E5%8D%95%E5%85%83%E7%B4%A0"><span class="toc-text">&lt;textarea&gt;表单元素</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML5%E9%83%A8%E5%88%86%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">HTML5部分新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML5%E6%96%B0%E5%A2%9E%E7%9A%84%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE"><span class="toc-text">HTML5新增的语义化标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML5%E6%96%B0%E5%A2%9E%E7%9A%84%E5%A4%9A%E5%AA%92%E4%BD%93%E6%A0%87%E7%AD%BE"><span class="toc-text">HTML5新增的多媒体标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML5%E6%96%B0%E5%A2%9E%E7%9A%84input%E7%B1%BB%E5%9E%8B"><span class="toc-text">HTML5新增的input类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML5%E6%96%B0%E5%A2%9E%E7%9A%84%E8%A1%A8%E5%8D%95%E5%B1%9E%E6%80%A7"><span class="toc-text">HTML5新增的表单属性</span></a></li></ol></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="https://github.com/Yeatsczx"
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:engineerczx@foxmail.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail "></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  <a target="_blank" href="https://github.com/Yeatsczx">CZX - 2022</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+    <div class="search">
+  <div class="search-container">
+    <div class="search-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <div class="search-input-wrapper">
+      <i class="search-input-icon iconfont iconsearch"></i>
+      <input class="search-input" type="search" id="search-input" placeholder="Search..." autofocus autocomplete="off"
+        autocorrect="off" autocapitalize="off">
+    </div>
+    <div class="search-output" id="search-output"></div>
+  </div>
+</div>
+  
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/tororo.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+  <script defer src='https://hm.baidu.com/hm.js?cdb8957a9ec8323f89c80310f82d9fb6'></script>
+
+
+
+
+
+
+
+
+
+
+
+</html>
